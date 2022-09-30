@@ -1,0 +1,24 @@
+* {
+  outline: 1px solid red;
+}
+
+.section {
+  width: 600px;
+  height: 912px;
+}
+
+.tabs {
+  display: flex;
+}
+
+.ingredients {
+  height: calc(100vh - 236px);
+  overflow-y: scroll;
+}
+
+.ingredients-element {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
+  list-style-type: none;
+}
