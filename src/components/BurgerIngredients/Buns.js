@@ -3,7 +3,7 @@ import Styles from './BurgerIngredients.module.css';
 
 function Buns({ pageRefs, ingredients, ingredientsList }) {
   const isBuns = ingredients.filter(element => element.type === 'bun');
-  const displayBuns = useMemo(() => ingredientsList(isBuns), []);
+  const displayBuns = useMemo(() => ingredientsList(isBuns), [ingredientsList, isBuns]);
   return (
     <section className={`${Styles.buns}`}
       ref={el => pageRefs.current = { ...pageRefs.current, buns: el }}>

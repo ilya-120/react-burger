@@ -1,0 +1,41 @@
+.section-constructor {
+  width: 600px;
+  display: flex;
+}
+
+.list-element {
+  display: flex;
+  align-items: center;
+  padding: 8px 0 8px 16px;
+  justify-content: center;
+}
+
+.list {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  max-height: 44vh;
+  overflow-y: scroll;
+}
+
+.div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.order {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 40px;
+  margin-right: 16px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 40px;
+}

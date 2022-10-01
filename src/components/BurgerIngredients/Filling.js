@@ -3,7 +3,7 @@ import Styles from './BurgerIngredients.module.css';
 
 function Filling({ pageRefs, ingredients, ingredientsList }) {
   const isFilling = ingredients.filter(element => element.type === 'main');
-  const displayMains = useMemo(() => ingredientsList(isFilling), []);
+  const displayMains = useMemo(() => ingredientsList(isFilling), [ingredientsList, isFilling]);
   return (
     <section className={`${Styles.main}`}
       ref={el => pageRefs.current = { ...pageRefs.current, main: el }}>

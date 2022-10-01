@@ -1,10 +1,7 @@
-* {
-  outline: 1px solid red;
-}
-
 .section {
   width: 600px;
-  height: 912px;
+  margin-right: 40px;
+  padding-left: 8px;
 }
 
 .tabs {
@@ -20,5 +17,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 24px;
+  row-gap: 32px;
   list-style-type: none;
 }
