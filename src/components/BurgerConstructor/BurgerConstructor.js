@@ -1,32 +1,25 @@
-import { Button, ConstructorElement, CurrencyIcon, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components"
-import Styles from './BurgerConstructor.module.css';
-import { elementsPropType } from '../utils/PropTypes'
+import {
+  Button,
+  ConstructorElement,
+  CurrencyIcon,
+  DragIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import Styles from "./BurgerConstructor.module.css";
+import PropTypes from "prop-types";
 
 function BurgerConstructor({ ingredients }) {
-  const burgerComponentInside = ingredients.filter(element => element.type !== 'bun');
-  const burgerComponentOutside = ingredients.filter(element => element.type === 'bun');
-
-  const IngredientsList = (array) => {
-    return array.map(element => (
-      <li key={element._id} className={`${Styles['list-element']}`}>
-        <DragIcon />
-        <div className={`${Styles.div} ml-2 mr-2`}>
-          <ConstructorElement
-            text={element.name}
-            price={element.price}
-            thumbnail={element.image}
-          />
-        </div>
-      </li>
-    )
-    );
-  }
+  const burgerComponentInside = ingredients.filter(
+    (element) => element.type !== "bun"
+  );
+  const burgerComponentOutside = ingredients.filter(
+    (element) => element.type === "bun"
+  );
 
   return (
-    <section className={`${Styles.section - constructor}`}>
+    <section className={`${Styles["section-constructor"]}`}>
       <div className={`${Styles.div} pt-25 pb-2 ml-3`}>
         <ConstructorElement
-          type='top'
+          type="top"
           isLocked={true}
           text={`${burgerComponentOutside[0].name} (верх)`}
           price={burgerComponentOutside[0].price}
@@ -34,11 +27,22 @@ function BurgerConstructor({ ingredients }) {
         />
       </div>
       <ul className={`${Styles.list} custom-scroll`}>
-        {IngredientsList(burgerComponentInside)}
+        {burgerComponentInside.map((element) => (
+          <li key={element._id} className={`${Styles["list-element"]}`}>
+            <DragIcon />
+            <div className={`${Styles.div} ml-2 mr-2`}>
+              <ConstructorElement
+                text={element.name}
+                price={element.price}
+                thumbnail={element.image}
+              />
+            </div>
+          </li>
+        ))}
       </ul>
       <div className={`${Styles.div} ml-3`}>
         <ConstructorElement
-          type='bottom'
+          type="bottom"
           isLocked={true}
           text={`${burgerComponentOutside[0].name} (низ)`}
           price={burgerComponentOutside[0].price}
@@ -50,13 +54,16 @@ function BurgerConstructor({ ingredients }) {
           <p className="text text_type_digits-medium pr-2">610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="submit" type="primary" size="large">Оформить заказ</Button>
+        <Button htmlType="submit" type="primary" size="large">
+          Оформить заказ
+        </Button>
       </div>
     </section>
   );
 }
 
-BurgerConstructor.propTypes = { elementsPropType }.isRequired
+BurgerConstructor.propTypes = {
+  ingredients: PropTypes.array.isRequired,
+};
 
 export default BurgerConstructor;
-

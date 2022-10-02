@@ -43,4 +43,11 @@
   box-sizing: border-box;
   display: flex;
   width: 36%;
+  transition: 0.2s;
+}
+
+.logo:hover {
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  cursor: pointer;
 }

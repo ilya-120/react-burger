@@ -1,6 +1,5 @@
 .section-constructor {
-  width: 600px;
-  display: flex;
+  box-sizing: border-box;
 }
 
 .list-element {
@@ -14,7 +13,7 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  max-height: 44vh;
+  max-height: 48vh;
   overflow-y: scroll;
 }
 

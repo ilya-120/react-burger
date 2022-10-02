@@ -1,35 +1,39 @@
-import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import Styles from './BurgerIngredientsElement.module.css';
-import { elementsPropType } from '../utils/PropTypes'
+import {
+  Counter,
+  CurrencyIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import Styles from "./BurgerIngredientsElement.module.css";
+import PropTypes from "prop-types";
 
 const BurgerIngredientsElement = ({ ingredient }) => {
-
   return (
     <li className={`${Styles.element} mb-8`}>
       <div>
-        {(ingredient.count >= 1) ?
-          (<Counter
-            size="default"
-            count={ingredient.count} />) : ('')}
+        {ingredient.count >= 1 ? (
+          <Counter size="default" count={ingredient.count} />
+        ) : (
+          ""
+        )}
         <img
-          className='ml-4 mr-4 mb-1'
+          className="ml-4 mr-4 mb-1"
           src={ingredient.image}
           alt={ingredient.name}
         />
         <div className={`${Styles.currency} mb-1`}>
-          <span className='text text_type_digits-default'>
+          <span className="text text_type_digits-default">
             {ingredient.price}
           </span>
-          &nbsp;<CurrencyIcon />
+          &nbsp;
+          <CurrencyIcon />
         </div>
-        <span className='text text_type_main-small'>
-          {ingredient.name}
-        </span>
+        <span className="text text_type_main-small">{ingredient.name}</span>
       </div>
     </li>
-  )
-}
+  );
+};
 
-BurgerIngredientsElement.propTypes = { elementsPropType }.isRequired
+BurgerIngredientsElement.propTypes = {
+  ingredient: PropTypes.object.isRequired,
+};
 
 export default BurgerIngredientsElement;
