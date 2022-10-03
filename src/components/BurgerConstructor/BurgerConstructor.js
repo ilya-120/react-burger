@@ -6,6 +6,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerConstructor.module.css";
 import PropTypes from "prop-types";
+import { elementsPropType } from "../utils/PropTypes";
 
 function BurgerConstructor({ ingredients }) {
   const burgerComponentInside = ingredients.filter(
@@ -63,7 +64,7 @@ function BurgerConstructor({ ingredients }) {
 }
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.array.isRequired,
+  ingredients: PropTypes.arrayOf(elementsPropType).isRequired,
 };
 
 export default BurgerConstructor;

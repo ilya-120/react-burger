@@ -1,20 +1,24 @@
 import { useMemo } from "react";
 import Styles from "./BurgerIngredientsType.module.css";
 import PropTypes from "prop-types";
+import BurgerIngredientsElement from "../BurgerIngredientsElement/BurgerIngredientsElement";
+import { elementsPropType } from "../utils/PropTypes";
 
 function BurgerIngredientsType({
   ingredients,
-  ingredientsList,
   ingredient,
   title,
   scroll,
 }) {
-  const isIngredient = ingredients.filter(
-    (element) => element.type === ingredient
-  );
+  const ingredientsList = (array) => {
+    return array.map((element) => (
+      <BurgerIngredientsElement ingredient={element} key={element._id} />
+    ));
+  };
+
   const displayIsIngredients = useMemo(
-    () => ingredientsList(isIngredient),
-    [ingredientsList, isIngredient]
+    () => ingredientsList(ingredients),
+    [ingredients]
   );
 
   return (
@@ -30,9 +34,8 @@ function BurgerIngredientsType({
 }
 
 BurgerIngredientsType.propTypes = {
-  ingredients: PropTypes.array.isRequired,
+  ingredients: PropTypes.arrayOf(elementsPropType).isRequired,
   ingredient: PropTypes.string.isRequired,
-  ingredientsList: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   scroll: PropTypes.func.isRequired,
 };
