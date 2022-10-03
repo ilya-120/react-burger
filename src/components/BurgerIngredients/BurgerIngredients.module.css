@@ -1,0 +1,14 @@
+.section {
+  width: 600px;
+  margin-right: 40px;
+  padding-left: 8px;
+}
+
+.tabs {
+  display: flex;
+}
+
+.ingredients {
+  height: calc(100vh - 236px);
+  overflow-y: scroll;
+}

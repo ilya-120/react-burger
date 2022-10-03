@@ -1,0 +1,53 @@
+.header__container {
+  max-width: 100%;
+  background: #1C1C21;
+  margin: 0 auto;
+}
+
+.div {
+  display: flex;
+}
+
+.header__nav {
+  background: #1C1C21;
+  max-width: 1280px;
+  margin: 40px auto 0px;
+  display: flex;
+  align-items: center;
+  min-height: 90px;
+  justify-content: space-between;
+}
+
+.label {
+  display: flex;
+  transition: 0.2s;
+}
+
+.header__link {
+  color: #8585AD;
+  text-decoration: none;
+}
+
+.header__link_active {
+  color: #F2F2F3;
+  text-decoration: none;
+}
+
+.label:hover {
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.logo {
+  box-sizing: border-box;
+  display: flex;
+  width: 36%;
+  transition: 0.2s;
+}
+
+.logo:hover {
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
