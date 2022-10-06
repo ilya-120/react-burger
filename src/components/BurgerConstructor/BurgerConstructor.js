@@ -9,11 +9,12 @@ import PropTypes from "prop-types";
 import { elementsPropType } from "../utils/PropTypes";
 
 function BurgerConstructor({ ingredients }) {
+
   const burgerComponentInside = ingredients.filter(
-    (element) => element.type !== "bun"
+    ({ type }) => type !== "bun"
   );
   const burgerComponentOutside = ingredients.filter(
-    (element) => element.type === "bun"
+    ({ type }) => type === "bun"
   );
 
   return (
@@ -45,9 +46,9 @@ function BurgerConstructor({ ingredients }) {
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text={`${burgerComponentOutside[0].name} (низ)`}
-          price={burgerComponentOutside[0].price}
-          thumbnail={burgerComponentOutside[0].image}
+          text={`${burgerComponentOutside[1].name} (низ)`}
+          price={burgerComponentOutside[1].price}
+          thumbnail={burgerComponentOutside[1].image}
         />
       </div>
       <div className={`${Styles.order}`}>
