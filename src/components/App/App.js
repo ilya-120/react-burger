@@ -9,9 +9,10 @@ function App() {
   const [burgerIngredients, setBurgerIngredients] = useState({
     success: false,
     error: false,
+    errorText: "",
     data: [],
   });
-  const { success, error, data } = burgerIngredients;
+  const { success, error, data, errorText } = burgerIngredients;
 
   useEffect(() => {
     getIngredients()
@@ -23,10 +24,10 @@ function App() {
         }));
       })
       .catch((err) => {
-        console.log(`Ошибка загрузки данных: ${err}`);
         setBurgerIngredients((burgerIngredients) => ({
           ...burgerIngredients,
           error: true,
+          errorText: `Ошибка загрузки данных: ${err}`,
         }));
       });
   }, []);
@@ -34,11 +35,7 @@ function App() {
   return (
     !!data && (
       <div className="root">
-        {error && (
-          <p className="message">
-            Что-то пошло не так, ошибка при получении данных!
-          </p>
-        )}
+        {error && <p className="message">{errorText}</p>}
         {!success && !error && (
           <span className="message">
             <ClipLoader color={"#165b97"} loading={!success} size={200} />

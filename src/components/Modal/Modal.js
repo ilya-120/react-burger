@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import ReactDom from "react-dom";
 import Styles from "./Modal.module.css";
+import PropTypes from "prop-types";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Overlay from "../Overlay/Overlay";
 
@@ -29,7 +30,7 @@ const Modal = ({ isOpen, title, onClose, children }) => {
       <Overlay onClick={handleOverlay} />
       <div className={Styles.modal__box}>
         <div className={`${Styles.modal__header} text`}>
-          <h4 className="text text_type_main-large"> {title}</h4>
+          <h4 className="text text_type_main-large">{title}</h4>
           <CloseIcon type="button" onClick={onClose}></CloseIcon>
         </div>
         <div className={Styles.modal__content}>{children}</div>
@@ -37,6 +38,13 @@ const Modal = ({ isOpen, title, onClose, children }) => {
     </div>,
     portal
   );
+};
+
+Modal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 export default Modal;

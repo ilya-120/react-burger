@@ -1,3 +1,4 @@
+import { elementsPropType } from "../utils/PropTypes";
 import Style from "./IngredientDetails.module.css";
 
 function IngredientDetails({ ingredient }) {
@@ -46,5 +47,9 @@ function IngredientDetails({ ingredient }) {
     </div>
   );
 }
+
+IngredientDetails.propTypes = {
+  ingredient: elementsPropType.isRequired,
+};
 
 export default IngredientDetails;

@@ -75,8 +75,8 @@ function BurgerConstructor({ ingredients }) {
         </Button>
       </div>
       {showModal && (
-        <Modal onClose={handleshowModal} isOpen={showModal}>
-          <OrderDetails {...data} />
+        <Modal onClose={handleshowModal} isOpen={showModal} title={''}>
+          <OrderDetails />
         </Modal>
       )}
     </section>
