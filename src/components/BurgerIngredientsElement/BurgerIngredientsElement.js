@@ -9,15 +9,15 @@ import { useState } from "react";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 const BurgerIngredientsElement = ({ ingredient }) => {
-  const [show, setShow] = useState(false);
+  const [showModal, setshowModal] = useState(false);
 
-  function handleShow() {
-    setShow(!show);
+  function handleshowModal() {
+    setshowModal(!showModal);
   }
 
   return (
     <li className={`${Styles.element} mb-8`}>
-      <div onClick={handleShow}>
+      <div onClick={handleshowModal}>
         {ingredient.count >= 1 ? (
           <Counter size="default" count={ingredient.count} />
         ) : (
@@ -37,8 +37,8 @@ const BurgerIngredientsElement = ({ ingredient }) => {
         </div>
         <span className="text text_type_main-small">{ingredient.name}</span>
       </div>
-      {show && (
-        <Modal title="Детали ингредиента" onClose={handleShow} isOpen={show}>
+      {showModal && (
+        <Modal title="Детали ингредиента" onClose={handleshowModal} isOpen={showModal}>
           <IngredientDetails ingredient={ingredient} />
         </Modal>
       )}

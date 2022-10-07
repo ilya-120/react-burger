@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import ReactDom from "react-dom";
 import Styles from "./Modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import Overlay from "../Overlay/Overlay";
 
 const Modal = ({ isOpen, title, onClose, children }) => {
   const portal = document.getElementById("root");
@@ -25,8 +26,8 @@ const Modal = ({ isOpen, title, onClose, children }) => {
 
   return ReactDom.createPortal(
     <div className={Styles.modal}>
-      <div className={Styles.modal__overlay} onClick={handleOverlay}></div>
-      <div className={Styles.modal__box} onClick={(e) => e.stopPropagation()}>
+      <Overlay onClick={handleOverlay} />
+      <div className={Styles.modal__box}>
         <div className={`${Styles.modal__header} text`}>
           <h4 className="text text_type_main-large"> {title}</h4>
           <CloseIcon type="button" onClick={onClose}></CloseIcon>
