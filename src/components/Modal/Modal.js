@@ -5,11 +5,12 @@ import PropTypes from "prop-types";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Overlay from "../Overlay/Overlay";
 
-const Modal = ({ isOpen, title, onClose, children }) => {
+const Modal = ({ title, onClose, children }) => {
   const portal = document.getElementById("root");
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!onClose) return;
+    console.log(!onClose)
     const closeByEscape = (e) => {
       if (e.key === "Escape") {
         onClose();
@@ -17,7 +18,7 @@ const Modal = ({ isOpen, title, onClose, children }) => {
     };
     document.addEventListener("keydown", closeByEscape);
     return () => document.removeEventListener("keydown", closeByEscape);
-  }, [isOpen, onClose]);
+  }, [onClose]);
 
   const handleOverlay = (e) => {
     if (e.target === e.currentTarget) {
@@ -41,7 +42,6 @@ const Modal = ({ isOpen, title, onClose, children }) => {
 };
 
 Modal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,

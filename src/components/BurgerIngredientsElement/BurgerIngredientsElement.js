@@ -38,7 +38,7 @@ const BurgerIngredientsElement = ({ ingredient }) => {
         <span className="text text_type_main-small">{ingredient.name}</span>
       </div>
       {showModal && (
-        <Modal title="Детали ингредиента" onClose={handleshowModal} isOpen={showModal}>
+        <Modal title="Детали ингредиента" onClose={handleshowModal}>
           <IngredientDetails ingredient={ingredient} />
         </Modal>
       )}

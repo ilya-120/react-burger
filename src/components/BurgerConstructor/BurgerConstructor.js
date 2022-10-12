@@ -55,9 +55,9 @@ function BurgerConstructor({ ingredients }) {
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text={`${burgerComponentOutside[1].name} (низ)`}
-          price={burgerComponentOutside[1].price}
-          thumbnail={burgerComponentOutside[1].image}
+          text={`${burgerComponentOutside[0].name} (низ)`}
+          price={burgerComponentOutside[0].price}
+          thumbnail={burgerComponentOutside[0].image}
         />
       </div>
       <div className={`${Styles.order}`}>
@@ -75,7 +75,7 @@ function BurgerConstructor({ ingredients }) {
         </Button>
       </div>
       {showModal && (
-        <Modal onClose={handleshowModal} isOpen={showModal} title={''}>
+        <Modal onClose={handleshowModal} title={''}>
           <OrderDetails />
         </Modal>
       )}
