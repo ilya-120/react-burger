@@ -4,11 +4,20 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerIngredientsElement.module.css";
 import { elementsPropType } from "../utils/PropTypes";
+import Modal from "../Modal/Modal";
+import { useState } from "react";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 const BurgerIngredientsElement = ({ ingredient }) => {
+  const [showModal, setshowModal] = useState(false);
+
+  function handleshowModal() {
+    setshowModal(!showModal);
+  }
+
   return (
     <li className={`${Styles.element} mb-8`}>
-      <div>
+      <div onClick={handleshowModal}>
         {ingredient.count >= 1 ? (
           <Counter size="default" count={ingredient.count} />
         ) : (
@@ -28,6 +37,11 @@ const BurgerIngredientsElement = ({ ingredient }) => {
         </div>
         <span className="text text_type_main-small">{ingredient.name}</span>
       </div>
+      {showModal && (
+        <Modal title="Детали ингредиента" onClose={handleshowModal}>
+          <IngredientDetails ingredient={ingredient} />
+        </Modal>
+      )}
     </li>
   );
 };

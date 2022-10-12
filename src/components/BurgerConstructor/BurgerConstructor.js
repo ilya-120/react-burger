@@ -7,13 +7,23 @@ import {
 import Styles from "./BurgerConstructor.module.css";
 import PropTypes from "prop-types";
 import { elementsPropType } from "../utils/PropTypes";
+import Modal from "../Modal/Modal";
+import { useState } from "react";
+import { data } from "../utils/data";
+import OrderDetails from "../OrderDetails/OrderDetails";
 
 function BurgerConstructor({ ingredients }) {
+  const [showModal, setshowModal] = useState(false);
+
+  function handleshowModal() {
+    setshowModal(!showModal);
+  }
+
   const burgerComponentInside = ingredients.filter(
-    (element) => element.type !== "bun"
+    ({ type }) => type !== "bun"
   );
   const burgerComponentOutside = ingredients.filter(
-    (element) => element.type === "bun"
+    ({ type }) => type === "bun"
   );
 
   return (
@@ -52,13 +62,23 @@ function BurgerConstructor({ ingredients }) {
       </div>
       <div className={`${Styles.order}`}>
         <div className={`${Styles.price} ml-3`}>
-          <p className="text text_type_digits-medium pr-2">610</p>
+          <p className="text text_type_digits-medium pr-2">{data.total}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="submit" type="primary" size="large">
+        <Button
+          htmlType="submit"
+          onClick={handleshowModal}
+          type="primary"
+          size="large"
+        >
           Оформить заказ
         </Button>
       </div>
+      {showModal && (
+        <Modal onClose={handleshowModal} title={''}>
+          <OrderDetails />
+        </Modal>
+      )}
     </section>
   );
 }

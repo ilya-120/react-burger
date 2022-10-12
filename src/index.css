@@ -10,3 +10,11 @@ main {
   justify-content: center;
   margin: auto;
 }
+
+.message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10vh;
+  color: red;
+}
