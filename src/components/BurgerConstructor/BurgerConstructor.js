@@ -9,13 +9,13 @@ import PropTypes from "prop-types";
 import Modal from "../Modal/Modal";
 import { useContext, useEffect, useState } from "react";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import { NumberContext, OrderContext } from "../utils/appContext";
+import { OrderNumberContext, BurgerConstructorContext } from "../utils/appContext";
 
 function BurgerConstructor({ requestOrderNumber }) {
   const [showModal, setshowModal] = useState(false);
   const [totalPrice, setTotalPrice] = useState(null);
-  const { setOrderNumber, setOrderError } = useContext(NumberContext);
-  const { orderData } = useContext(OrderContext);
+  const { setOrderNumber, setOrderError } = useContext(OrderNumberContext);
+  const { orderData } = useContext(BurgerConstructorContext);
 
   useEffect(() => {
     setTotalPrice(
@@ -34,7 +34,11 @@ function BurgerConstructor({ requestOrderNumber }) {
     evt.preventDefault();
     setOrderNumber(null);
     setOrderError("");
-    const data = orderData.map((item) => item._id);
+    const data = [burgerComponentOutside._id].concat(
+      burgerComponentInside
+        .map((item) => item._id)
+        .concat(burgerComponentOutside._id)
+    );
     requestOrderNumber({
       ingredients: data,
     });

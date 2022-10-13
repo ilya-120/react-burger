@@ -3,7 +3,10 @@ import ClipLoader from "react-spinners/ClipLoader";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import { NumberContext, OrderContext } from "../utils/appContext";
+import {
+  OrderNumberContext,
+  BurgerConstructorContext,
+} from "../utils/appContext";
 import { color } from "../utils/data";
 import { getIngredients, getOrderNumber } from "../utils/StellarBurgersApi";
 
@@ -41,7 +44,9 @@ function App() {
   function requestOrderNumber(ingredients) {
     getOrderNumber(ingredients)
       .then((data) => {
-        setOrderNumber(data.order.number);
+        !data.success
+          ? setOrderError('the order has not been created')
+          : setOrderNumber(data.order.number);
       })
       .catch((err) => {
         setOrderError(err.message);
@@ -62,8 +67,10 @@ function App() {
             <AppHeader />
             <main>
               <BurgerIngredients ingredients={data} />
-              <OrderContext.Provider value={{ orderData, setOrderData }}>
-                <NumberContext.Provider
+              <BurgerConstructorContext.Provider
+                value={{ orderData, setOrderData }}
+              >
+                <OrderNumberContext.Provider
                   value={{
                     orderNumber,
                     setOrderNumber,
@@ -72,8 +79,8 @@ function App() {
                   }}
                 >
                   <BurgerConstructor requestOrderNumber={requestOrderNumber} />
-                </NumberContext.Provider>
-              </OrderContext.Provider>
+                </OrderNumberContext.Provider>
+              </BurgerConstructorContext.Provider>
             </main>
           </>
         )}
