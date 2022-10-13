@@ -42,14 +42,9 @@ function App() {
     getOrderNumber(ingredients)
       .then((data) => {
         setOrderNumber(data.order.number);
-        console.log(data);
       })
       .catch((err) => {
         setOrderError(err.message);
-        console.log(err);
-      })
-      .finally(() => {
-        console.log("ok");
       });
   }
 

@@ -32,7 +32,6 @@ function BurgerConstructor({ requestOrderNumber }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    console.log(totalPrice);
     setOrderNumber(null);
     setOrderError("");
     const data = orderData.map((item) => item._id);

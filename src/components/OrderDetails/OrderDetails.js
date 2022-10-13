@@ -12,7 +12,11 @@ function OrderDetails() {
       <div className="mt-15">
         <p className="text text_type_digits-large">
           {!orderNumber && !orderError ? (
-            <ClipLoader color={color} loading={!orderNumber || !orderError} size={50} />
+            <ClipLoader
+              color={color}
+              loading={!orderNumber || !orderError}
+              size={50}
+            />
           ) : (
             orderNumber || `error: ${orderError}`
           )}
