@@ -6,25 +6,46 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerConstructor.module.css";
 import PropTypes from "prop-types";
-import { elementsPropType } from "../utils/PropTypes";
 import Modal from "../Modal/Modal";
-import { useState } from "react";
-import { data } from "../utils/data";
+import { useContext, useEffect, useState } from "react";
 import OrderDetails from "../OrderDetails/OrderDetails";
+import { OrderNumberContext, BurgerConstructorContext } from "../utils/appContext";
 
-function BurgerConstructor({ ingredients }) {
+function BurgerConstructor({ requestOrderNumber }) {
   const [showModal, setshowModal] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(null);
+  const { setOrderNumber, setOrderError } = useContext(OrderNumberContext);
+  const { orderData } = useContext(BurgerConstructorContext);
+
+  useEffect(() => {
+    setTotalPrice(
+      burgerComponentInside
+        .map((item) => item.price)
+        .concat(Array(2).fill(burgerComponentOutside.price))
+        .reduce((a, b) => a + b)
+    );
+  }, [orderData]);
 
   function handleshowModal() {
     setshowModal(!showModal);
   }
 
-  const burgerComponentInside = ingredients.filter(
-    ({ type }) => type !== "bun"
-  );
-  const burgerComponentOutside = ingredients.filter(
-    ({ type }) => type === "bun"
-  );
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    setOrderNumber(null);
+    setOrderError("");
+    const data = [burgerComponentOutside._id].concat(
+      burgerComponentInside
+        .map((item) => item._id)
+        .concat(burgerComponentOutside._id)
+    );
+    requestOrderNumber({
+      ingredients: data,
+    });
+  }
+
+  const burgerComponentInside = orderData.filter(({ type }) => type !== "bun");
+  const burgerComponentOutside = orderData.find(({ type }) => type === "bun");
 
   return (
     <section className={`${Styles["section-constructor"]}`}>
@@ -32,9 +53,9 @@ function BurgerConstructor({ ingredients }) {
         <ConstructorElement
           type="top"
           isLocked={true}
-          text={`${burgerComponentOutside[0].name} (верх)`}
-          price={burgerComponentOutside[0].price}
-          thumbnail={burgerComponentOutside[0].image}
+          text={`${burgerComponentOutside.name} (верх)`}
+          price={burgerComponentOutside.price}
+          thumbnail={burgerComponentOutside.image}
         />
       </div>
       <ul className={`${Styles.list} custom-scroll`}>
@@ -55,27 +76,29 @@ function BurgerConstructor({ ingredients }) {
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text={`${burgerComponentOutside[0].name} (низ)`}
-          price={burgerComponentOutside[0].price}
-          thumbnail={burgerComponentOutside[0].image}
+          text={`${burgerComponentOutside.name} (низ)`}
+          price={burgerComponentOutside.price}
+          thumbnail={burgerComponentOutside.image}
         />
       </div>
       <div className={`${Styles.order}`}>
         <div className={`${Styles.price} ml-3`}>
-          <p className="text text_type_digits-medium pr-2">{data.total}</p>
+          <p className="text text_type_digits-medium pr-2">{totalPrice}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button
-          htmlType="submit"
-          onClick={handleshowModal}
-          type="primary"
-          size="large"
-        >
-          Оформить заказ
-        </Button>
+        <form onSubmit={handleSubmit}>
+          <Button
+            htmlType="submit"
+            onClick={handleshowModal}
+            type="primary"
+            size="large"
+          >
+            Оформить заказ
+          </Button>
+        </form>
       </div>
       {showModal && (
-        <Modal onClose={handleshowModal} title={''}>
+        <Modal onClose={handleshowModal} title={""}>
           <OrderDetails />
         </Modal>
       )}
@@ -84,7 +107,7 @@ function BurgerConstructor({ ingredients }) {
 }
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(elementsPropType).isRequired,
+  requestOrderNumber: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;
