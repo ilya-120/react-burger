@@ -10,7 +10,6 @@ const Modal = ({ title, onClose, children }) => {
 
   useEffect(() => {
     if (!onClose) return;
-    console.log(!onClose)
     const closeByEscape = (e) => {
       if (e.key === "Escape") {
         onClose();

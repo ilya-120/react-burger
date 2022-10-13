@@ -1,4 +1,4 @@
-const BASE_URL = "https://norma.nomoreparties.space/api/ingredients";
+const BASE_URL = "https://norma.nomoreparties.space/api/";
 const headers = {
   Accept: "application/json",
   "Content-Type": "application/json",
@@ -9,11 +9,22 @@ const checkResponse = (res) => {
 };
 
 export const getIngredients = async () => {
-  const res = await fetch(`${BASE_URL}`, {
+  const res = await fetch(`${BASE_URL}ingredients`, {
     method: "GET",
     headers: {
       ...headers,
     },
+  });
+  return checkResponse(res);
+};
+
+export const getOrderNumber = async (ingredients) => {
+  const res = await fetch(`${BASE_URL}orders`, {
+    method: "POST",
+    headers: {
+      ...headers,
+    },
+    body: JSON.stringify(ingredients),
   });
   return checkResponse(res);
 };

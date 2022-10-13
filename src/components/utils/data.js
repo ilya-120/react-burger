@@ -8,3 +8,5 @@ export const data =
     ],
     total: '610',
   };
+
+  export const color = "#165b97";

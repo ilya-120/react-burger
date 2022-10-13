@@ -3,7 +3,9 @@ import ClipLoader from "react-spinners/ClipLoader";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import { getIngredients } from "../utils/StellarBurgersApi";
+import { NumberContext, OrderContext } from "../utils/appContext";
+import { color } from "../utils/data";
+import { getIngredients, getOrderNumber } from "../utils/StellarBurgersApi";
 
 function App() {
   const [burgerIngredients, setBurgerIngredients] = useState({
@@ -12,6 +14,9 @@ function App() {
     errorText: "",
     data: [],
   });
+  const [orderNumber, setOrderNumber] = useState(null);
+  const [orderError, setOrderError] = useState("");
+  const [orderData, setOrderData] = useState([]);
   const { success, error, data, errorText } = burgerIngredients;
 
   useEffect(() => {
@@ -22,6 +27,7 @@ function App() {
           success: res.success,
           data: res.data,
         }));
+        setOrderData(res.data);
       })
       .catch((err) => {
         setBurgerIngredients((burgerIngredients) => ({
@@ -32,13 +38,28 @@ function App() {
       });
   }, []);
 
+  function requestOrderNumber(ingredients) {
+    getOrderNumber(ingredients)
+      .then((data) => {
+        setOrderNumber(data.order.number);
+        console.log(data);
+      })
+      .catch((err) => {
+        setOrderError(err.message);
+        console.log(err);
+      })
+      .finally(() => {
+        console.log("ok");
+      });
+  }
+
   return (
     !!data && (
       <div className="root">
         {error && <p className="message">{errorText}</p>}
         {!success && !error && (
           <span className="message">
-            <ClipLoader color={"#165b97"} loading={!success} size={200} />
+            <ClipLoader color={color} loading={!success} size={200} />
           </span>
         )}
         {!!success && !error && (
@@ -46,7 +67,18 @@ function App() {
             <AppHeader />
             <main>
               <BurgerIngredients ingredients={data} />
-              <BurgerConstructor ingredients={data} />
+              <OrderContext.Provider value={{ orderData, setOrderData }}>
+                <NumberContext.Provider
+                  value={{
+                    orderNumber,
+                    setOrderNumber,
+                    orderError,
+                    setOrderError,
+                  }}
+                >
+                  <BurgerConstructor requestOrderNumber={requestOrderNumber} />
+                </NumberContext.Provider>
+              </OrderContext.Provider>
             </main>
           </>
         )}
