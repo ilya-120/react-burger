@@ -2,10 +2,9 @@ import React, { useRef } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerIngredients.module.css";
 import BurgerIngredientsType from "../BurgerIngredientsType/BurgerIngredientsType";
-import PropTypes from "prop-types";
-import { elementsPropType } from "../utils/PropTypes";
+import { useSelector } from "react-redux";
 
-function BurgerIngredients({ ingredients }) {
+function BurgerIngredients() {
   const pageRefs = useRef({});
   const [isBlock, setBlock] = React.useState("buns");
   const scrollBuns = (el) =>
@@ -14,9 +13,8 @@ function BurgerIngredients({ ingredients }) {
     (pageRefs.current = { ...pageRefs.current, sauces: el });
   const scrollMain = (el) =>
     (pageRefs.current = { ...pageRefs.current, main: el });
-  const buns = ingredients.filter((item) => item.type === "bun");
-  const mains = ingredients.filter((item) => item.type === "main");
-  const sauces = ingredients.filter((item) => item.type === "sauce");
+
+  const { buns, mains, sauces } = useSelector((store) => store.ingredients);
 
   function scrollIntoView(type) {
     pageRefs.current[type].scrollIntoView();
@@ -64,9 +62,5 @@ function BurgerIngredients({ ingredients }) {
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(elementsPropType).isRequired,
-};
 
 export default BurgerIngredients;

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
+import { getStoreIngredients } from "../../services/actions/ingredients";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
@@ -21,6 +23,12 @@ function App() {
   const [orderError, setOrderError] = useState("");
   const [orderData, setOrderData] = useState([]);
   const { success, error, data, errorText } = burgerIngredients;
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getStoreIngredients());
+  }, [dispatch]);
 
   useEffect(() => {
     getIngredients()
@@ -66,7 +74,7 @@ function App() {
           <>
             <AppHeader />
             <main>
-              <BurgerIngredients ingredients={data} />
+              <BurgerIngredients />
               <BurgerConstructorContext.Provider
                 value={{ orderData, setOrderData }}
               >
