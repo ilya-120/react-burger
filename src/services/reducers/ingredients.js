@@ -1,8 +1,10 @@
 import {
+  CLOSE_SHOW_MODAL,
   CONSTRUCTOR_BUNS,
   CONSTRUCTOR_INGREDIENTS,
   ERROR_TEXT_GET_INGREDIENTS,
   GET_INGREDIENTS,
+  OPEN_SHOW_MODAL,
   ORDER_INGREDIENTS,
   REMOVE_ELEMENT,
   RESET_CONSTRUCTOR,
@@ -19,6 +21,8 @@ const initialState = {
   orderIngredients: [],
   constructorIngredients: [],
   constructorBuns: {},
+  showModal: false,
+  modalIngredientsDetails: {},
 };
 
 export const ingredientsReducer = (state = initialState, action) => {
@@ -72,6 +76,18 @@ export const ingredientsReducer = (state = initialState, action) => {
         ...state,
         constructorIngredients: [],
         constructorBuns: {},
+      };
+    case OPEN_SHOW_MODAL:
+      return {
+        ...state,
+        modalIngredientsDetails: action.payload,
+        showModal: true,
+      };
+    case CLOSE_SHOW_MODAL:
+      return {
+        ...state,
+        modalIngredientsDetails: {},
+        showModal: false,
       };
     default:
       return state;

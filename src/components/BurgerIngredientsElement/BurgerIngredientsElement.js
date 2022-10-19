@@ -6,22 +6,29 @@ import Styles from "./BurgerIngredientsElement.module.css";
 import { v4 as uuidv4 } from "uuid";
 import { elementsPropType } from "../utils/PropTypes";
 import Modal from "../Modal/Modal";
-import { useState } from "react";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  CLOSE_SHOW_MODAL,
   CONSTRUCTOR_BUNS,
   CONSTRUCTOR_INGREDIENTS,
+  OPEN_SHOW_MODAL,
 } from "../../services/actions";
 
 const BurgerIngredientsElement = ({ ingredient }) => {
   const dispatch = useDispatch();
-  const [showModal, setshowModal] = useState(false);
-  const { constructorBuns, constructorIngredients } = useSelector(
-    (store) => store.ingredients
-  );
+  const {
+    constructorBuns,
+    constructorIngredients,
+    showModal,
+    modalIngredientsDetails,
+  } = useSelector((store) => store.ingredients);
+
   function handleshowModal() {
-    setshowModal(!showModal);
+    dispatch({
+      type: OPEN_SHOW_MODAL,
+      payload: ingredient,
+    });
     const newIdIngredient = {
       ...ingredient,
       id: ingredient._id,
@@ -37,6 +44,12 @@ const BurgerIngredientsElement = ({ ingredient }) => {
         type: CONSTRUCTOR_INGREDIENTS,
         payload: newIdIngredient,
       });
+  }
+
+  function handleCloseModal() {
+    dispatch({
+      type: CLOSE_SHOW_MODAL,
+    });
   }
 
   const showCountMaterials = () => {
@@ -69,8 +82,8 @@ const BurgerIngredientsElement = ({ ingredient }) => {
         </div>
         <span className="text text_type_main-small">{ingredient.name}</span>
       </div>
-      {showModal && (
-        <Modal title="Детали ингредиента" onClose={handleshowModal}>
+      {showModal && ingredient._id === modalIngredientsDetails._id && (
+        <Modal title="Детали ингредиента" onClose={handleCloseModal}>
           <IngredientDetails ingredient={ingredient} />
         </Modal>
       )}

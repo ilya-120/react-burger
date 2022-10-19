@@ -5,62 +5,68 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerConstructor.module.css";
-import PropTypes from "prop-types";
 import Modal from "../Modal/Modal";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import { OrderNumberContext } from "../utils/appContext";
 import { useDispatch, useSelector } from "react-redux";
-import { ORDER_INGREDIENTS, REMOVE_ELEMENT, RESET_CONSTRUCTOR } from "../../services/actions";
+import {
+  CLOSE_SHOW_MODAL_ORDER_NUMBER,
+  ERROR_TEXT_GET_ORDER_NUMBER,
+  GET_ORDER_NUMBER,
+  OPEN_SHOW_MODAL_ORDER_NUMBER,
+  ORDER_INGREDIENTS,
+  REMOVE_ELEMENT,
+  RESET_CONSTRUCTOR,
+} from "../../services/actions";
+import { getStoreOrderNumber } from "../../services/actions/orders";
 
-function BurgerConstructor({ requestOrderNumber }) {
+function BurgerConstructor() {
   const dispatch = useDispatch();
-  const [showModal, setshowModal] = useState(false);
   const [totalPrice, setTotalPrice] = useState(null);
-  const [orderData, setOrderData] = useState([]);
-  const [burgerComponentOutside, setBurgerComponentOutside] = useState({});
-  const [burgerComponentInside, setBurgerComponentInside] = useState([]);
-  const { setOrderNumber, setOrderError } = useContext(OrderNumberContext);
-  const { constructorIngredients, constructorBuns } = useSelector(
-    (store) => store.ingredients
-  );
+  const { constructorIngredients, constructorBuns, orderIngredients } =
+    useSelector((store) => store.ingredients);
+  const { showModal } = useSelector((store) => store.orderNumber);
 
   useEffect(() => {
     setTotalPrice(
-      burgerComponentInside
+      constructorIngredients
         .map((item) => item.price)
-        .concat(Array(2).fill(burgerComponentOutside.price || 0))
+        .concat(Array(2).fill(constructorBuns.price || 0))
         .reduce((a, b) => a + b)
-    );
-    setOrderData(
-      [burgerComponentOutside._id].concat(
-        burgerComponentInside
-          .map((item) => item.id)
-          .concat(burgerComponentOutside._id)
-      )
     );
     dispatch({
       type: ORDER_INGREDIENTS,
-      payload: orderData,
+      payload: [constructorBuns._id].concat(
+        constructorIngredients
+          .map((item) => item.id)
+          .concat(constructorBuns._id)
+      ),
     });
-  }, [burgerComponentOutside, burgerComponentInside]);
-
-  useEffect(() => {
-    setBurgerComponentOutside(constructorBuns);
-    setBurgerComponentInside(constructorIngredients);
-  }, [constructorBuns, constructorIngredients]);
+  }, [constructorBuns, constructorIngredients, dispatch]);
 
   function handleshowModal() {
-    setshowModal(!showModal);
+    dispatch({
+      type: OPEN_SHOW_MODAL_ORDER_NUMBER,
+    });
+  }
+
+  function handleCloseModal() {
+    dispatch({
+      type: CLOSE_SHOW_MODAL_ORDER_NUMBER,
+    });
   }
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    setOrderNumber(null);
-    setOrderError("");
-    requestOrderNumber({
-      ingredients: orderData,
+    dispatch({
+      type: GET_ORDER_NUMBER,
+      payload: null,
     });
+    dispatch({
+      type: ERROR_TEXT_GET_ORDER_NUMBER,
+      payload: "",
+    });
+    dispatch(getStoreOrderNumber({ ingredients: orderIngredients }));
     dispatch({
       type: RESET_CONSTRUCTOR,
     });
@@ -73,14 +79,14 @@ function BurgerConstructor({ requestOrderNumber }) {
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={`${burgerComponentOutside.name} (верх)`}
-            price={burgerComponentOutside.price}
-            thumbnail={burgerComponentOutside.image}
+            text={`${constructorBuns.name} (верх)`}
+            price={constructorBuns.price}
+            thumbnail={constructorBuns.image}
           />
         )}
       </div>
       <ul className={`${Styles.list} custom-scroll`}>
-        {burgerComponentInside.map((element) => (
+        {constructorIngredients.map((element) => (
           <li key={element._id} className={`${Styles["list-element"]}`}>
             <DragIcon />
             <div className={`${Styles.div} ml-2 mr-2`}>
@@ -104,9 +110,9 @@ function BurgerConstructor({ requestOrderNumber }) {
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={`${burgerComponentOutside.name} (низ)`}
-            price={burgerComponentOutside.price}
-            thumbnail={burgerComponentOutside.image}
+            text={`${constructorBuns.name} (низ)`}
+            price={constructorBuns.price}
+            thumbnail={constructorBuns.image}
           />
         )}
       </div>
@@ -130,16 +136,12 @@ function BurgerConstructor({ requestOrderNumber }) {
         </form>
       </div>
       {showModal && (
-        <Modal onClose={handleshowModal} title={""}>
+        <Modal onClose={handleCloseModal} title={""}>
           <OrderDetails />
         </Modal>
       )}
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  requestOrderNumber: PropTypes.func.isRequired,
-};
 
 export default BurgerConstructor;
