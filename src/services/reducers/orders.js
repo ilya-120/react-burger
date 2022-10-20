@@ -4,6 +4,7 @@ import {
   ERROR_TEXT_GET_ORDER_NUMBER,
   GET_ORDER_NUMBER,
   OPEN_SHOW_MODAL_ORDER_NUMBER,
+  RESET_OLD_ORDER_DATA,
   SUCCESS_GET_ORDER_NUMBER,
 } from "../actions";
 
@@ -48,6 +49,14 @@ export const orderReducer = (state = initialState, action) => {
         ...state,
         showModal: false,
       };
+      case RESET_OLD_ORDER_DATA:
+        return {
+          ...state,
+          success: false,
+          error: false,
+          errorText: "",
+          orderNumber: null,
+        };
     default:
       return state;
   }

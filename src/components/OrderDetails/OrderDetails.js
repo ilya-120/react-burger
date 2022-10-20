@@ -19,7 +19,7 @@ function OrderDetails() {
               size={50}
             />
           ) : (
-            orderNumber || ''
+            orderNumber || ""
           )}
         </p>
       </div>

@@ -11,12 +11,11 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import { useDispatch, useSelector } from "react-redux";
 import {
   CLOSE_SHOW_MODAL_ORDER_NUMBER,
-  ERROR_TEXT_GET_ORDER_NUMBER,
-  GET_ORDER_NUMBER,
   OPEN_SHOW_MODAL_ORDER_NUMBER,
   ORDER_INGREDIENTS,
   REMOVE_ELEMENT,
   RESET_CONSTRUCTOR,
+  RESET_OLD_ORDER_DATA,
 } from "../../services/actions";
 import { getStoreOrderNumber } from "../../services/actions/orders";
 
@@ -25,7 +24,7 @@ function BurgerConstructor() {
   const [totalPrice, setTotalPrice] = useState(null);
   const { constructorIngredients, constructorBuns, orderIngredients } =
     useSelector((store) => store.ingredients);
-  const { showModal } = useSelector((store) => store.orderNumber);
+  const { showModal, success } = useSelector((store) => store.orderNumber);
 
   useEffect(() => {
     setTotalPrice(
@@ -59,12 +58,8 @@ function BurgerConstructor() {
   function handleSubmit(evt) {
     evt.preventDefault();
     dispatch({
-      type: GET_ORDER_NUMBER,
+      type: RESET_OLD_ORDER_DATA,
       payload: null,
-    });
-    dispatch({
-      type: ERROR_TEXT_GET_ORDER_NUMBER,
-      payload: "",
     });
     dispatch(getStoreOrderNumber({ ingredients: orderIngredients }));
     dispatch({
