@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDispatch, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 import { getStoreIngredients } from "../../services/actions/ingredients";
@@ -29,10 +31,12 @@ function App() {
       {!!success && !error && (
         <>
           <AppHeader />
-          <main>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </main>
+          <DndProvider backend={HTML5Backend}>
+            <main>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </main>
+          </DndProvider>
         </>
       )}
     </div>

@@ -1,0 +1,13 @@
+.list-element {
+  display: flex;
+  align-items: center;
+  padding: 8px 0 8px 16px;
+  justify-content: center;
+}
+
+.div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}

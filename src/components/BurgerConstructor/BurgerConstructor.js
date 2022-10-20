@@ -2,29 +2,33 @@ import {
   Button,
   ConstructorElement,
   CurrencyIcon,
-  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerConstructor.module.css";
 import Modal from "../Modal/Modal";
-import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useCallback, useEffect, useRef, useState } from "react";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  CHANGE_THE_ORDER_CONSTRUCTOR_INGREDIENTS,
   CLOSE_SHOW_MODAL_ORDER_NUMBER,
+  CONSTRUCTOR_BUNS,
+  CONSTRUCTOR_INGREDIENTS,
   OPEN_SHOW_MODAL_ORDER_NUMBER,
   ORDER_INGREDIENTS,
-  REMOVE_ELEMENT,
   RESET_CONSTRUCTOR,
   RESET_OLD_ORDER_DATA,
 } from "../../services/actions";
 import { getStoreOrderNumber } from "../../services/actions/orders";
+import { useDrop } from "react-dnd";
+import BurgerConstructorElement from "../BurgerConstructorElement/BurgerConstructorElement";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const [totalPrice, setTotalPrice] = useState(null);
   const { constructorIngredients, constructorBuns, orderIngredients } =
     useSelector((store) => store.ingredients);
-  const { showModal, success } = useSelector((store) => store.orderNumber);
+  const { showModal } = useSelector((store) => store.orderNumber);
 
   useEffect(() => {
     setTotalPrice(
@@ -55,6 +59,34 @@ function BurgerConstructor() {
     });
   }
 
+  function dropNewIngredient(ingredient) {
+    if (ingredient.type !== "bun") {
+      const newIdIngredient = {
+        ...ingredient,
+        id: ingredient._id,
+        _id: uuidv4(),
+      };
+      dispatch({
+        type: CONSTRUCTOR_INGREDIENTS,
+        payload: newIdIngredient,
+      });
+    } else
+      dispatch({
+        type: CONSTRUCTOR_BUNS,
+        payload: ingredient,
+      });
+  }
+
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(ingredient) {
+      dropNewIngredient(ingredient);
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
+
   function handleSubmit(evt) {
     evt.preventDefault();
     dispatch({
@@ -67,8 +99,22 @@ function BurgerConstructor() {
     });
   }
 
+  const moveIngredient = useCallback(
+    (dIndex, hIndex) => {
+      let draggingIngredient = constructorIngredients[dIndex.index];
+      const NewConstructorIngredients = [...constructorIngredients];
+      NewConstructorIngredients.splice(dIndex.index, 1);
+      NewConstructorIngredients.splice(hIndex, 0, draggingIngredient);
+      dispatch({
+        type: CHANGE_THE_ORDER_CONSTRUCTOR_INGREDIENTS,
+        payload: NewConstructorIngredients,
+      });
+    },
+    [constructorIngredients, dispatch]
+  );
+
   return (
-    <section className={`${Styles["section-constructor"]}`}>
+    <section ref={dropTarget} className={`${Styles["section-constructor"]}`}>
       <div className={`${Styles.div} pt-25 pb-2 ml-3`}>
         {constructorBuns._id && (
           <ConstructorElement
@@ -80,24 +126,14 @@ function BurgerConstructor() {
           />
         )}
       </div>
-      <ul className={`${Styles.list} custom-scroll`}>
-        {constructorIngredients.map((element) => (
-          <li key={element._id} className={`${Styles["list-element"]}`}>
-            <DragIcon />
-            <div className={`${Styles.div} ml-2 mr-2`}>
-              <ConstructorElement
-                text={element.name}
-                price={element.price}
-                thumbnail={element.image}
-                handleClose={() => {
-                  dispatch({
-                    type: REMOVE_ELEMENT,
-                    payload: element._id,
-                  });
-                }}
-              />
-            </div>
-          </li>
+      <ul className={`${Styles.list} ${isHover} custom-scroll`}>
+        {constructorIngredients.map((element, index) => (
+          <BurgerConstructorElement
+            key={element._id}
+            element={element}
+            index={index}
+            moveIngredient={moveIngredient}
+          />
         ))}
       </ul>
       <div className={`${Styles.div} ml-3`}>
@@ -115,7 +151,7 @@ function BurgerConstructor() {
       <div className={`${Styles.order}`}>
         <div className={`${Styles.price} ml-3`}>
           <p className="text text_type_digits-medium pr-2">
-            {totalPrice || ""}
+            {totalPrice || "0"}
           </p>
           <CurrencyIcon type="primary" />
         </div>
@@ -125,6 +161,7 @@ function BurgerConstructor() {
             onClick={handleshowModal}
             type="primary"
             size="large"
+            disabled={!totalPrice}
           >
             Оформить заказ
           </Button>

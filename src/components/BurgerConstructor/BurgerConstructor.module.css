@@ -2,18 +2,11 @@
   box-sizing: border-box;
 }
 
-.list-element {
-  display: flex;
-  align-items: center;
-  padding: 8px 0 8px 16px;
-  justify-content: center;
-}
-
 .list {
   width: 100%;
   margin: 0;
   padding: 0;
-  max-height: 48vh;
+  max-height: 46vh;
   overflow-y: scroll;
 }
 

@@ -1,4 +1,5 @@
 import {
+  CHANGE_THE_ORDER_CONSTRUCTOR_INGREDIENTS,
   CLOSE_SHOW_MODAL,
   CONSTRUCTOR_BUNS,
   CONSTRUCTOR_INGREDIENTS,
@@ -88,6 +89,11 @@ export const ingredientsReducer = (state = initialState, action) => {
         ...state,
         modalIngredientsDetails: {},
         showModal: false,
+      };
+      case CHANGE_THE_ORDER_CONSTRUCTOR_INGREDIENTS:
+      return {
+        ...state,
+        constructorIngredients:  action.payload,
       };
     default:
       return state;
