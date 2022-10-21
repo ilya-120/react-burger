@@ -48,19 +48,19 @@ function BurgerIngredients() {
           ingredients={buns}
           ingredient={"bun"}
           title={"Булки"}
-          forwardedRef={bunsRef}
+          ref={bunsRef}
         />
         <BurgerIngredientsType
           ingredients={sauces}
           ingredient={"sauce"}
           title={"Соусы"}
-          forwardedRef={saucesRef}
+          ref={saucesRef}
         />
         <BurgerIngredientsType
           ingredients={mains}
           ingredient={"main"}
           title={"Начинки"}
-          forwardedRef={mainsRef}
+          ref={mainsRef}
         />
       </div>
     </section>
