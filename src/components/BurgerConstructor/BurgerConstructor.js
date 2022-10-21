@@ -6,46 +6,51 @@ import {
 import Styles from "./BurgerConstructor.module.css";
 import Modal from "../Modal/Modal";
 import { v4 as uuidv4 } from "uuid";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  CHANGE_THE_ORDER_CONSTRUCTOR_INGREDIENTS,
-  CLOSE_SHOW_MODAL_ORDER_NUMBER,
-  CONSTRUCTOR_BUNS,
-  CONSTRUCTOR_INGREDIENTS,
-  OPEN_SHOW_MODAL_ORDER_NUMBER,
-  ORDER_INGREDIENTS,
-  RESET_CONSTRUCTOR,
-  RESET_OLD_ORDER_DATA,
-} from "../../services/actions";
-import { getStoreOrderNumber } from "../../services/actions/orders";
+
+import { getStoreOrderNumber } from "../../services/actions/amplifierActions/orders";
 import { useDrop } from "react-dnd";
 import BurgerConstructorElement from "../BurgerConstructorElement/BurgerConstructorElement";
+import {
+  CHANGE_THE_ORDER_CONSTRUCTOR_INGREDIENTS,
+  CONSTRUCTOR_BUNS,
+  CONSTRUCTOR_INGREDIENTS,
+  ORDER_INGREDIENTS,
+  RESET_CONSTRUCTOR,
+} from "../../services/actions/constructor";
+import { RESET_OLD_ORDER_DATA } from "../../services/actions/orders";
+import {
+  CLOSE_SHOW_MODAL_ORDER_NUMBER,
+  OPEN_SHOW_MODAL_ORDER_NUMBER,
+} from "../../services/actions/modalOrder";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
-  const [totalPrice, setTotalPrice] = useState(null);
   const { constructorIngredients, constructorBuns, orderIngredients } =
-    useSelector((store) => store.ingredients);
-  const { showModal } = useSelector((store) => store.orderNumber);
+    useSelector((store) => store.constructorBurger);
+  const { showModal } = useSelector((store) => store.modalOrder);
 
   useEffect(() => {
-    setTotalPrice(
+    dispatch({
+      type: ORDER_INGREDIENTS,
+      payload: [
+        constructorBuns._id,
+        ...constructorIngredients.map((item) => item.id),
+        constructorBuns._id,
+      ],
+    });
+  }, [constructorBuns, constructorIngredients, dispatch]);
+
+  const totalPrice = useMemo(
+    () =>
       constructorIngredients
         .map((item) => item.price)
         .concat(Array(2).fill(constructorBuns.price || 0))
-        .reduce((a, b) => a + b)
-    );
-    dispatch({
-      type: ORDER_INGREDIENTS,
-      payload: [constructorBuns._id].concat(
-        constructorIngredients
-          .map((item) => item.id)
-          .concat(constructorBuns._id)
-      ),
-    });
-  }, [constructorBuns, constructorIngredients, dispatch]);
+        .reduce((a, b) => a + b),
+    [constructorIngredients, constructorBuns]
+  );
 
   function handleshowModal() {
     dispatch({
@@ -91,7 +96,6 @@ function BurgerConstructor() {
     evt.preventDefault();
     dispatch({
       type: RESET_OLD_ORDER_DATA,
-      payload: null,
     });
     dispatch(getStoreOrderNumber({ ingredients: orderIngredients }));
     dispatch({

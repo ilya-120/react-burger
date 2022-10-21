@@ -7,8 +7,8 @@ import PropTypes from "prop-types";
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
-import { REMOVE_ELEMENT } from "../../services/actions";
-import { elementsPropType } from "../utils/PropTypes";
+import { elementsPropType } from "../../utils/PropTypes";
+import { REMOVE_ELEMENT } from "../../services/actions/constructor";
 
 function BurgerConstructorElement({ element, index, moveIngredient }) {
   const ref = useRef(null);

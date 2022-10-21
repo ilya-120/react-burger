@@ -1,19 +1,16 @@
 import {
-  CLOSE_SHOW_MODAL_ORDER_NUMBER,
   ERROR_GET_ORDER_NUMBER,
   ERROR_TEXT_GET_ORDER_NUMBER,
   GET_ORDER_NUMBER,
-  OPEN_SHOW_MODAL_ORDER_NUMBER,
   RESET_OLD_ORDER_DATA,
   SUCCESS_GET_ORDER_NUMBER,
-} from "../actions";
+} from "../actions/orders";
 
 const initialState = {
   success: false,
   error: false,
   errorText: "",
   orderNumber: null,
-  showModal: false,
 };
 
 export const orderReducer = (state = initialState, action) => {
@@ -34,29 +31,19 @@ export const orderReducer = (state = initialState, action) => {
         ...state,
         errorText: action.payload,
       };
-      case ERROR_GET_ORDER_NUMBER:
-        return {
-          ...state,
-          error: true,
-        };
-        case OPEN_SHOW_MODAL_ORDER_NUMBER:
+    case ERROR_GET_ORDER_NUMBER:
       return {
         ...state,
-        showModal: true,
+        error: true,
       };
-    case CLOSE_SHOW_MODAL_ORDER_NUMBER:
+    case RESET_OLD_ORDER_DATA:
       return {
         ...state,
-        showModal: false,
+        success: false,
+        error: false,
+        errorText: "",
+        orderNumber: null,
       };
-      case RESET_OLD_ORDER_DATA:
-        return {
-          ...state,
-          success: false,
-          error: false,
-          errorText: "",
-          orderNumber: null,
-        };
     default:
       return state;
   }

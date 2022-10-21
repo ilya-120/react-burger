@@ -1,29 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerIngredients.module.css";
 import BurgerIngredientsType from "../BurgerIngredientsType/BurgerIngredientsType";
 import { useSelector } from "react-redux";
-
-const useIntersectionObserver = (ref) => {
-  const [isOnScreen, setIsOnScreen] = useState(null);
-  const observerRef = new IntersectionObserver(
-    ([entry]) => setIsOnScreen(entry.isIntersecting),
-    {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.2,
-    }
-  );
-
-  useEffect(() => {
-    observerRef.observe(ref.current);
-    return () => observerRef.disconnect();
-  }, [ref, observerRef]);
-
-  return {
-    isOnScreen,
-  };
-};
+import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
 
 function BurgerIngredients() {
   const saucesRef = useRef();
@@ -50,37 +30,37 @@ function BurgerIngredients() {
         </Tab>
         <Tab
           value="sauces"
-          active={observerSauces.isOnScreen}
+          active={observerBun.isOnScreen ? false : observerSauces.isOnScreen}
           onClick={() => onTabClick(saucesRef)}
         >
           Соусы
         </Tab>
         <Tab
           value="main"
-          active={observerMain.isOnScreen}
+          active={!observerSauces.isOnScreen ? observerMain.isOnScreen : false}
           onClick={() => onTabClick(mainsRef)}
         >
           Начинки
         </Tab>
       </div>
-      <div className={`${Styles.ingredients} custom-scroll`}>
+      <div className={`${Styles.ingredients} custom-scroll`} id="container">
         <BurgerIngredientsType
           ingredients={buns}
           ingredient={"bun"}
           title={"Булки"}
-          scroll={bunsRef}
+          forwardedRef={bunsRef}
         />
         <BurgerIngredientsType
           ingredients={sauces}
           ingredient={"sauce"}
           title={"Соусы"}
-          scroll={saucesRef}
+          forwardedRef={saucesRef}
         />
         <BurgerIngredientsType
           ingredients={mains}
           ingredient={"main"}
           title={"Начинки"}
-          scroll={mainsRef}
+          forwardedRef={mainsRef}
         />
       </div>
     </section>

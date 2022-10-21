@@ -1,6 +1,6 @@
 import Style from "./OrderDetails.module.css";
 import done from "../../images/done.svg";
-import { color } from "../utils/data";
+import { color } from "../../utils/data";
 import { ClipLoader } from "react-spinners";
 import { useSelector } from "react-redux";
 

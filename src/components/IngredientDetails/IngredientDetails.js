@@ -1,4 +1,4 @@
-import { elementsPropType } from "../utils/PropTypes";
+import { elementsPropType } from "../../utils/PropTypes";
 import Style from "./IngredientDetails.module.css";
 
 function IngredientDetails({ ingredient }) {
