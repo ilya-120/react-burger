@@ -1,10 +1,10 @@
-import React, { forwardRef, useMemo } from "react";
+import { forwardRef, useMemo } from "react";
 import Styles from "./BurgerIngredientsType.module.css";
 import PropTypes from "prop-types";
 import BurgerIngredientsElement from "../BurgerIngredientsElement/BurgerIngredientsElement";
 import { elementsPropType } from "../../utils/PropTypes";
 
-const BurgerIngredientsType = forwardRef((props, ref) => {
+const BurgerIngredientsType = forwardRef(({ingredients, ingredient, title}, ref) => {
   const ingredientsList = (array) => {
     return array.map((element) => (
       <BurgerIngredientsElement ingredient={element} key={element._id} />
@@ -12,14 +12,14 @@ const BurgerIngredientsType = forwardRef((props, ref) => {
   };
 
   const displayIsIngredients = useMemo(
-    () => ingredientsList(props.ingredients),
-    [props.ingredients]
+    () => ingredientsList(ingredients),
+    [ingredients]
   );
 
   return (
     <section>
-      <h2 className="text text_type_main-medium mb-6" id={props.ingredient}>
-        {props.title}
+      <h2 className="text text_type_main-medium mb-6" id={ingredient}>
+        {title}
       </h2>
       <ul className={`${Styles["ingredients-element"]} pl-4 pr-4`} ref={ref}>
         {displayIsIngredients}
