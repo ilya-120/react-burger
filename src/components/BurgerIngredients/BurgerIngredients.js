@@ -1,72 +1,70 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerIngredients.module.css";
 import BurgerIngredientsType from "../BurgerIngredientsType/BurgerIngredientsType";
-import PropTypes from "prop-types";
-import { elementsPropType } from "../utils/PropTypes";
+import { useSelector } from "react-redux";
+import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
 
-function BurgerIngredients({ ingredients }) {
-  const pageRefs = useRef({});
-  const [isBlock, setBlock] = React.useState("buns");
-  const scrollBuns = (el) =>
-    (pageRefs.current = { ...pageRefs.current, buns: el });
-  const scrollSauces = (el) =>
-    (pageRefs.current = { ...pageRefs.current, sauces: el });
-  const scrollMain = (el) =>
-    (pageRefs.current = { ...pageRefs.current, main: el });
-  const buns = ingredients.filter((item) => item.type === "bun");
-  const mains = ingredients.filter((item) => item.type === "main");
-  const sauces = ingredients.filter((item) => item.type === "sauce");
+function BurgerIngredients() {
+  const saucesRef = useRef();
+  const bunsRef = useRef();
+  const mainsRef = useRef();
+  const observerBun = useIntersectionObserver(bunsRef);
+  const observerSauces = useIntersectionObserver(saucesRef);
+  const observerMain = useIntersectionObserver(mainsRef);
 
-  function scrollIntoView(type) {
-    pageRefs.current[type].scrollIntoView();
-  }
+  const { buns, mains, sauces } = useSelector((store) => store.ingredients);
 
-  const onTabClick = (tab) => {
-    setBlock(tab);
-    scrollIntoView(tab);
-  };
+  const onTabClick = (ref) => ref.current.scrollIntoView();
 
   return (
     <section className={`${Styles.section}`}>
       <h1 className="text text_type_main-large mt-10">Соберите бургер</h1>
       <div className={`${Styles.tabs} mt-5 mb-10`}>
-        <Tab value="buns" active={isBlock === "buns"} onClick={onTabClick}>
+        <Tab
+          value="buns"
+          active={observerBun.isOnScreen}
+          onClick={() => onTabClick(bunsRef)}
+        >
           Булки
         </Tab>
-        <Tab value="sauces" active={isBlock === "sauces"} onClick={onTabClick}>
+        <Tab
+          value="sauces"
+          active={observerBun.isOnScreen ? false : observerSauces.isOnScreen}
+          onClick={() => onTabClick(saucesRef)}
+        >
           Соусы
         </Tab>
-        <Tab value="main" active={isBlock === "main"} onClick={onTabClick}>
+        <Tab
+          value="main"
+          active={!observerSauces.isOnScreen ? observerMain.isOnScreen : false}
+          onClick={() => onTabClick(mainsRef)}
+        >
           Начинки
         </Tab>
       </div>
-      <div className={`${Styles.ingredients} custom-scroll`}>
+      <div className={`${Styles.ingredients} custom-scroll`} id="container">
         <BurgerIngredientsType
           ingredients={buns}
           ingredient={"bun"}
           title={"Булки"}
-          scroll={scrollBuns}
+          ref={bunsRef}
         />
         <BurgerIngredientsType
           ingredients={sauces}
           ingredient={"sauce"}
           title={"Соусы"}
-          scroll={scrollSauces}
+          ref={saucesRef}
         />
         <BurgerIngredientsType
           ingredients={mains}
           ingredient={"main"}
           title={"Начинки"}
-          scroll={scrollMain}
+          ref={mainsRef}
         />
       </div>
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(elementsPropType).isRequired,
-};
 
 export default BurgerIngredients;

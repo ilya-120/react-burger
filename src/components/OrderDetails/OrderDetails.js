@@ -1,38 +1,39 @@
 import Style from "./OrderDetails.module.css";
 import done from "../../images/done.svg";
-import { color } from "../utils/data";
-import { useContext } from "react";
-import { OrderNumberContext } from "../utils/appContext";
+import { color } from "../../utils/data";
 import { ClipLoader } from "react-spinners";
+import { useSelector } from "react-redux";
 
 function OrderDetails() {
-  const { orderNumber, orderError } = useContext(OrderNumberContext);
+  const { error, errorText, orderNumber } = useSelector(
+    (store) => store.orderNumber
+  );
   return (
     <div className={`${Style["order-box"]}`}>
       <div className="mt-15">
         <p className="text text_type_digits-large">
-          {!orderNumber && !orderError ? (
+          {!orderNumber && !error ? (
             <ClipLoader
               color={color}
-              loading={!orderNumber || !orderError}
+              loading={!orderNumber || !error}
               size={50}
             />
           ) : (
-            orderNumber || `error: ${orderError}`
+            orderNumber || ""
           )}
         </p>
       </div>
       <div className="text text_type_main-default mb-15">
-        {!orderError ? "идентификатор заказа" : ""}
+        {!error ? "идентификатор заказа" : `error: ${errorText}`}
       </div>
       <div className={`${Style.div}`}>
-        {!orderError ? <img alt="фото" src={done} /> : ""}
+        {!error ? <img alt="фото" src={done} /> : ""}
       </div>
       <div className="text text_type_main-default mb-2">
-        {!orderError ? "Ваш заказ начали готовить" : "Произошла ошибка"}
+        {!error ? "Ваш заказ начали готовить" : "Произошла ошибка"}
       </div>
       <div className="text text_type_main-default text_color_inactive mb-30">
-        {!orderError
+        {!error
           ? "Дождитесь готовности на орбитальной станции"
           : "Попробуйте еще раз"}
       </div>

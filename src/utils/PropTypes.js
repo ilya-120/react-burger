@@ -13,4 +13,5 @@ export const elementsPropType = PropTypes.shape({
   type: PropTypes.oneOf(["bun", "main", "sauce"]).isRequired,
   __v: PropTypes.number,
   _id: PropTypes.string.isRequired,
+  id: PropTypes.string,
 });

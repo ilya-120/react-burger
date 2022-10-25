@@ -3,23 +3,61 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerIngredientsElement.module.css";
-import { elementsPropType } from "../utils/PropTypes";
+import { elementsPropType } from "../../utils/PropTypes";
 import Modal from "../Modal/Modal";
-import { useState } from "react";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrag } from "react-dnd";
+import { useMemo } from "react";
+import {
+  CLOSE_SHOW_MODAL,
+  OPEN_SHOW_MODAL,
+} from "../../services/actions/modalIngredient";
 
 const BurgerIngredientsElement = ({ ingredient }) => {
-  const [showModal, setshowModal] = useState(false);
+  const dispatch = useDispatch();
+  const { constructorBuns, constructorIngredients } = useSelector(
+    (store) => store.constructorBurger
+  );
+
+  const { showModal, modalIngredientsDetails } = useSelector(
+    (store) => store.modalIngredient
+  );
+
+  const [, dragRef, dragPreviewRef] = useDrag({
+    type: "ingredient",
+    item: ingredient,
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ? 0.5 : 1,
+    }),
+  });
 
   function handleshowModal() {
-    setshowModal(!showModal);
+    dispatch({
+      type: OPEN_SHOW_MODAL,
+      payload: ingredient,
+    });
   }
 
+  function handleCloseModal() {
+    dispatch({
+      type: CLOSE_SHOW_MODAL,
+    });
+  }
+
+  const showCountMaterials = useMemo(() => {
+    if (ingredient._id === constructorBuns._id) return 1;
+    const id = constructorIngredients.filter(
+      (item) => item.id === ingredient._id
+    );
+    return id.length;
+  }, [constructorIngredients, constructorBuns, ingredient._id]);
+
   return (
-    <li className={`${Styles.element} mb-8`}>
+    <li className={`${Styles.element} mb-8`} ref={dragRef}>
       <div onClick={handleshowModal}>
-        {ingredient.count >= 1 ? (
-          <Counter size="default" count={ingredient.count} />
+        {showCountMaterials >= 1 ? (
+          <Counter size="default" count={showCountMaterials} />
         ) : (
           ""
         )}
@@ -27,6 +65,7 @@ const BurgerIngredientsElement = ({ ingredient }) => {
           className="ml-4 mr-4 mb-1"
           src={ingredient.image}
           alt={ingredient.name}
+          ref={dragPreviewRef}
         />
         <div className={`${Styles.currency} mb-1`}>
           <span className="text text_type_digits-default">
@@ -37,8 +76,8 @@ const BurgerIngredientsElement = ({ ingredient }) => {
         </div>
         <span className="text text_type_main-small">{ingredient.name}</span>
       </div>
-      {showModal && (
-        <Modal title="Детали ингредиента" onClose={handleshowModal}>
+      {showModal && ingredient._id === modalIngredientsDetails._id && (
+        <Modal title="Детали ингредиента" onClose={handleCloseModal}>
           <IngredientDetails ingredient={ingredient} />
         </Modal>
       )}
