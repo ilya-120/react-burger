@@ -8,6 +8,8 @@ import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import { color } from "../../utils/data";
+import { Route, Routes } from "react-router-dom";
+import Login from "../../pages/Login/Login";
 
 function App() {
   const dispatch = useDispatch();
@@ -16,9 +18,7 @@ function App() {
     dispatch(getStoreIngredients());
   }, [dispatch]);
 
-  const { success, errorText } = useSelector(
-    (store) => store.ingredients
-  );
+  const { success, errorText } = useSelector((store) => store.ingredients);
 
   return (
     <div className="root">
@@ -31,12 +31,20 @@ function App() {
       {!!success && !errorText && (
         <>
           <AppHeader />
-          <DndProvider backend={HTML5Backend}>
-            <main>
-              <BurgerIngredients />
-              <BurgerConstructor />
-            </main>
-          </DndProvider>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <DndProvider backend={HTML5Backend}>
+                  <main>
+                    <BurgerIngredients />
+                    <BurgerConstructor />
+                  </main>
+                </DndProvider>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+          </Routes>
         </>
       )}
     </div>
