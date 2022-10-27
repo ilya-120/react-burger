@@ -40,7 +40,7 @@ function AppHeader() {
             >
               <label className={`${Styles.label}`}>
                 <ListIcon
-                  type={`${pathname === "/orders" ? "" : "secondary"}`}
+                  type={`${ pathname.slice(0, 7) === "/orders" ? "" : "secondary"}`}
                 />
                 <p className="text text_type_main-default pl-2">
                   Лента заказов
@@ -54,7 +54,7 @@ function AppHeader() {
         </Link>
         <div className={`${Styles.div} `}>
           <NavLink
-            to="/login"
+            to="/profile"
             className={(navData) =>
               navData.isActive
                 ? `${Styles.header__link_active}`
@@ -63,7 +63,11 @@ function AppHeader() {
           >
             <label className={`${Styles.label}`}>
               <ProfileIcon
-                type={`${pathname === "/login" ? "" : "secondary"}`}
+                type={`${
+                  pathname.slice(0, 8) === "/profile"
+                    ? ""
+                    : "secondary"
+                }`}
               />
               <p className="text text_type_main-default pl-2 pr-5">
                 Личный кабинет

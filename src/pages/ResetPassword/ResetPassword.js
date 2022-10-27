@@ -8,7 +8,7 @@ import Styles from "./ResetPassword.module.css";
 import { Link, useNavigate } from "react-router-dom";
 
 const ResetPassword = () => {
-  const [form, setForm] = useState({ password: "", code: "" });
+  const [form, setForm] = useState({ password: "", token: "" });
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -34,7 +34,7 @@ const ResetPassword = () => {
         type={"text"}
         placeholder={"Введите код из письма"}
         onChange={onChange}
-        value={form.code}
+        value={form.token}
         name={"token"}
         size={"default"}
       />
