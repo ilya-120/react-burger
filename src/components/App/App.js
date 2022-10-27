@@ -10,6 +10,7 @@ import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import { color } from "../../utils/data";
 import { Route, Routes } from "react-router-dom";
 import Login from "../../pages/Login/Login";
+import Register from "../../pages/Register/Register";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ function App() {
               }
             />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </>
       )}
