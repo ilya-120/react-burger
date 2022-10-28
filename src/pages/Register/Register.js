@@ -6,12 +6,17 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./Register.module.css";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { registerRequest } from "../../services/actions/amplifierActions/user";
 
 const Register = () => {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const dispatch = useDispatch()
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(registerRequest(form))
   };
 
   const onChange = (e) => {

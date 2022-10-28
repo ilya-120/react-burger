@@ -28,3 +28,27 @@ export const getOrderNumber = async (ingredients) => {
   });
   return checkResponse(res);
 };
+
+export const signup = async (form) => {
+  const res = await fetch(`${BASE_URL}auth/register`, {
+    method: "POST",
+    headers: {
+      ...headers,
+    },
+    body: JSON.stringify(form),
+  });
+  return checkResponse(res);
+};
+
+export const signin = async (form) => {
+  const res = await fetch(`${BASE_URL}auth/login`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      ...headers,
+    },
+    body: JSON.stringify(form)
+  });
+  const data = await checkResponse(res);
+  return data;
+};
