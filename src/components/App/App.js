@@ -7,16 +7,21 @@ import { getStoreIngredients } from "../../services/actions/amplifierActions/ing
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import { color } from "../../utils/data";
-import { Route, Routes } from "react-router-dom";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import { color, titleModal } from "../../utils/data";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Login from "../../pages/Login/Login";
 import Register from "../../pages/Register/Register";
 import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "../../pages/ResetPassword/ResetPassword";
 import Profile from "../../pages/Profile/Profile";
 import UserProfile from "../../pages/UserProfile/UserProfile";
+import Modal from "../Modal/Modal";
 
 function App() {
+  const location = useLocation();
+  const state = location.state;
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,7 +41,7 @@ function App() {
       {!!success && !errorText && (
         <>
           <AppHeader />
-          <Routes>
+          <Routes location={state?.backgroundLocation || location}>
             <Route
               path="/"
               element={
@@ -48,6 +53,20 @@ function App() {
                 </DndProvider>
               }
             />
+            <Route
+              path="/ingredients/:id"
+              element={
+                <>
+                  <h1
+                    className="text text_type_main-large pt-30 mt-3 pb-6"
+                    style={{ textAlign: "center" }}
+                  >
+                    {titleModal}
+                  </h1>
+                  <IngredientDetails />
+                </>
+              }
+            />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -56,6 +75,23 @@ function App() {
               <Route path="" element={<UserProfile />} />
             </Route>
           </Routes>
+          {state?.backgroundLocation && (
+            <Routes>
+              <Route
+                path="/ingredients/:id"
+                element={
+                  <Modal
+                    title={titleModal}
+                    onClose={() => {
+                      navigate("/");
+                    }}
+                  >
+                    <IngredientDetails />
+                  </Modal>
+                }
+              />
+            </Routes>
+          )}
         </>
       )}
     </div>

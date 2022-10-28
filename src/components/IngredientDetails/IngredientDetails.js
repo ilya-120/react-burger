@@ -1,7 +1,12 @@
-import { elementsPropType } from "../../utils/PropTypes";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import Style from "./IngredientDetails.module.css";
 
-function IngredientDetails({ ingredient }) {
+function IngredientDetails() {
+  const { id } = useParams();
+  const { ingredients } = useSelector((store) => store.ingredients);
+  const ingredient = ingredients.find((ingredient) => ingredient._id === id);
+
   return (
     <div className={`${Style.box}`}>
       <div className={`${Style.div1}`}>
@@ -47,9 +52,5 @@ function IngredientDetails({ ingredient }) {
     </div>
   );
 }
-
-IngredientDetails.propTypes = {
-  ingredient: elementsPropType.isRequired,
-};
 
 export default IngredientDetails;
