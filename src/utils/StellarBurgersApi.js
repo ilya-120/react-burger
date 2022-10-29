@@ -43,7 +43,9 @@ export const signup = async (form) => {
 export const signin = async (form) => {
   const res = await fetch(`${BASE_URL}auth/login`, {
     method: 'POST',
-    credentials: 'include',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
     headers: {
       ...headers,
     },

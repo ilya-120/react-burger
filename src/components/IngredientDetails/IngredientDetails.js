@@ -13,7 +13,7 @@ function IngredientDetails() {
         <img alt={ingredient.name} src={ingredient.image_large} />
       </div>
       <div className={`${Style.div2}`}>
-        <p className=" text_type_main-medium text">{`${ingredient.name}`}</p>
+        <p className=" text_type_main-medium text mb-8">{`${ingredient.name}`}</p>
       </div>
       <div className={`${Style.div3}`}>
         <div className={`${Style.div4}`}>
