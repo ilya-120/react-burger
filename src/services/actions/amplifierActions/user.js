@@ -1,10 +1,12 @@
-import { signin, signup } from "../../../utils/StellarBurgersApi";
+import { getUserInfo, signin, signup } from "../../../utils/StellarBurgersApi";
 import { setCookie } from "../../../utils/utils";
 import {
   ERROR_TEXT_GET_LOGIN_USER,
   ERROR_TEXT_GET_REGISTER_USER,
+  ERROR_TEXT_GET_USER_INFO,
   LOGIN_USER_SUCCESS,
   REGISTER_USER_SUCCESS,
+  USER_INFO_DATA_SUCCESS,
 } from "../user";
 
 export const registerRequest = (form, nav, reflectErrorRequest) => (dispatch) => {
@@ -23,7 +25,7 @@ export const registerRequest = (form, nav, reflectErrorRequest) => (dispatch) =>
       (err) =>
         dispatch({
           type: ERROR_TEXT_GET_REGISTER_USER,
-          payload: `Ошибка регистрация: ${err.message}`,
+          payload: `Ошибка регистрации: ${err.message}`,
         }),
       reflectErrorRequest()
     );
@@ -49,4 +51,23 @@ export const loginRequest = (form, nav, reflectErrorRequest) => (dispatch) => {
         }),
       reflectErrorRequest()
     );
+};
+
+export const userRequest = () => (dispatch) => {
+  getUserInfo()
+    .then((res) =>
+      res && res.success
+        ? dispatch({ type: USER_INFO_DATA_SUCCESS, payload: res })
+        : dispatch({
+          type: ERROR_TEXT_GET_USER_INFO,
+          payload: "Ошибка получения данных",
+        })
+    )
+    .catch(
+      (err) =>
+        dispatch({
+          type: ERROR_TEXT_GET_USER_INFO,
+          payload: `Ошибка получения данных: ${err.message}`,
+        })
+    )
 };

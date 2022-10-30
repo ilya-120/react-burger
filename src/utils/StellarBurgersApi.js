@@ -1,3 +1,5 @@
+import { getCookie } from "./utils";
+
 const BASE_URL = "https://norma.nomoreparties.space/api/";
 const headers = {
   Accept: "application/json",
@@ -54,3 +56,18 @@ export const signin = async (form) => {
   const data = await checkResponse(res);
   return data;
 };
+
+export const getUserInfo = async () => {
+  const token = getCookie('accessToken')
+  const res = await fetch(`${BASE_URL}auth/user`, {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      ...headers,
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  return checkResponse(res);
+}

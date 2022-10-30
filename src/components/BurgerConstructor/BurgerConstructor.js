@@ -25,12 +25,15 @@ import {
   CLOSE_SHOW_MODAL_ORDER_NUMBER,
   OPEN_SHOW_MODAL_ORDER_NUMBER,
 } from "../../services/actions/modalOrder";
+import { useNavigate } from "react-router-dom";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const { constructorIngredients, constructorBuns, orderIngredients } =
     useSelector((store) => store.constructorBurger);
   const { showModal } = useSelector((store) => store.modalOrder);
+  const { isLogin } = useSelector((store) => store.userData);
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch({
@@ -52,13 +55,10 @@ function BurgerConstructor() {
     [constructorIngredients, constructorBuns]
   );
 
-  function handleshowModal() {
-    dispatch({
-      type: OPEN_SHOW_MODAL_ORDER_NUMBER,
-    });
-  }
-
   function handleCloseModal() {
+    dispatch({
+      type: RESET_CONSTRUCTOR,
+    });
     dispatch({
       type: CLOSE_SHOW_MODAL_ORDER_NUMBER,
     });
@@ -94,13 +94,16 @@ function BurgerConstructor() {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    dispatch({
-      type: RESET_OLD_ORDER_DATA,
-    });
-    dispatch(getStoreOrderNumber({ ingredients: orderIngredients }));
-    dispatch({
-      type: RESET_CONSTRUCTOR,
-    });
+    !isLogin ?
+      navigate("/login")
+      :
+      dispatch({
+        type: RESET_OLD_ORDER_DATA,
+      }) &&
+      dispatch({
+        type: OPEN_SHOW_MODAL_ORDER_NUMBER,
+      }) &&
+      dispatch(getStoreOrderNumber({ ingredients: orderIngredients }))
   }
 
   const moveIngredient = useCallback(
@@ -162,7 +165,6 @@ function BurgerConstructor() {
         <form onSubmit={handleSubmit}>
           <Button
             htmlType="submit"
-            onClick={handleshowModal}
             type="primary"
             size="large"
             disabled={!totalPrice}
