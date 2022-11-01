@@ -1,4 +1,4 @@
-import { getCookie } from "./utils";
+import { getCookie, setCookie } from "./utils";
 
 const BASE_URL = "https://norma.nomoreparties.space/api/";
 const headers = {
@@ -9,6 +9,23 @@ const headers = {
 const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
+
+export const updateAccessToken = async () => {
+  const refreshToken = localStorage.getItem('refreshToken');
+  const res = await fetch(`${BASE_URL}auth/token`, {
+    method: "POST",
+    headers: {
+      ...headers,
+    },
+    body: JSON.stringify({
+      token: refreshToken
+    })
+  });
+  const res_1 = await checkResponse(res);
+  setCookie("accessToken", res_1.accessToken);
+  localStorage.setItem("refreshToken", res_1.refreshToken);
+  return
+}
 
 export const getIngredients = async () => {
   const res = await fetch(`${BASE_URL}ingredients`, {
@@ -58,7 +75,7 @@ export const signin = async (form) => {
 };
 
 export const getUserInfo = async () => {
-  const token = getCookie('accessToken')
+  const token = getCookie('accessToken');
   const res = await fetch(`${BASE_URL}auth/user`, {
     method: 'GET',
     mode: 'cors',
@@ -68,12 +85,12 @@ export const getUserInfo = async () => {
       ...headers,
       'Authorization': token,
     }
-  });
+  })
   return checkResponse(res);
 }
 
 export const setUserInfo = async (form) => {
-  const token = getCookie('accessToken')
+  const token = getCookie('accessToken');
   const res = await fetch(`${BASE_URL}auth/user`, {
     method: 'PATCH',
     mode: 'cors',
@@ -85,6 +102,5 @@ export const setUserInfo = async (form) => {
     },
     body: JSON.stringify(form)
   });
-  const data = await checkResponse(res);
-  return data;
+  return checkResponse(res);
 }

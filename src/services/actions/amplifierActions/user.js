@@ -1,4 +1,4 @@
-import { getUserInfo, setUserInfo, signin, signup } from "../../../utils/StellarBurgersApi";
+import { getUserInfo, setUserInfo, signin, signup, updateAccessToken } from "../../../utils/StellarBurgersApi";
 import { setCookie } from "../../../utils/utils";
 import {
   ERROR_TEXT_GET_LOGIN_USER,
@@ -16,7 +16,10 @@ export const registerRequest = (form, nav, reflectErrorRequest) => (dispatch) =>
     .then((res) =>
       res && res.success
         ? (dispatch({ type: REGISTER_USER_SUCCESS, payload: res }),
-          setCookie("accessToken", res.accessToken), nav())
+          setCookie("accessToken", res.accessToken),
+          localStorage.setItem("refreshToken",
+            res.refreshToken),
+          nav())
         : (dispatch({
           type: ERROR_TEXT_GET_REGISTER_USER,
           payload: "Ошибка регистрации",
@@ -38,7 +41,10 @@ export const loginRequest = (form, nav, reflectErrorRequest) => (dispatch) => {
     .then((res) =>
       res && res.success
         ? (dispatch({ type: LOGIN_USER_SUCCESS, payload: res }),
-          setCookie("accessToken", res.accessToken), nav())
+          setCookie("accessToken", res.accessToken),
+          localStorage.setItem("refreshToken",
+            res.refreshToken),
+          nav())
         : dispatch({
           type: ERROR_TEXT_GET_LOGIN_USER,
           payload: "Ошибка авторизации",
@@ -57,42 +63,58 @@ export const loginRequest = (form, nav, reflectErrorRequest) => (dispatch) => {
 
 export const userRequest = (reflectErrorRequest) => (dispatch) => {
   getUserInfo()
-    .then((res) =>
-      res && res.success
-        ? dispatch({ type: USER_INFO_DATA_SUCCESS, payload: res })
-        : dispatch({
-          type: ERROR_TEXT_GET_USER_INFO,
-          payload: "Ошибка получения данных",
-        }),
+    .then(async (res) =>
+      res.message === 'jwt expired' ?
+        (await updateAccessToken(),
+          getUserInfo())
+        :
+        res && res.success
+          ? dispatch({ type: USER_INFO_DATA_SUCCESS, payload: res })
+          :
+          dispatch({
+            type: ERROR_TEXT_GET_USER_INFO,
+            payload: "Ошибка получения данных",
+          }),
       reflectErrorRequest()
     )
     .catch(
-      (err) =>
-        dispatch({
-          type: ERROR_TEXT_GET_USER_INFO,
-          payload: `Ошибка получения данных: ${err.message}`,
-        }),
+      async (err) =>
+        err.message === 'jwt expired' ?
+          (await updateAccessToken(),
+            getUserInfo())
+          :
+          dispatch({
+            type: ERROR_TEXT_GET_USER_INFO,
+            payload: `Ошибка получения данных: ${err.message}`,
+          }),
       reflectErrorRequest()
     )
 };
 
 export const udateUserRequest = (form, reflectErrorRequest) => (dispatch) => {
   setUserInfo(form)
-    .then((res) =>
-      res && res.success
-        ? dispatch({ type: UPDATE_USER_SUCCESS, payload: res })
-        : (dispatch({
-          type: ERROR_TEXT_PATCH_UPDATE_USER,
-          payload: "Ошибка обновления данных",
-        }),
-          reflectErrorRequest())
-    )
+    .then(async (res) =>
+      res.message === 'jwt expired' ?
+        (await updateAccessToken(),
+          getUserInfo())
+        :
+        res && res.success
+          ? dispatch({ type: UPDATE_USER_SUCCESS, payload: res })
+          : dispatch({
+            type: ERROR_TEXT_PATCH_UPDATE_USER,
+            payload: "Ошибка обновления данных",
+          }),
+      reflectErrorRequest())
     .catch(
-      (err) =>
-        dispatch({
-          type: ERROR_TEXT_PATCH_UPDATE_USER,
-          payload: `Ошибка обновления данных: ${err.message}`,
-        }),
-      reflectErrorRequest()
-    );
+      async (err) =>
+        err.message === 'jwt expired' ?
+          (await updateAccessToken(),
+            getUserInfo())
+          :
+          dispatch({
+            type: ERROR_TEXT_PATCH_UPDATE_USER,
+            payload: `Ошибка обновления данных: ${err.message}`,
+          }),
+      reflectErrorRequest())
+    ;
 };

@@ -17,6 +17,7 @@ import ResetPassword from "../../pages/ResetPassword/ResetPassword";
 import Profile from "../../pages/Profile/Profile";
 import UserProfile from "../../pages/UserProfile/UserProfile";
 import Modal from "../Modal/Modal";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
   const location = useLocation();
@@ -67,11 +68,17 @@ function App() {
                 </>
               }
             />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={
+              <Login />
+            } />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/profile/*" element={<Profile />}>
+            <Route path="/profile/*" element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }>
               <Route path="" element={<UserProfile />} />
             </Route>
           </Routes>
