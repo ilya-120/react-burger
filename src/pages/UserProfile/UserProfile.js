@@ -1,29 +1,67 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
+  Button,
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./UserProfile.module.css";
-import { useSelector } from "react-redux";
-import { userRequest } from "../../services/actions/amplifierActions/user";
+import { useDispatch, useSelector } from "react-redux";
+import { udateUserRequest, userRequest } from "../../services/actions/amplifierActions/user";
 import { ClipLoader } from "react-spinners";
 import { color } from "../../utils/data";
+import Modal from "../../components/Modal/Modal";
+import ErrorRequest from "../../components/ErrorRequest/ErrorRequest";
+import { ERROR_TEXT_PATCH_UPDATE_USER, IS_LOADING, RESET_ERROR } from "../../services/actions/user";
 
 const UserProfile = () => {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
-  const { userInfo, isLoading } = useSelector((store) => store.userData);
+  const [disabled, setDisabled] = useState(true)
+  const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch();
+  const { userInfo, isLoading, errorText } = useSelector((store) => store.userData);
+
   useEffect(() => {
-    setForm({ password: '', ...userInfo.user })
-    userRequest()
+    dispatch(userRequest(reflectErrorRequest))
+  }, [dispatch])
+
+  useEffect(() => {
+    setForm({ password: '', ...userInfo.user });
   }, [userInfo])
+
+  useEffect(() => {
+    if ((userInfo.user.name === form.name) && (userInfo.user.email === form.email) && !form.password) {
+      setDisabled(true)
+    }
+  }, [form, userInfo])
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch({
+      type: IS_LOADING,
+    });
+    form ?
+      dispatch(udateUserRequest(form, reflectErrorRequest))
+      :
+      dispatch({
+        type: ERROR_TEXT_PATCH_UPDATE_USER,
+        payload: "Проверьте корректность данных!",
+      });
+    setShowModal(true)
   };
 
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setDisabled(false);
   };
+
+  const onCancel = useCallback(() => {
+    setForm({ ...userInfo.user })
+    setDisabled(true)
+  }, [userInfo.user]);
+
+  const reflectErrorRequest = () => {
+    setShowModal(true)
+  }
 
   return (
     isLoading ? (<span className="message">
@@ -61,6 +99,22 @@ const UserProfile = () => {
             onChange={onChange}
             icon={"EditIcon"}
           />
+          <div className={`${Styles.div} mt-6`}>
+            <Button htmlType="submit" type='secondary' onClick={onCancel}>Отменить</Button>
+            <Button htmlType="submit" disabled={disabled} type='primary'>Сохранить</Button>
+          </div>
+          {errorText && showModal && (
+            <Modal
+              title={'Произошла ошибка'}
+              onClose={() => {
+                setShowModal(false);
+                dispatch({
+                  type: RESET_ERROR,
+                });
+              }}>
+              <ErrorRequest />
+            </Modal>
+          )}
         </form>)
   );
 };

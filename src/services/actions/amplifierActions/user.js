@@ -1,11 +1,13 @@
-import { getUserInfo, signin, signup } from "../../../utils/StellarBurgersApi";
+import { getUserInfo, setUserInfo, signin, signup } from "../../../utils/StellarBurgersApi";
 import { setCookie } from "../../../utils/utils";
 import {
   ERROR_TEXT_GET_LOGIN_USER,
   ERROR_TEXT_GET_REGISTER_USER,
   ERROR_TEXT_GET_USER_INFO,
+  ERROR_TEXT_PATCH_UPDATE_USER,
   LOGIN_USER_SUCCESS,
   REGISTER_USER_SUCCESS,
+  UPDATE_USER_SUCCESS,
   USER_INFO_DATA_SUCCESS,
 } from "../user";
 
@@ -53,7 +55,7 @@ export const loginRequest = (form, nav, reflectErrorRequest) => (dispatch) => {
     );
 };
 
-export const userRequest = () => (dispatch) => {
+export const userRequest = (reflectErrorRequest) => (dispatch) => {
   getUserInfo()
     .then((res) =>
       res && res.success
@@ -61,13 +63,36 @@ export const userRequest = () => (dispatch) => {
         : dispatch({
           type: ERROR_TEXT_GET_USER_INFO,
           payload: "Ошибка получения данных",
-        })
+        }),
+      reflectErrorRequest()
     )
     .catch(
       (err) =>
         dispatch({
           type: ERROR_TEXT_GET_USER_INFO,
           payload: `Ошибка получения данных: ${err.message}`,
-        })
+        }),
+      reflectErrorRequest()
     )
+};
+
+export const udateUserRequest = (form, reflectErrorRequest) => (dispatch) => {
+  setUserInfo(form)
+    .then((res) =>
+      res && res.success
+        ? dispatch({ type: UPDATE_USER_SUCCESS, payload: res })
+        : (dispatch({
+          type: ERROR_TEXT_PATCH_UPDATE_USER,
+          payload: "Ошибка обновления данных",
+        }),
+          reflectErrorRequest())
+    )
+    .catch(
+      (err) =>
+        dispatch({
+          type: ERROR_TEXT_PATCH_UPDATE_USER,
+          payload: `Ошибка обновления данных: ${err.message}`,
+        }),
+      reflectErrorRequest()
+    );
 };

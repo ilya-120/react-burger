@@ -66,8 +66,25 @@ export const getUserInfo = async () => {
     credentials: 'same-origin',
     headers: {
       ...headers,
-      'Authorization': `Bearer ${token}`
+      'Authorization': token,
     }
   });
   return checkResponse(res);
+}
+
+export const setUserInfo = async (form) => {
+  const token = getCookie('accessToken')
+  const res = await fetch(`${BASE_URL}auth/user`, {
+    method: 'PATCH',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      ...headers,
+      'Authorization': token,
+    },
+    body: JSON.stringify(form)
+  });
+  const data = await checkResponse(res);
+  return data;
 }
