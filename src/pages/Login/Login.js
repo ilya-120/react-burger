@@ -5,7 +5,7 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./Login.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "../../services/actions/amplifierActions/user";
 import { ERROR_TEXT_GET_LOGIN_USER, IS_LOADING, RESET_ERROR } from "../../services/actions/user";
@@ -17,9 +17,11 @@ import { color } from "../../utils/data";
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
   const { errorText, isLoading } = useSelector((store) => store.userData);
+  const fromPage = location.state?.from?.pathname || '/';
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,9 +29,7 @@ const Login = () => {
       type: IS_LOADING,
     });
     form.email && form.password ?
-      dispatch(loginRequest(form, () => {
-        navigate('/')
-      }, reflectErrorRequest))
+      dispatch(loginRequest(form, nav, reflectErrorRequest))
       :
       dispatch({
         type: ERROR_TEXT_GET_LOGIN_USER,
@@ -44,6 +44,10 @@ const Login = () => {
 
   const reflectErrorRequest = () => {
     setShowModal(true)
+  }
+
+  const nav = () => {
+      navigate(fromPage)
   }
 
   return (

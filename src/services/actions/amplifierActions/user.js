@@ -48,16 +48,19 @@ export const loginRequest = (form, nav, reflectErrorRequest) => (dispatch) => {
     .then((res) =>
       res && res.success
         ? (dispatch({ type: LOGIN_USER_SUCCESS, payload: res }),
+          console.log('ok'),
           setCookie("accessToken", res.accessToken),
           localStorage.setItem("refreshToken",
-            res.refreshToken),
-          nav())
+            res.refreshToken))
         : dispatch({
           type: ERROR_TEXT_GET_LOGIN_USER,
           payload: "Ошибка авторизации",
         }),
       reflectErrorRequest()
     )
+    .then(() => {
+      nav();
+    })
     .catch(
       (err) =>
         dispatch({
