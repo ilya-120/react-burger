@@ -99,10 +99,11 @@ const UserProfile = () => {
             onChange={onChange}
             icon={"EditIcon"}
           />
-          <div className={`${Styles.div} mt-6`}>
-            <Button htmlType="submit" type='secondary' onClick={onCancel}>Отменить</Button>
-            <Button htmlType="submit" disabled={disabled} type='primary'>Сохранить</Button>
-          </div>
+          {!disabled ? (
+            <div className={`${Styles.div} mt-6`}>
+              <Button htmlType="submit" type='secondary' onClick={onCancel}>Отменить</Button>
+              <Button htmlType="submit" disabled={disabled} type='primary'>Сохранить</Button>
+            </div>) : ('')}
           {errorText && showModal && (
             <Modal
               title={'Произошла ошибка'}
