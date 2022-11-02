@@ -27,6 +27,20 @@ export const updateAccessToken = async () => {
   return
 }
 
+export const logOut = async () => {
+  const refreshToken = localStorage.getItem('refreshToken');
+  const res = await fetch(`${BASE_URL}auth/logout`, {
+    method: "POST",
+    headers: {
+      ...headers,
+    },
+    body: JSON.stringify({
+      token: refreshToken
+    })
+  });
+  return checkResponse(res);
+}
+
 export const getIngredients = async () => {
   const res = await fetch(`${BASE_URL}ingredients`, {
     method: "GET",
@@ -104,3 +118,27 @@ export const setUserInfo = async (form) => {
   });
   return checkResponse(res);
 }
+
+export const forgotPassword = async (form) => {
+  const res = await fetch(`${BASE_URL}password-reset`, {
+    method: "POST",
+    headers: {
+      ...headers,
+    },
+    body: JSON.stringify(form),
+  });
+  return checkResponse(res);
+};
+
+export const resetPassword = async (form) => {
+  const res = await fetch(`${BASE_URL}password-reset/reset`, {
+    method: "POST",
+    headers: {
+      ...headers,
+    },
+    body: JSON.stringify(form),
+  });
+  return checkResponse(res);
+};
+
+

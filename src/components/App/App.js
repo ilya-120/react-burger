@@ -18,6 +18,9 @@ import Profile from "../../pages/Profile/Profile";
 import UserProfile from "../../pages/UserProfile/UserProfile";
 import Modal from "../Modal/Modal";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import ProtectedRouteResetPassword from "../ProtectedRoute/ProtectedRouteResetPassword";
+import NotFound from "../../pages/NotFound/NotFound";
+import ProtectedRouteOnLogin from "../ProtectedRoute/ProtectedRouteOnLogin";
 
 function App() {
   const location = useLocation();
@@ -68,19 +71,36 @@ function App() {
                 </>
               }
             />
-            <Route path="/login" element={
-              <Login />
-            } />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/profile/*" element={
-              <ProtectedRoute>
+            <Route path="/login"
+              element={<ProtectedRouteOnLogin>
+                <Login />
+              </ProtectedRouteOnLogin>
+              } />
+            <Route path="/register"
+              element={<ProtectedRouteOnLogin>
+                <Register />
+              </ProtectedRouteOnLogin>} />
+            <Route path="/forgot-password"
+              element={<ProtectedRouteOnLogin>
+                <ForgotPassword />
+              </ProtectedRouteOnLogin>} />
+            <Route path="/reset-password"
+              element={<ProtectedRouteOnLogin>
+                <ProtectedRouteResetPassword>
+                  <ResetPassword />
+                </ProtectedRouteResetPassword>
+              </ProtectedRouteOnLogin>} />
+            <Route path="/profile/*"
+              element={<ProtectedRoute>
                 <Profile />
-              </ProtectedRoute>
-            }>
-              <Route path="" element={<UserProfile />} />
+              </ProtectedRoute>}>
+              <Route path=""
+                element={<UserProfile />} />
             </Route>
+            <Route path="*"
+              element={
+                <NotFound />
+              } />
           </Routes>
           {state?.backgroundLocation && (
             <Routes>

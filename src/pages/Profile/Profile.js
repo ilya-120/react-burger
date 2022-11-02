@@ -1,7 +1,25 @@
 import Styles from "./Profile.module.css";
 import { NavLink, Outlet } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUserRequest } from "../../services/actions/amplifierActions/user";
+import { useState } from "react";
+import ErrorRequest from "../../components/ErrorRequest/ErrorRequest";
+import Modal from "../../components/Modal/Modal";
+import { RESET_ERROR } from "../../services/actions/user";
 
 const Profile = () => {
+  const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch();
+  const { errorText } = useSelector((store) => store.userData);
+
+  const logOut = () => {
+    dispatch(logoutUserRequest(reflectErrorRequest))
+  }
+
+  const reflectErrorRequest = () => {
+    setShowModal(true)
+  }
+
   return (
     <section className={Styles.container}>
       <div className={Styles.div}>
@@ -30,7 +48,7 @@ const Profile = () => {
             </NavLink>
           </li>
           <li className={Styles.item}>
-            <span className="text text_type_main-medium text_color_inactive">
+            <span onClick={logOut} className="text text_type_main-medium text_color_inactive">
               Выход
             </span>
           </li>
@@ -40,6 +58,18 @@ const Profile = () => {
           <br />
           изменить свои персональные данные
         </p>
+        {errorText && showModal && (
+          <Modal
+            title={'Произошла ошибка'}
+            onClose={() => {
+              setShowModal(false);
+              dispatch({
+                type: RESET_ERROR,
+              });
+            }}>
+            <ErrorRequest />
+          </Modal>
+        )}
       </div>
       <Outlet />
     </section>
