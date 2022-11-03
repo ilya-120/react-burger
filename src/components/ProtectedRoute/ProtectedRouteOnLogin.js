@@ -3,9 +3,10 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
 const ProtectedRouteOnLogin = ({ children }) => {
-  const location = useLocation()
+  const location = useLocation();
+  const fromPage = location.state?.from?.pathname || '/';
   const { isLogin } = useSelector((state => state.userData))
-  if (isLogin) { return <Navigate to='/' state={{ from: location }} /> }
+  if (isLogin) { return <Navigate to={fromPage} state={{ from: location }} /> }
   else return children;
 };
 

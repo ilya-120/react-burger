@@ -76,7 +76,7 @@ function App() {
               }
             />
             <Route path="/login"
-              element={<ProtectedRouteOnLogin path="/">
+              element={<ProtectedRouteOnLogin>
                 <Login />
               </ProtectedRouteOnLogin>
               } />
@@ -95,7 +95,7 @@ function App() {
                 </ProtectedRouteResetPassword>
               </ProtectedRouteOnLogin>} />
             <Route path="/profile/*"
-              element={<ProtectedRoute path="/login">
+              element={<ProtectedRoute>
                 <Profile />
               </ProtectedRoute>}>
               <Route path=""
