@@ -1,4 +1,4 @@
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import {
   Logo,
   BurgerIcon,
@@ -8,6 +8,7 @@ import {
 import Styles from "./AppHeader.module.css";
 
 function AppHeader() {
+  const { pathname } = useLocation();
   return (
     <header className={`${Styles.header__container}`}>
       <nav className={`${Styles.header__nav}  `}>
@@ -15,6 +16,7 @@ function AppHeader() {
           <div className={`${Styles.div} pr-6`}>
             <NavLink
               to="/"
+              end
               className={(navData) =>
                 navData.isActive
                   ? `${Styles.header__link_active}`
@@ -22,7 +24,7 @@ function AppHeader() {
               }
             >
               <label className={`${Styles.label}`}>
-                <BurgerIcon />
+                <BurgerIcon type={`${pathname === "/" ? "" : "secondary"}`} />
                 <p className="text text_type_main-default pl-2">Конструктор</p>
               </label>
             </NavLink>
@@ -37,7 +39,9 @@ function AppHeader() {
               }
             >
               <label className={`${Styles.label}`}>
-                <ListIcon type="secondary" />
+                <ListIcon
+                  type={`${ pathname.slice(0, 7) === "/orders" ? "" : "secondary"}`}
+                />
                 <p className="text text_type_main-default pl-2">
                   Лента заказов
                 </p>
@@ -50,7 +54,7 @@ function AppHeader() {
         </Link>
         <div className={`${Styles.div} `}>
           <NavLink
-            to="/sign-in"
+            to="/profile"
             className={(navData) =>
               navData.isActive
                 ? `${Styles.header__link_active}`
@@ -58,7 +62,13 @@ function AppHeader() {
             }
           >
             <label className={`${Styles.label}`}>
-              <ProfileIcon type="secondary" />
+              <ProfileIcon
+                type={`${
+                  pathname.slice(0, 8) === "/profile"
+                    ? ""
+                    : "secondary"
+                }`}
+              />
               <p className="text text_type_main-default pl-2 pr-5">
                 Личный кабинет
               </p>

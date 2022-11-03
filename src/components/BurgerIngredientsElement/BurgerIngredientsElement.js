@@ -4,24 +4,19 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerIngredientsElement.module.css";
 import { elementsPropType } from "../../utils/PropTypes";
-import Modal from "../Modal/Modal";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
 import { useMemo } from "react";
 import {
-  CLOSE_SHOW_MODAL,
   OPEN_SHOW_MODAL,
 } from "../../services/actions/modalIngredient";
+import { Link, useLocation } from "react-router-dom";
 
 const BurgerIngredientsElement = ({ ingredient }) => {
+  let location = useLocation();
   const dispatch = useDispatch();
   const { constructorBuns, constructorIngredients } = useSelector(
     (store) => store.constructorBurger
-  );
-
-  const { showModal, modalIngredientsDetails } = useSelector(
-    (store) => store.modalIngredient
   );
 
   const [, dragRef, dragPreviewRef] = useDrag({
@@ -39,12 +34,6 @@ const BurgerIngredientsElement = ({ ingredient }) => {
     });
   }
 
-  function handleCloseModal() {
-    dispatch({
-      type: CLOSE_SHOW_MODAL,
-    });
-  }
-
   const showCountMaterials = useMemo(() => {
     if (ingredient._id === constructorBuns._id) return 1;
     const id = constructorIngredients.filter(
@@ -54,7 +43,9 @@ const BurgerIngredientsElement = ({ ingredient }) => {
   }, [constructorIngredients, constructorBuns, ingredient._id]);
 
   return (
-    <li className={`${Styles.element} mb-8`} ref={dragRef}>
+    <Link
+    to={`/ingredients/${ingredient._id}`}
+    state={{backgroundLocation: location}} className={`${Styles.element} mb-8`} ref={dragRef}>
       <div onClick={handleshowModal}>
         {showCountMaterials >= 1 ? (
           <Counter size="default" count={showCountMaterials} />
@@ -76,12 +67,8 @@ const BurgerIngredientsElement = ({ ingredient }) => {
         </div>
         <span className="text text_type_main-small">{ingredient.name}</span>
       </div>
-      {showModal && ingredient._id === modalIngredientsDetails._id && (
-        <Modal title="Детали ингредиента" onClose={handleCloseModal}>
-          <IngredientDetails ingredient={ingredient} />
-        </Modal>
-      )}
-    </li>
+
+    </Link>
   );
 };
 

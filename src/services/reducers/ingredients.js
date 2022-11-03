@@ -5,6 +5,7 @@ import {
 } from "../actions/ingredients";
 
 const initialState = {
+  ingredients: [],
   buns: [],
   mains: [],
   sauces: [],
@@ -22,6 +23,7 @@ export const ingredientsReducer = (state = initialState, action) => {
     case GET_INGREDIENTS:
       return {
         ...state,
+        ingredients: action.payload,
         buns: action.payload.filter((item) => item.type === "bun"),
         mains: action.payload.filter((item) => item.type === "main"),
         sauces: action.payload.filter((item) => item.type === "sauce"),

@@ -4,6 +4,7 @@ import { ingredientsReducer } from "./ingredients";
 import { modalIngredientReducer } from "./modalIngredient";
 import { orderReducer } from "./orders";
 import { modalOrderReducer } from "./modalOrder";
+import { userReducer } from "./user";
 
 export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
   constructorBurger: constructorReducer,
   modalIngredient: modalIngredientReducer,
   modalOrder: modalOrderReducer,
+  userData: userReducer,
 });
