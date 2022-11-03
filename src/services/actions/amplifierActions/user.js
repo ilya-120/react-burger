@@ -48,7 +48,6 @@ export const loginRequest = (form, nav, reflectErrorRequest) => (dispatch) => {
     .then((res) =>
       res && res.success
         ? (dispatch({ type: LOGIN_USER_SUCCESS, payload: res }),
-          console.log('ok'),
           setCookie("accessToken", res.accessToken),
           localStorage.setItem("refreshToken",
             res.refreshToken))
@@ -105,7 +104,8 @@ export const userRequest = (reflectErrorRequest) => (dispatch) => {
           type: ERROR_TEXT_GET_USER_INFO,
           payload: "Ошибка получения данных",
         }),
-      reflectErrorRequest()
+      reflectErrorRequest ?
+        reflectErrorRequest() : ''
     )
     .catch(
       async (err) =>
@@ -117,7 +117,8 @@ export const userRequest = (reflectErrorRequest) => (dispatch) => {
             type: ERROR_TEXT_GET_USER_INFO,
             payload: `Ошибка получения данных: ${err.message}`,
           }),
-      reflectErrorRequest()
+      reflectErrorRequest ?
+        reflectErrorRequest() : ''
     )
 };
 

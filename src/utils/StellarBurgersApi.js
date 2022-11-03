@@ -21,9 +21,9 @@ export const updateAccessToken = async () => {
       token: refreshToken
     })
   });
-  const res_1 = await checkResponse(res);
-  setCookie("accessToken", res_1.accessToken);
-  localStorage.setItem("refreshToken", res_1.refreshToken);
+  const data = await checkResponse(res);
+  setCookie("accessToken", data.accessToken);
+  localStorage.setItem("refreshToken", data.refreshToken);
   return
 }
 

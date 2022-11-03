@@ -21,6 +21,8 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import ProtectedRouteResetPassword from "../ProtectedRoute/ProtectedRouteResetPassword";
 import NotFound from "../../pages/NotFound/NotFound";
 import ProtectedRouteOnLogin from "../ProtectedRoute/ProtectedRouteOnLogin";
+import { userRequest } from "../../services/actions/amplifierActions/user";
+import { getCookie } from "../../utils/utils";
 
 function App() {
   const location = useLocation();
@@ -30,6 +32,9 @@ function App() {
 
   useEffect(() => {
     dispatch(getStoreIngredients());
+    const token = getCookie('accessToken');
+    if (token)
+      dispatch(userRequest());
   }, [dispatch]);
 
   const { success, errorText } = useSelector((store) => store.ingredients);
@@ -62,8 +67,7 @@ function App() {
               element={
                 <>
                   <h1
-                    className="text text_type_main-large pt-30 mt-3 pb-6"
-                    style={{ textAlign: "center" }}
+                    className="title text text_type_main-large pt-30 mt-3 pb-6"
                   >
                     {titleModal}
                   </h1>
@@ -72,7 +76,7 @@ function App() {
               }
             />
             <Route path="/login"
-              element={<ProtectedRouteOnLogin>
+              element={<ProtectedRouteOnLogin path="/">
                 <Login />
               </ProtectedRouteOnLogin>
               } />
@@ -91,11 +95,13 @@ function App() {
                 </ProtectedRouteResetPassword>
               </ProtectedRouteOnLogin>} />
             <Route path="/profile/*"
-              element={<ProtectedRoute>
+              element={<ProtectedRoute path="/login">
                 <Profile />
               </ProtectedRoute>}>
               <Route path=""
-                element={<UserProfile />} />
+                element={<ProtectedRoute>
+                  <UserProfile />
+                </ProtectedRoute>} />
             </Route>
             <Route path="*"
               element={
