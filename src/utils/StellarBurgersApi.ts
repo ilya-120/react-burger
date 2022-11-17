@@ -1,12 +1,13 @@
+import { TUserDataForm } from "./typeData";
 import { getCookie, setCookie } from "./utils";
 
 const BASE_URL = "https://norma.nomoreparties.space/api/";
-const headers = {
+const headers: any = {
   Accept: "application/json",
   "Content-Type": "application/json",
 };
 
-const checkResponse = (res) => {
+const checkResponse = (res: Response) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
@@ -51,7 +52,7 @@ export const getIngredients = async () => {
   return checkResponse(res);
 };
 
-export const getOrderNumber = async (ingredients) => {
+export const getOrderNumber = async (ingredients: string[]) => {
   const res = await fetch(`${BASE_URL}orders`, {
     method: "POST",
     headers: {
@@ -62,7 +63,7 @@ export const getOrderNumber = async (ingredients) => {
   return checkResponse(res);
 };
 
-export const signup = async (form) => {
+export const signup = async (form: TUserDataForm) => {
   const res = await fetch(`${BASE_URL}auth/register`, {
     method: "POST",
     headers: {
@@ -73,7 +74,7 @@ export const signup = async (form) => {
   return checkResponse(res);
 };
 
-export const signin = async (form) => {
+export const signin = async (form: TUserDataForm) => {
   const res = await fetch(`${BASE_URL}auth/login`, {
     method: 'POST',
     mode: 'cors',
@@ -103,23 +104,23 @@ export const getUserInfo = async () => {
   return checkResponse(res);
 }
 
-export const setUserInfo = async (form) => {
+export const setUserInfo = async (form: TUserDataForm) => {
   const token = getCookie('accessToken');
   const res = await fetch(`${BASE_URL}auth/user`, {
-    method: 'PATCH',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
     headers: {
       ...headers,
       'Authorization': token,
     },
+    method: 'PATCH',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
     body: JSON.stringify(form)
   });
   return checkResponse(res);
 }
 
-export const forgotPassword = async (form) => {
+export const forgotPassword = async (form: TUserDataForm) => {
   const res = await fetch(`${BASE_URL}password-reset`, {
     method: "POST",
     headers: {
@@ -130,7 +131,7 @@ export const forgotPassword = async (form) => {
   return checkResponse(res);
 };
 
-export const resetPassword = async (form) => {
+export const resetPassword = async (form: TUserDataForm) => {
   const res = await fetch(`${BASE_URL}password-reset/reset`, {
     method: "POST",
     headers: {
