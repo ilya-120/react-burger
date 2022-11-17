@@ -19,10 +19,17 @@ export type TIngredient = {
   readonly __v: number;
   readonly _id: string;
   id?: string;
+  index: number;
 };
 
 export type TRef<T> = {
   title: string;
   ingredients: T[];
   ingredient: string;
+};
+
+export type TBurgerConstructorElementProps<T> = {
+  element: T;
+  index: number;
+  moveIngredient: (dIndex: number, hIndex: number) => void;
 };

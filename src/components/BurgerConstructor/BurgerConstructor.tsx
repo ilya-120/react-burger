@@ -6,7 +6,7 @@ import {
 import Styles from "./BurgerConstructor.module.css";
 import Modal from "../Modal/Modal";
 import { v4 as uuidv4 } from "uuid";
-import { useCallback, useEffect, useMemo } from "react";
+import { ChangeEvent, useCallback, useEffect, useMemo } from "react";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -26,21 +26,24 @@ import {
   OPEN_SHOW_MODAL_ORDER_NUMBER,
 } from "../../services/actions/modalOrder";
 import { useNavigate } from "react-router-dom";
+import { FC } from "react";
+import { AnyAction } from "redux";
+import { TIngredient } from "../../utils/typeData";
 
-function BurgerConstructor() {
+const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const { constructorIngredients, constructorBuns, orderIngredients } =
-    useSelector((store) => store.constructorBurger);
-  const { showModal } = useSelector((store) => store.modalOrder);
-  const { isLogin } = useSelector((store) => store.userData);
-  const navigate = useNavigate()
+    useSelector((store: AnyAction) => store.constructorBurger);
+  const { showModal } = useSelector((store: AnyAction) => store.modalOrder);
+  const { isLogin } = useSelector((store: AnyAction) => store.userData);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch({
       type: ORDER_INGREDIENTS,
       payload: [
         constructorBuns._id,
-        ...constructorIngredients.map((item) => item.id),
+        ...constructorIngredients.map((item: TIngredient) => item.id),
         constructorBuns._id,
       ],
     });
@@ -49,9 +52,9 @@ function BurgerConstructor() {
   const totalPrice = useMemo(
     () =>
       constructorIngredients
-        .map((item) => item.price)
+        .map((item: TIngredient) => item.price)
         .concat(Array(2).fill(constructorBuns.price || 0))
-        .reduce((a, b) => a + b),
+        .reduce((a: number, b: number) => a + b),
     [constructorIngredients, constructorBuns]
   );
 
@@ -64,7 +67,7 @@ function BurgerConstructor() {
     });
   }
 
-  function dropNewIngredient(ingredient) {
+  function dropNewIngredient(ingredient: TIngredient) {
     if (ingredient.type !== "bun") {
       const newIdIngredient = {
         ...ingredient,
@@ -84,7 +87,7 @@ function BurgerConstructor() {
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(ingredient) {
+    drop(ingredient: TIngredient) {
       dropNewIngredient(ingredient);
     },
     collect: (monitor) => ({
@@ -92,22 +95,23 @@ function BurgerConstructor() {
     }),
   });
 
-  function handleSubmit(evt) {
+  function handleSubmit(evt: ChangeEvent<any>) {
     evt.preventDefault();
-    !isLogin ?
-      navigate("/login")
-      :
-      dispatch({
-        type: RESET_OLD_ORDER_DATA,
-      }) &&
-      dispatch({
-        type: OPEN_SHOW_MODAL_ORDER_NUMBER,
-      }) &&
-      dispatch(getStoreOrderNumber({ ingredients: orderIngredients }))
+    !isLogin
+      ? navigate("/login")
+      : dispatch({
+          type: RESET_OLD_ORDER_DATA,
+        }) &&
+        dispatch({
+          type: OPEN_SHOW_MODAL_ORDER_NUMBER,
+        }) &&
+        dispatch(
+          (getStoreOrderNumber as any)({ ingredients: orderIngredients })
+        );
   }
 
   const moveIngredient = useCallback(
-    (dIndex, hIndex) => {
+    (dIndex: any, hIndex: any) => {
       let draggingIngredient = constructorIngredients[dIndex.index];
       const NewConstructorIngredients = [...constructorIngredients];
       NewConstructorIngredients.splice(dIndex.index, 1);
@@ -134,7 +138,7 @@ function BurgerConstructor() {
         )}
       </div>
       <ul className={`${Styles.list} ${isHover} custom-scroll`}>
-        {constructorIngredients.map((element, index) => (
+        {constructorIngredients.map((element: TIngredient, index: number) => (
           <BurgerConstructorElement
             key={element._id}
             element={element}
@@ -180,6 +184,6 @@ function BurgerConstructor() {
       )}
     </section>
   );
-}
+};
 
 export default BurgerConstructor;
