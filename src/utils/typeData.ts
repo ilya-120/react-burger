@@ -20,3 +20,9 @@ export type TIngredient = {
   readonly _id: string;
   id?: string;
 };
+
+export type TRef<T> = {
+  title: string;
+  ingredients: T[];
+  ingredient: string;
+};

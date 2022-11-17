@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 
-export const useIntersectionObserver = (ref) => {
-  const [isOnScreen, setIsOnScreen] = useState(null);
+export const useIntersectionObserver = (ref: RefObject<any>) => {
+  const [isOnScreen, setIsOnScreen] = useState(false);
   const observerRef = new IntersectionObserver(
     ([entry]) => setIsOnScreen(entry.isIntersecting),
     {
