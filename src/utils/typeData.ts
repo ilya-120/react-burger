@@ -53,11 +53,3 @@ export type TModalProps = {
 export interface IProtectedRoute {
   children: ReactElement;
 }
-
-export interface TNav  {
-  nav: () => void;
-};
-
-export interface TReflectErrorRequest {
-  reflectErrorRequest: () => void;
-};
