@@ -6,8 +6,9 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./AppHeader.module.css";
+import { FC } from "react";
 
-function AppHeader() {
+const AppHeader: FC = () => {
   const { pathname } = useLocation();
   return (
     <header className={`${Styles.header__container}`}>
@@ -24,7 +25,9 @@ function AppHeader() {
               }
             >
               <label className={`${Styles.label}`}>
-                <BurgerIcon type={`${pathname === "/" ? "" : "secondary"}`} />
+                <BurgerIcon
+                  type={`${pathname === "/" ? "primary" : "secondary"}`}
+                />
                 <p className="text text_type_main-default pl-2">Конструктор</p>
               </label>
             </NavLink>
@@ -40,7 +43,9 @@ function AppHeader() {
             >
               <label className={`${Styles.label}`}>
                 <ListIcon
-                  type={`${ pathname.slice(0, 7) === "/orders" ? "" : "secondary"}`}
+                  type={`${
+                    pathname.slice(0, 7) === "/orders" ? "primary" : "secondary"
+                  }`}
                 />
                 <p className="text text_type_main-default pl-2">
                   Лента заказов
@@ -64,9 +69,7 @@ function AppHeader() {
             <label className={`${Styles.label}`}>
               <ProfileIcon
                 type={`${
-                  pathname.slice(0, 8) === "/profile"
-                    ? ""
-                    : "secondary"
+                  pathname.slice(0, 8) === "/profile" ? "primary" : "secondary"
                 }`}
               />
               <p className="text text_type_main-default pl-2 pr-5">
@@ -78,6 +81,6 @@ function AppHeader() {
       </nav>
     </header>
   );
-}
+};
 
 export default AppHeader;

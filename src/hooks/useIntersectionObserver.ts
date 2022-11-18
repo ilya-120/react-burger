@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useState } from "react";
 
-export const useIntersectionObserver = (ref: RefObject<any>) => {
+export const useIntersectionObserver = (ref: RefObject<HTMLElement>) => {
   const [isOnScreen, setIsOnScreen] = useState(false);
   const observerRef = new IntersectionObserver(
     ([entry]) => setIsOnScreen(entry.isIntersecting),
@@ -12,7 +12,7 @@ export const useIntersectionObserver = (ref: RefObject<any>) => {
   );
 
   useEffect(() => {
-    observerRef.observe(ref.current);
+    (observerRef.observe as any)(ref.current);
     return () => observerRef.disconnect();
   }, [ref, observerRef]);
 

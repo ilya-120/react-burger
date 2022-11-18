@@ -1,3 +1,5 @@
+import { ReactElement } from "react";
+
 export type TUserDataForm = {
   name?: string;
   email: string;
@@ -32,4 +34,30 @@ export type TBurgerConstructorElementProps<T> = {
   element: T;
   index: number;
   moveIngredient: (dIndex: number, hIndex: number) => void;
+};
+
+export type TBurgerIngredientsElementProps<T> = {
+  ingredient: T
+};
+
+export type TOverlayProps = {
+  onClick: () => void;
+};
+
+export type TModalProps = {
+  title?: string;
+  onClose: () => void;
+  children: React.ReactNode
+};
+
+export interface IProtectedRoute {
+  children: ReactElement;
+}
+
+export interface TNav  {
+  nav: () => void;
+};
+
+export interface TReflectErrorRequest {
+  reflectErrorRequest: () => void;
 };

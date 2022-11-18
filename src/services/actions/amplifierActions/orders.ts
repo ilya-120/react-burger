@@ -5,8 +5,9 @@ import {
   SUCCESS_GET_ORDER_NUMBER,
 } from "../orders";
 import { getOrderNumber } from "../../../utils/StellarBurgersApi";
+import { Dispatch } from "redux";
 
-export const getStoreOrderNumber = (object) => (dispatch) => {
+export const getStoreOrderNumber = (object: string[]) => (dispatch: Dispatch) => {
   getOrderNumber(object)
     .then((data) =>
       data && data.success

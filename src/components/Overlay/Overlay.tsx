@@ -1,12 +1,9 @@
 import Styles from "./Overlay.module.css";
-import PropTypes from "prop-types";
+import { FC } from "react";
+import { TOverlayProps } from "../../utils/typeData";
 
-const Overlay = ({ onClick }) => {
+const Overlay: FC<TOverlayProps> = ({ onClick }) => {
   return <div className={Styles.overlay} onClick={onClick}></div>;
-};
-
-Overlay.propTypes = {
-  onClick: PropTypes.func.isRequired,
 };
 
 export default Overlay;

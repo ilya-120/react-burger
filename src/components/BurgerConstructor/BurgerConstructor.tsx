@@ -6,7 +6,7 @@ import {
 import Styles from "./BurgerConstructor.module.css";
 import Modal from "../Modal/Modal";
 import { v4 as uuidv4 } from "uuid";
-import { ChangeEvent, useCallback, useEffect, useMemo } from "react";
+import { SyntheticEvent, useCallback, useEffect, useMemo } from "react";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -95,7 +95,7 @@ const BurgerConstructor: FC = () => {
     }),
   });
 
-  function handleSubmit(evt: ChangeEvent<any>) {
+  function handleSubmit(evt: SyntheticEvent) {
     evt.preventDefault();
     !isLogin
       ? navigate("/login")
