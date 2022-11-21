@@ -111,7 +111,7 @@ const BurgerConstructor: FC = () => {
   }
 
   const moveIngredient = useCallback(
-    (dIndex: any, hIndex: any) => {
+    (dIndex: { index: number }, hIndex: number) => {
       let draggingIngredient = constructorIngredients[dIndex.index];
       const NewConstructorIngredients = [...constructorIngredients];
       NewConstructorIngredients.splice(dIndex.index, 1);

@@ -1,11 +1,17 @@
 import { forwardRef, useMemo } from "react";
 import Styles from "./BurgerIngredientsType.module.css";
 import BurgerIngredientsElement from "../BurgerIngredientsElement/BurgerIngredientsElement";
-import { TIngredient, TRef } from "../../utils/typeData";
+import { TIngredient } from "../../utils/typeData";
+
+export type TRef<T> = {
+  title: string;
+  ingredients: T[];
+  ingredient: string;
+};
 
 const BurgerIngredientsType = forwardRef<HTMLUListElement, TRef<TIngredient>>(
   ({ ingredients, ingredient, title }, ref) => {
-    const ingredientsList = (array: Array<any>) => {
+    const ingredientsList = (array: Array<TIngredient>) => {
       return array.map((element: TIngredient) => (
         <BurgerIngredientsElement ingredient={element} key={element._id} />
       ));

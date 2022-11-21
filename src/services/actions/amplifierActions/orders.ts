@@ -11,7 +11,7 @@ export const getStoreOrderNumber = (object: string[]) => (dispatch: Dispatch) =>
   getOrderNumber(object)
     .then((data) =>
       data && data.success
-        ? dispatch({ type: GET_ORDER_NUMBER, payload: data.order.number }) &&
+        ? dispatch({ type: GET_ORDER_NUMBER, payload: data.order?.number }) &&
           dispatch({ type: SUCCESS_GET_ORDER_NUMBER })
         : dispatch({
             type: ERROR_TEXT_GET_ORDER_NUMBER,

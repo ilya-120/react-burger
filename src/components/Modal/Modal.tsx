@@ -1,10 +1,15 @@
-import { KeyboardEvent, useEffect } from "react";
+import { useEffect } from "react";
 import ReactDom from "react-dom";
 import Styles from "./Modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Overlay from "../Overlay/Overlay";
 import { FC } from "react";
-import { TModalProps } from "../../utils/typeData";
+
+type TModalProps = {
+  title?: string;
+  onClose: () => void;
+  children: React.ReactNode;
+};
 
 const Modal: FC<TModalProps> = ({ title, onClose, children }) => {
   const portal: HTMLElement = document.getElementById("root") as HTMLElement;
@@ -16,8 +21,8 @@ const Modal: FC<TModalProps> = ({ title, onClose, children }) => {
         onClose();
       }
     };
-    document.addEventListener("keydown", closeByEscape as any);
-    return () => document.removeEventListener("keydown", closeByEscape as any);
+    document.addEventListener("keydown", closeByEscape);
+    return () => document.removeEventListener("keydown", closeByEscape);
   }, [onClose]);
 
   return ReactDom.createPortal(

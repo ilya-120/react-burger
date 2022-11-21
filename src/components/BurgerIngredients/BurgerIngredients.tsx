@@ -19,7 +19,7 @@ const BurgerIngredients: FC = () => {
     (store: AnyAction) => store.ingredients
   );
 
-  const onTabClick = (ref: RefObject<any>) => ref.current.scrollIntoView();
+  const onTabClick = (ref: RefObject<HTMLUListElement>) => ref.current?.scrollIntoView();
 
   return (
     <section className={`${Styles.section}`}>

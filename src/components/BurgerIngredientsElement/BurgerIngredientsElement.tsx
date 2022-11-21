@@ -12,7 +12,11 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { AnyAction } from "redux";
 import { FC } from "react";
-import { TIngredient, TBurgerIngredientsElementProps } from "../../utils/typeData";
+import { TIngredient } from "../../utils/typeData";
+
+type TBurgerIngredientsElementProps<T> = {
+  ingredient: T
+};
 
 const BurgerIngredientsElement: FC<TBurgerIngredientsElementProps<TIngredient>> = ({ ingredient }) => {
   let location = useLocation();

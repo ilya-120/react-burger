@@ -1,13 +1,30 @@
-import { TUserDataForm } from "./typeData";
 import { getCookie, setCookie } from "./utils";
 
+type TUserDataForm = {
+  name?: string;
+  email: string;
+  password?: string;
+  token?: string;
+};
+
+type TOrder = {
+  number?: string;
+};
+
+interface IApiData extends Response {
+  readonly refreshToken?: string;
+  readonly accessToken?: string;
+  readonly success?: boolean;
+  readonly order?: TOrder;
+}
+
 const BASE_URL = "https://norma.nomoreparties.space/api/";
-const headers: any = {
+const headers: HeadersInit = {
   Accept: "application/json",
   "Content-Type": "application/json",
 };
 
-const checkResponse = (res: Response) => {
+const checkResponse = (res: Response): Promise<IApiData> => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
@@ -23,8 +40,8 @@ export const updateAccessToken = async () => {
     })
   });
   const data = await checkResponse(res);
-  setCookie("accessToken", data.accessToken);
-  localStorage.setItem("refreshToken", data.refreshToken);
+  setCookie("accessToken", data.accessToken as string);
+  localStorage.setItem("refreshToken", data.refreshToken as string);
   return
 }
 
@@ -90,7 +107,6 @@ export const signin = async (form: TUserDataForm) => {
 };
 
 export const getUserInfo = async () => {
-  const token = getCookie('accessToken');
   const res = await fetch(`${BASE_URL}auth/user`, {
     method: 'GET',
     mode: 'cors',
@@ -98,18 +114,17 @@ export const getUserInfo = async () => {
     credentials: 'same-origin',
     headers: {
       ...headers,
-      'Authorization': token,
+      'Authorization': `${getCookie('accessToken')}`,
     }
   })
   return checkResponse(res);
 }
 
 export const setUserInfo = async (form: TUserDataForm) => {
-  const token = getCookie('accessToken');
   const res = await fetch(`${BASE_URL}auth/user`, {
     headers: {
       ...headers,
-      'Authorization': token,
+      'Authorization': `${getCookie('accessToken')}`,
     },
     method: 'PATCH',
     mode: 'cors',

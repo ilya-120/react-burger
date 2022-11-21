@@ -25,9 +25,13 @@ import { userRequest } from "../../services/actions/amplifierActions/user";
 import { getCookie } from "../../utils/utils";
 import { AnyAction } from "redux";
 
+interface ILocationState {
+  backgroundLocation?: string;
+}
+
 const App: FC = () => {
   const location = useLocation();
-  const state = location.state;
+  const state = location.state as ILocationState;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

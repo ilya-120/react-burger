@@ -8,10 +8,13 @@ import { DropTargetMonitor, useDrag, useDrop, XYCoord } from "react-dnd";
 import { useDispatch } from "react-redux";
 import { REMOVE_ELEMENT } from "../../services/actions/constructor";
 import { FC } from "react";
-import {
-  TBurgerConstructorElementProps,
-  TIngredient,
-} from "../../utils/typeData";
+import { TIngredient } from "../../utils/typeData";
+
+type TBurgerConstructorElementProps<T> = {
+  element: T;
+  index: number;
+  moveIngredient: (dIndex: { index: number }, hIndex: number) => void;
+};
 
 const BurgerConstructorElement: FC<
   TBurgerConstructorElementProps<TIngredient>

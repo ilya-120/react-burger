@@ -1,6 +1,9 @@
 import Styles from "./Overlay.module.css";
 import { FC } from "react";
-import { TOverlayProps } from "../../utils/typeData";
+
+type TOverlayProps = {
+  onClick: () => void;
+};
 
 const Overlay: FC<TOverlayProps> = ({ onClick }) => {
   return <div className={Styles.overlay} onClick={onClick}></div>;
