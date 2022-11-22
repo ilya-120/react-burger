@@ -10,16 +10,16 @@ import { Dispatch } from "redux";
 export const getStoreOrderNumber = (object: string[]) => (dispatch: Dispatch) => {
   getOrderNumber(object)
     .then((data) =>
-      data && data.success
-        ? dispatch({ type: GET_ORDER_NUMBER, payload: data.order?.number }) &&
-          dispatch({ type: SUCCESS_GET_ORDER_NUMBER })
+      data
+        ? dispatch({ type: GET_ORDER_NUMBER, payload: data }) &&
+        dispatch({ type: SUCCESS_GET_ORDER_NUMBER })
         : dispatch({
-            type: ERROR_TEXT_GET_ORDER_NUMBER,
-            payload: "От сервера полученны некорректные данные",
-          }) &&
-          dispatch({
-            type: ERROR_GET_ORDER_NUMBER,
-          })
+          type: ERROR_TEXT_GET_ORDER_NUMBER,
+          payload: "От сервера полученны некорректные данные",
+        }) &&
+        dispatch({
+          type: ERROR_GET_ORDER_NUMBER,
+        })
     )
     .catch(
       (err) =>
