@@ -10,23 +10,25 @@ type TUserDataForm = {
 
 type TOrder = {
   order:
-  { number: any }
+  { number: number }
 }
 
 type TLogout = {
   message?: string;
 }
 
-interface IApiData<T> {
-  data?: T;
-  readonly success?: boolean;
-}
-
-type TResponse<T> = {
-  success: boolean;
+type TApiAuthResponse = {
   accessToken: string;
   refreshToken: string;
-} & T;
+}
+
+type TIngredientResponse = {
+  data: TIngredient[];
+}
+
+type TApiData<T> = {
+  success: boolean;
+} & T & TApiAuthResponse;
 
 const BASE_URL = "https://norma.nomoreparties.space/api/";
 const headers: HeadersInit = {
@@ -35,7 +37,7 @@ const headers: HeadersInit = {
 };
 
 const checkResponse = <T>(res: Response) => {
-  return res.ok ? res.json().then(data => data as TResponse<T>) : res.json().then((err) => Promise.reject(err));
+  return res.ok ? res.json().then(data => data as TApiData<T>) : res.json().then((err) => Promise.reject(err));
 };
 
 export const updateAccessToken = async () => {
@@ -49,13 +51,13 @@ export const updateAccessToken = async () => {
       token: refreshToken
     })
   });
-  const data = await checkResponse(res);
+  const data = await checkResponse<TApiAuthResponse>(res);
   setCookie("accessToken", data.accessToken);
   localStorage.setItem("refreshToken", data.refreshToken);
   return
 }
 
-export const logOut = async (): Promise<IApiData<TLogout>> => {
+export const logOut = async (): Promise<TApiData<TLogout>> => {
   const refreshToken = localStorage.getItem('refreshToken');
   const res = await fetch(`${BASE_URL}auth/logout`, {
     method: "POST",
@@ -69,7 +71,7 @@ export const logOut = async (): Promise<IApiData<TLogout>> => {
   return checkResponse(res);
 }
 
-export const getIngredients = async (): Promise<IApiData<[TIngredient]>> => {
+export const getIngredients = async (): Promise<TApiData<TIngredientResponse>> => {
   const res = await fetch(`${BASE_URL}ingredients`, {
     method: "GET",
     headers: {
@@ -79,7 +81,7 @@ export const getIngredients = async (): Promise<IApiData<[TIngredient]>> => {
   return checkResponse(res);
 };
 
-export const getOrderNumber = async (ingredients: string[]): Promise<IApiData<number>> => {
+export const getOrderNumber = async (ingredients: string[]) => {
   const res = await fetch(`${BASE_URL}orders`, {
     method: "POST",
     headers: {
@@ -87,11 +89,11 @@ export const getOrderNumber = async (ingredients: string[]): Promise<IApiData<nu
     },
     body: JSON.stringify(ingredients),
   });
-  const data: TOrder = await checkResponse(res);
+  const data = await checkResponse<TOrder>(res);
   return data.order.number;
 };
 
-export const signup = async (form: TUserDataForm): Promise<IApiData<TUserDataForm>> => {
+export const signup = async (form: TUserDataForm): Promise<TApiData<TUserDataForm>> => {
   const res = await fetch(`${BASE_URL}auth/register`, {
     method: "POST",
     headers: {
@@ -102,7 +104,7 @@ export const signup = async (form: TUserDataForm): Promise<IApiData<TUserDataFor
   return checkResponse(res);
 };
 
-export const signin = async (form: TUserDataForm): Promise<IApiData<TUserDataForm>> => {
+export const signin = async (form: TUserDataForm): Promise<TApiData<TUserDataForm>> => {
   const res = await fetch(`${BASE_URL}auth/login`, {
     method: 'POST',
     mode: 'cors',
@@ -113,11 +115,11 @@ export const signin = async (form: TUserDataForm): Promise<IApiData<TUserDataFor
     },
     body: JSON.stringify(form)
   });
-  const data = await checkResponse(res);
+  const data = await checkResponse<TUserDataForm>(res);
   return data;
 };
 
-export const getUserInfo = async (): Promise<IApiData<TUserDataForm>> => {
+export const getUserInfo = async (): Promise<TApiData<TUserDataForm>> => {
   const res = await fetch(`${BASE_URL}auth/user`, {
     method: 'GET',
     mode: 'cors',
@@ -131,7 +133,7 @@ export const getUserInfo = async (): Promise<IApiData<TUserDataForm>> => {
   return checkResponse(res);
 }
 
-export const setUserInfo = async (form: TUserDataForm): Promise<IApiData<TUserDataForm>> => {
+export const setUserInfo = async (form: TUserDataForm): Promise<TApiData<TUserDataForm>> => {
   const res = await fetch(`${BASE_URL}auth/user`, {
     headers: {
       ...headers,
@@ -146,7 +148,7 @@ export const setUserInfo = async (form: TUserDataForm): Promise<IApiData<TUserDa
   return checkResponse(res);
 }
 
-export const forgotPassword = async (form: TUserDataForm): Promise<IApiData<TUserDataForm>> => {
+export const forgotPassword = async (form: TUserDataForm): Promise<TApiData<TUserDataForm>> => {
   const res = await fetch(`${BASE_URL}password-reset`, {
     method: "POST",
     headers: {
@@ -157,7 +159,7 @@ export const forgotPassword = async (form: TUserDataForm): Promise<IApiData<TUse
   return checkResponse(res);
 };
 
-export const resetPassword = async (form: TUserDataForm): Promise<IApiData<TUserDataForm>> => {
+export const resetPassword = async (form: TUserDataForm): Promise<TApiData<TUserDataForm>> => {
   const res = await fetch(`${BASE_URL}password-reset/reset`, {
     method: "POST",
     headers: {

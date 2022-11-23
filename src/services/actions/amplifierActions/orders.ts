@@ -1,5 +1,4 @@
 import {
-  ERROR_GET_ORDER_NUMBER,
   ERROR_TEXT_GET_ORDER_NUMBER,
   GET_ORDER_NUMBER,
   SUCCESS_GET_ORDER_NUMBER,
@@ -16,15 +15,12 @@ export const getStoreOrderNumber = (object: string[]) => (dispatch: Dispatch) =>
         : dispatch({
           type: ERROR_TEXT_GET_ORDER_NUMBER,
           payload: "От сервера полученны некорректные данные",
-        }) &&
-        dispatch({
-          type: ERROR_GET_ORDER_NUMBER,
         })
     )
     .catch(
       (err) =>
         dispatch({
-          type: ERROR_TEXT_GET_ORDER_NUMBER && ERROR_GET_ORDER_NUMBER,
+          type: ERROR_TEXT_GET_ORDER_NUMBER,
           payload: `Ошибка загрузки данных: ${err}`,
         })
     );

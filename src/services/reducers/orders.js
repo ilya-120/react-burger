@@ -1,5 +1,4 @@
 import {
-  ERROR_GET_ORDER_NUMBER,
   ERROR_TEXT_GET_ORDER_NUMBER,
   GET_ORDER_NUMBER,
   RESET_OLD_ORDER_DATA,
@@ -30,10 +29,6 @@ export const orderReducer = (state = initialState, action) => {
       return {
         ...state,
         errorText: action.payload,
-      };
-    case ERROR_GET_ORDER_NUMBER:
-      return {
-        ...state,
         error: true,
       };
     case RESET_OLD_ORDER_DATA:
