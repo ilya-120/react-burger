@@ -9,18 +9,24 @@ type TUserDataForm = {
 };
 
 type TOrder = {
-  order?:
-  { number?: number; }
+  order:
+  { number: any }
 }
 
 type TLogout = {
   message?: string;
 }
 
-interface IApiData<T> extends Response {
+interface IApiData<T> {
   data?: T;
   readonly success?: boolean;
 }
+
+type TResponse<T> = {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+} & T;
 
 const BASE_URL = "https://norma.nomoreparties.space/api/";
 const headers: HeadersInit = {
@@ -28,8 +34,8 @@ const headers: HeadersInit = {
   "Content-Type": "application/json",
 };
 
-const checkResponse = (res: Response) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+const checkResponse = <T>(res: Response) => {
+  return res.ok ? res.json().then(data => data as TResponse<T>) : res.json().then((err) => Promise.reject(err));
 };
 
 export const updateAccessToken = async () => {
@@ -44,8 +50,8 @@ export const updateAccessToken = async () => {
     })
   });
   const data = await checkResponse(res);
-  setCookie("accessToken", data.accessToken as string);
-  localStorage.setItem("refreshToken", data.refreshToken as string);
+  setCookie("accessToken", data.accessToken);
+  localStorage.setItem("refreshToken", data.refreshToken);
   return
 }
 
@@ -63,7 +69,7 @@ export const logOut = async (): Promise<IApiData<TLogout>> => {
   return checkResponse(res);
 }
 
-export const getIngredients = async (): Promise<IApiData<TIngredient>> => {
+export const getIngredients = async (): Promise<IApiData<[TIngredient]>> => {
   const res = await fetch(`${BASE_URL}ingredients`, {
     method: "GET",
     headers: {
@@ -73,7 +79,7 @@ export const getIngredients = async (): Promise<IApiData<TIngredient>> => {
   return checkResponse(res);
 };
 
-export const getOrderNumber = async (ingredients: string[]): Promise<IApiData<TOrder>> => {
+export const getOrderNumber = async (ingredients: string[]): Promise<IApiData<number>> => {
   const res = await fetch(`${BASE_URL}orders`, {
     method: "POST",
     headers: {
@@ -81,7 +87,7 @@ export const getOrderNumber = async (ingredients: string[]): Promise<IApiData<TO
     },
     body: JSON.stringify(ingredients),
   });
-  const data = await checkResponse(res);
+  const data: TOrder = await checkResponse(res);
   return data.order.number;
 };
 

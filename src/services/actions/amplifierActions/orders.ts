@@ -24,11 +24,8 @@ export const getStoreOrderNumber = (object: string[]) => (dispatch: Dispatch) =>
     .catch(
       (err) =>
         dispatch({
-          type: ERROR_TEXT_GET_ORDER_NUMBER,
+          type: ERROR_TEXT_GET_ORDER_NUMBER && ERROR_GET_ORDER_NUMBER,
           payload: `Ошибка загрузки данных: ${err}`,
-        }) &&
-        dispatch({
-          type: ERROR_GET_ORDER_NUMBER,
         })
     );
 };
