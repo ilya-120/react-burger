@@ -3,7 +3,6 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerIngredientsElement.module.css";
-import { elementsPropType } from "../../utils/PropTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
 import { useMemo } from "react";
@@ -11,12 +10,19 @@ import {
   OPEN_SHOW_MODAL,
 } from "../../services/actions/modalIngredient";
 import { Link, useLocation } from "react-router-dom";
+import { AnyAction } from "redux";
+import { FC } from "react";
+import { TIngredient } from "../../utils/typeData";
 
-const BurgerIngredientsElement = ({ ingredient }) => {
+type TBurgerIngredientsElementProps<T> = {
+  ingredient: T
+};
+
+const BurgerIngredientsElement: FC<TBurgerIngredientsElementProps<TIngredient>> = ({ ingredient }) => {
   let location = useLocation();
   const dispatch = useDispatch();
   const { constructorBuns, constructorIngredients } = useSelector(
-    (store) => store.constructorBurger
+    (store: AnyAction) => store.constructorBurger
   );
 
   const [, dragRef, dragPreviewRef] = useDrag({
@@ -37,7 +43,7 @@ const BurgerIngredientsElement = ({ ingredient }) => {
   const showCountMaterials = useMemo(() => {
     if (ingredient._id === constructorBuns._id) return 1;
     const id = constructorIngredients.filter(
-      (item) => item.id === ingredient._id
+      (item: TIngredient) => item.id === ingredient._id
     );
     return id.length;
   }, [constructorIngredients, constructorBuns, ingredient._id]);
@@ -63,17 +69,13 @@ const BurgerIngredientsElement = ({ ingredient }) => {
             {ingredient.price}
           </span>
           &nbsp;
-          <CurrencyIcon />
+          <CurrencyIcon type='primary' />
         </div>
         <span className="text text_type_main-small">{ingredient.name}</span>
       </div>
 
     </Link>
   );
-};
-
-BurgerIngredientsElement.propTypes = {
-  ingredient: elementsPropType.isRequired,
 };
 
 export default BurgerIngredientsElement;

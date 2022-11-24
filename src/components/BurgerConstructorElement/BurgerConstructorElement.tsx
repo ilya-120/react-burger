@@ -3,22 +3,30 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerConstructorElement.module.css";
-import PropTypes from "prop-types";
 import { useRef } from "react";
-import { useDrag, useDrop } from "react-dnd";
+import { DropTargetMonitor, useDrag, useDrop, XYCoord } from "react-dnd";
 import { useDispatch } from "react-redux";
-import { elementsPropType } from "../../utils/PropTypes";
 import { REMOVE_ELEMENT } from "../../services/actions/constructor";
+import { FC } from "react";
+import { TIngredient } from "../../utils/typeData";
 
-function BurgerConstructorElement({ element, index, moveIngredient }) {
-  const ref = useRef(null);
+type TBurgerConstructorElementProps<T> = {
+  element: T;
+  index: number;
+  moveIngredient: (dIndex: { index: number }, hIndex: number) => void;
+};
+
+const BurgerConstructorElement: FC<
+  TBurgerConstructorElementProps<TIngredient>
+> = ({ element, index, moveIngredient }) => {
+  const ref = useRef<HTMLLIElement>(null);
   const dispatch = useDispatch();
-  const [{ handlerId }, dropTarget] = useDrop({
+  const [handlerId, dropTarget] = useDrop<any>({
     accept: "ingredients",
     collect: (monitor) => ({
       handlerId: monitor.getHandlerId(),
     }),
-    hover(ingredient, monitor) {
+    hover(ingredient, monitor: DropTargetMonitor) {
       if (!ref.current) {
         return;
       }
@@ -32,7 +40,7 @@ function BurgerConstructorElement({ element, index, moveIngredient }) {
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
       if (dIndex < index && hoverClientY < hoverMiddleY) {
         return;
       }
@@ -57,7 +65,7 @@ function BurgerConstructorElement({ element, index, moveIngredient }) {
       onDrop={(e) => e.preventDefault()}
       className={`${Styles["list-element"]}`}
     >
-      <DragIcon />
+      <DragIcon type="primary" />
       <div className={`${Styles.div} ml-2 mr-2`}>
         <ConstructorElement
           text={element.name}
@@ -73,12 +81,6 @@ function BurgerConstructorElement({ element, index, moveIngredient }) {
       </div>
     </li>
   );
-}
-
-BurgerConstructorElement.propTypes = {
-  element: elementsPropType.isRequired,
-  index: PropTypes.number.isRequired,
-  moveIngredient: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructorElement;

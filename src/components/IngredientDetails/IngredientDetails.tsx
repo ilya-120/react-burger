@@ -1,11 +1,14 @@
+import { FC } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { AnyAction } from "redux";
+import { TIngredient } from "../../utils/typeData";
 import Style from "./IngredientDetails.module.css";
 
-function IngredientDetails() {
+const IngredientDetails: FC = () => {
   const { id } = useParams();
-  const { ingredients } = useSelector((store) => store.ingredients);
-  const ingredient = ingredients.find((ingredient) => ingredient._id === id);
+  const { ingredients } = useSelector((store: AnyAction) => store.ingredients);
+  const ingredient = ingredients.find((ingredient: TIngredient) => ingredient._id === id);
 
   return (
     <div className={`${Style.box}`}>

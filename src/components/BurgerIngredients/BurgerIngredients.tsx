@@ -1,21 +1,25 @@
-import { useRef } from "react";
+import { RefObject, useRef } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerIngredients.module.css";
 import BurgerIngredientsType from "../BurgerIngredientsType/BurgerIngredientsType";
 import { useSelector } from "react-redux";
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
+import { FC } from "react";
+import { AnyAction } from "redux";
 
-function BurgerIngredients() {
-  const saucesRef = useRef();
-  const bunsRef = useRef();
-  const mainsRef = useRef();
+const BurgerIngredients: FC = () => {
+  const saucesRef = useRef<HTMLUListElement>(null);
+  const bunsRef = useRef<HTMLUListElement>(null);
+  const mainsRef = useRef<HTMLUListElement>(null);
   const observerBun = useIntersectionObserver(bunsRef);
   const observerSauces = useIntersectionObserver(saucesRef);
   const observerMain = useIntersectionObserver(mainsRef);
 
-  const { buns, mains, sauces } = useSelector((store) => store.ingredients);
+  const { buns, mains, sauces } = useSelector(
+    (store: AnyAction) => store.ingredients
+  );
 
-  const onTabClick = (ref) => ref.current.scrollIntoView();
+  const onTabClick = (ref: RefObject<HTMLUListElement>) => ref.current?.scrollIntoView();
 
   return (
     <section className={`${Styles.section}`}>
@@ -65,6 +69,6 @@ function BurgerIngredients() {
       </div>
     </section>
   );
-}
+};
 
 export default BurgerIngredients;

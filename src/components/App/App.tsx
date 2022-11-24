@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,21 +23,27 @@ import NotFound from "../../pages/NotFound/NotFound";
 import ProtectedRouteOnLogin from "../ProtectedRoute/ProtectedRouteOnLogin";
 import { userRequest } from "../../services/actions/amplifierActions/user";
 import { getCookie } from "../../utils/utils";
+import { AnyAction } from "redux";
 
-function App() {
+interface ILocationState {
+  backgroundLocation?: string;
+}
+
+const App: FC = () => {
   const location = useLocation();
-  const state = location.state;
+  const state = location.state as ILocationState;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getStoreIngredients());
-    const token = getCookie('accessToken');
-    if (token)
-      dispatch(userRequest());
+    dispatch((getStoreIngredients as any)());
+    const token = getCookie("accessToken");
+    if (token) dispatch((userRequest as any)());
   }, [dispatch]);
 
-  const { success, errorText } = useSelector((store) => store.ingredients);
+  const { success, errorText } = useSelector(
+    (store: AnyAction) => store.ingredients
+  );
 
   return (
     <div className="root">
@@ -66,47 +72,65 @@ function App() {
               path="/ingredients/:id"
               element={
                 <>
-                  <h1
-                    className="title text text_type_main-large pt-30 mt-3 pb-6"
-                  >
+                  <h1 className="title text text_type_main-large pt-30 mt-3 pb-6">
                     {titleModal}
                   </h1>
                   <IngredientDetails />
                 </>
               }
             />
-            <Route path="/login"
-              element={<ProtectedRouteOnLogin>
-                <Login />
-              </ProtectedRouteOnLogin>
-              } />
-            <Route path="/register"
-              element={<ProtectedRouteOnLogin>
-                <Register />
-              </ProtectedRouteOnLogin>} />
-            <Route path="/forgot-password"
-              element={<ProtectedRouteOnLogin>
-                <ForgotPassword />
-              </ProtectedRouteOnLogin>} />
-            <Route path="/reset-password"
-              element={<ProtectedRouteOnLogin>
-                <ProtectedRouteResetPassword>
-                  <ResetPassword />
-                </ProtectedRouteResetPassword>
-              </ProtectedRouteOnLogin>} />
-            <Route path="/profile/*"
-              element={<ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>}>
-              <Route path=""
-                element={<ProtectedRoute>
-                  <UserProfile />
-                </ProtectedRoute>} />
-            </Route>
-            <Route path="*"
+            <Route
+              path="/login"
               element={
-                <NotFound />
-              } />
+                <ProtectedRouteOnLogin>
+                  <Login />
+                </ProtectedRouteOnLogin>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <ProtectedRouteOnLogin>
+                  <Register />
+                </ProtectedRouteOnLogin>
+              }
+            />
+            <Route
+              path="/forgot-password"
+              element={
+                <ProtectedRouteOnLogin>
+                  <ForgotPassword />
+                </ProtectedRouteOnLogin>
+              }
+            />
+            <Route
+              path="/reset-password"
+              element={
+                <ProtectedRouteOnLogin>
+                  <ProtectedRouteResetPassword>
+                    <ResetPassword />
+                  </ProtectedRouteResetPassword>
+                </ProtectedRouteOnLogin>
+              }
+            />
+            <Route
+              path="/profile/*"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            >
+              <Route
+                path=""
+                element={
+                  <ProtectedRoute>
+                    <UserProfile />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
           {state?.backgroundLocation && (
             <Routes>
@@ -129,6 +153,6 @@ function App() {
       )}
     </div>
   );
-}
+};
 
 export default App;
