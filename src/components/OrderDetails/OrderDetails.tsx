@@ -3,12 +3,12 @@ import done from "../../images/done.svg";
 import { color } from "../../utils/data";
 import { ClipLoader } from "react-spinners";
 import { useSelector } from "react-redux";
-import { AnyAction } from "redux";
 import { FC } from "react";
+import { RootState } from "../../services/reducers";
 
 const OrderDetails: FC = () => {
   const { error, errorText, orderNumber } = useSelector(
-    (store: AnyAction) => store.orderNumber
+    (store: RootState) => store.orderNumber
   );
   return (
     <div className={`${Style["order-box"]}`}>

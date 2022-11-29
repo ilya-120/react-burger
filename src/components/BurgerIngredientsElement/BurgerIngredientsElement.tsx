@@ -10,9 +10,9 @@ import {
   OPEN_SHOW_MODAL,
 } from "../../services/actions/modalIngredient";
 import { Link, useLocation } from "react-router-dom";
-import { AnyAction } from "redux";
 import { FC } from "react";
 import { TIngredient } from "../../utils/typeData";
+import { RootState } from "../../services/reducers";
 
 type TBurgerIngredientsElementProps<T> = {
   ingredient: T
@@ -22,7 +22,7 @@ const BurgerIngredientsElement: FC<TBurgerIngredientsElementProps<TIngredient>> 
   let location = useLocation();
   const dispatch = useDispatch();
   const { constructorBuns, constructorIngredients } = useSelector(
-    (store: AnyAction) => store.constructorBurger
+    (store: RootState) => store.constructorBurger
   );
 
   const [, dragRef, dragPreviewRef] = useDrag({
@@ -42,7 +42,7 @@ const BurgerIngredientsElement: FC<TBurgerIngredientsElementProps<TIngredient>> 
 
   const showCountMaterials = useMemo(() => {
     if (ingredient._id === constructorBuns._id) return 1;
-    const id = constructorIngredients.filter(
+    const id = constructorIngredients!.filter(
       (item: TIngredient) => item.id === ingredient._id
     );
     return id.length;

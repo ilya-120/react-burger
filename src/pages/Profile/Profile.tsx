@@ -6,12 +6,12 @@ import { FC, useState } from "react";
 import ErrorRequest from "../../components/ErrorRequest/ErrorRequest";
 import Modal from "../../components/Modal/Modal";
 import { RESET_ERROR } from "../../services/actions/user";
-import { AnyAction } from "redux";
+import { RootState } from "../../services/reducers";
 
 const Profile: FC = () => {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
-  const { errorText } = useSelector((store: AnyAction) => store.userData);
+  const { errorText } = useSelector((store: RootState) => store.userData);
 
   const logOut = () => {
     dispatch((logoutUserRequest as any)(reflectErrorRequest))

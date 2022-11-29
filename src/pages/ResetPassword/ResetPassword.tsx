@@ -17,13 +17,13 @@ import ErrorRequest from "../../components/ErrorRequest/ErrorRequest";
 import Modal from "../../components/Modal/Modal";
 import { color } from "../../utils/data";
 import { ClipLoader } from "react-spinners";
-import { AnyAction } from "redux";
+import { RootState } from "../../services/reducers";
 
 const ResetPassword: FC = () => {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const { errorText, isLoading } = useSelector(
-    (state: AnyAction) => state.userData
+    (state: RootState) => state.userData
   );
   const [form, setForm] = useState({ password: "", token: "" });
   const navigate = useNavigate();

@@ -23,7 +23,7 @@ import NotFound from "../../pages/NotFound/NotFound";
 import ProtectedRouteOnLogin from "../ProtectedRoute/ProtectedRouteOnLogin";
 import { userRequest } from "../../services/actions/amplifierActions/user";
 import { getCookie } from "../../utils/utils";
-import { AnyAction } from "redux";
+import { RootState } from "../../services/reducers";
 
 interface ILocationState {
   backgroundLocation?: string;
@@ -42,7 +42,7 @@ const App: FC = () => {
   }, [dispatch]);
 
   const { success, errorText } = useSelector(
-    (store: AnyAction) => store.ingredients
+    (store: RootState) => store.ingredients
   );
 
   return (

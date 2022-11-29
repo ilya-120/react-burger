@@ -17,7 +17,7 @@ import ErrorRequest from "../../components/ErrorRequest/ErrorRequest";
 import Modal from "../../components/Modal/Modal";
 import { ClipLoader } from "react-spinners";
 import { color } from "../../utils/data";
-import { AnyAction } from "redux";
+import { RootState } from "../../services/reducers";
 
 const Login: FC = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -26,7 +26,7 @@ const Login: FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { errorText, isLoading } = useSelector(
-    (store: AnyAction) => store.userData
+    (store: RootState) => store.userData
   );
   const fromPage = location.state?.from?.pathname || "/";
 

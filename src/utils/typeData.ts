@@ -22,6 +22,7 @@ export type TUserDataForm = {
   email?: string;
   password?: string;
   token?: string;
+  user?: any | null;
 };
 
 export interface IProtectedRoute {

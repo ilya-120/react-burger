@@ -27,15 +27,15 @@ import {
 } from "../../services/actions/modalOrder";
 import { useNavigate } from "react-router-dom";
 import { FC } from "react";
-import { AnyAction } from "redux";
 import { TIngredient } from "../../utils/typeData";
+import { RootState } from "../../services/reducers";
 
 const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const { constructorIngredients, constructorBuns, orderIngredients } =
-    useSelector((store: AnyAction) => store.constructorBurger);
-  const { showModal } = useSelector((store: AnyAction) => store.modalOrder);
-  const { isLogin } = useSelector((store: AnyAction) => store.userData);
+    useSelector((store: RootState) => store.constructorBurger);
+  const { showModal } = useSelector((store: RootState) => store.modalOrder);
+  const { isLogin } = useSelector((store: RootState) => store.userData);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const BurgerConstructor: FC = () => {
       type: ORDER_INGREDIENTS,
       payload: [
         constructorBuns._id,
-        ...constructorIngredients.map((item: TIngredient) => item.id),
+        ...constructorIngredients!.map((item: TIngredient) => item.id),
         constructorBuns._id,
       ],
     });
@@ -51,7 +51,7 @@ const BurgerConstructor: FC = () => {
 
   const totalPrice = useMemo(
     () =>
-      constructorIngredients
+      constructorIngredients!
         .map((item: TIngredient) => item.price)
         .concat(Array(2).fill(constructorBuns.price || 0))
         .reduce((a: number, b: number) => a + b),
@@ -112,8 +112,8 @@ const BurgerConstructor: FC = () => {
 
   const moveIngredient = useCallback(
     (dIndex: { index: number }, hIndex: number) => {
-      let draggingIngredient = constructorIngredients[dIndex.index];
-      const NewConstructorIngredients = [...constructorIngredients];
+      let draggingIngredient = constructorIngredients![dIndex.index];
+      const NewConstructorIngredients = [...constructorIngredients!];
       NewConstructorIngredients.splice(dIndex.index, 1);
       NewConstructorIngredients.splice(hIndex, 0, draggingIngredient);
       dispatch({
@@ -138,7 +138,7 @@ const BurgerConstructor: FC = () => {
         )}
       </div>
       <ul className={`${Styles.list} ${isHover} custom-scroll`}>
-        {constructorIngredients.map((element: TIngredient, index: number) => (
+        {constructorIngredients!.map((element: TIngredient, index: number) => (
           <BurgerConstructorElement
             key={element._id}
             element={element}

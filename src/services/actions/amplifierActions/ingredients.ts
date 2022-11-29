@@ -4,9 +4,9 @@ import {
   SUCCESS_GET_INGREDIENTS,
 } from "../ingredients";
 import { getIngredients } from "../../../utils/StellarBurgersApi";
-import { Dispatch } from "redux";
+import { AppDispatch, AppThunk } from "../../reducers";
 
-export const getStoreIngredients = () => (dispatch: Dispatch) => {
+export const getStoreIngredients: AppThunk = () => (dispatch: AppDispatch) => {
   getIngredients()
     .then((res) =>
       res && res.success

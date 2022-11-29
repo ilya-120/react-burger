@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { useSelector } from "react-redux";
-import { AnyAction } from "redux";
+import { RootState } from "../../services/reducers";
 
 const ErrorRequest: FC = () => {
-  const { errorText } = useSelector((store: AnyAction) => store.userData);
+  const { errorText } = useSelector((store: RootState) => store.userData);
   return (
     <div>
       <p className="text text_type_main-large text_color_inactive pt-20 ml-10 mr-4">{errorText}</p>

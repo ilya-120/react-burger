@@ -5,7 +5,7 @@ import BurgerIngredientsType from "../BurgerIngredientsType/BurgerIngredientsTyp
 import { useSelector } from "react-redux";
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
 import { FC } from "react";
-import { AnyAction } from "redux";
+import { RootState } from "../../services/reducers";
 
 const BurgerIngredients: FC = () => {
   const saucesRef = useRef<HTMLUListElement>(null);
@@ -16,7 +16,7 @@ const BurgerIngredients: FC = () => {
   const observerMain = useIntersectionObserver(mainsRef);
 
   const { buns, mains, sauces } = useSelector(
-    (store: AnyAction) => store.ingredients
+    (store: RootState) => store.ingredients
   );
 
   const onTabClick = (ref: RefObject<HTMLUListElement>) => ref.current?.scrollIntoView();

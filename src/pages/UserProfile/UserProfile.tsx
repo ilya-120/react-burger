@@ -26,7 +26,7 @@ import {
   IS_LOADING,
   RESET_ERROR,
 } from "../../services/actions/user";
-import { AnyAction } from "redux";
+import { RootState } from "../../services/reducers";
 
 const UserProfile: FC = () => {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -34,7 +34,7 @@ const UserProfile: FC = () => {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const { userInfo, isLoading, errorText } = useSelector(
-    (store: AnyAction) => store.userData
+    (store: RootState) => store.userData
   );
 
   useEffect(() => {
@@ -42,13 +42,13 @@ const UserProfile: FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setForm({ password: "", ...userInfo.user });
+    setForm({ password: "", ...userInfo!.user });
   }, [userInfo]);
 
   useEffect(() => {
     if (
-      userInfo.user.name === form.name &&
-      userInfo.user.email === form.email &&
+      userInfo!.user.name === form.name &&
+      userInfo!.user.email === form.email &&
       !form.password
     ) {
       setDisabled(true);
@@ -76,9 +76,9 @@ const UserProfile: FC = () => {
   };
 
   const onCancel = useCallback(() => {
-    setForm({ ...userInfo.user });
+    setForm({ ...userInfo!.user });
     setDisabled(true);
-  }, [userInfo.user]);
+  }, [userInfo]);
 
   const reflectErrorRequest = () => {
     setShowModal(true);

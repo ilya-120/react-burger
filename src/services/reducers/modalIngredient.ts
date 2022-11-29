@@ -15,7 +15,7 @@ const initialState: TInitialState = {
 export const modalIngredientReducer = (
   state = initialState,
   action: TModalActions
-) => {
+): TInitialState => {
   switch (action.type) {
     case OPEN_SHOW_MODAL:
       return {
@@ -26,7 +26,7 @@ export const modalIngredientReducer = (
     case CLOSE_SHOW_MODAL:
       return {
         ...state,
-        modalIngredientsDetails: {},
+        modalIngredientsDetails: {} as TIngredient,
         showModal: false,
       };
     default:

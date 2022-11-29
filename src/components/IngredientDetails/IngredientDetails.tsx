@@ -1,22 +1,26 @@
 import { FC } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { AnyAction } from "redux";
+import { RootState } from "../../services/reducers";
 import { TIngredient } from "../../utils/typeData";
 import Style from "./IngredientDetails.module.css";
 
 const IngredientDetails: FC = () => {
   const { id } = useParams();
-  const { ingredients } = useSelector((store: AnyAction) => store.ingredients);
-  const ingredient = ingredients.find((ingredient: TIngredient) => ingredient._id === id);
+  const { ingredients } = useSelector((store: RootState) => store.ingredients);
+  const ingredient = ingredients.find(
+    (ingredient: TIngredient) => ingredient._id === id
+  );
 
   return (
     <div className={`${Style.box}`}>
       <div className={`${Style.div1}`}>
-        <img alt={ingredient.name} src={ingredient.image_large} />
+        <img alt={ingredient!.name} src={ingredient!.image_large} />
       </div>
       <div className={`${Style.div2}`}>
-        <p className=" text_type_main-medium text mb-8">{`${ingredient.name}`}</p>
+        <p className=" text_type_main-medium text mb-8">{`${
+          ingredient!.name
+        }`}</p>
       </div>
       <div className={`${Style.div3}`}>
         <div className={`${Style.div4}`}>
@@ -24,7 +28,7 @@ const IngredientDetails: FC = () => {
             Калории, ккал
           </div>
           <div className="text_type_digits-default text_color_inactive">
-            {`${ingredient.calories}`}
+            {`${ingredient!.calories}`}
           </div>
         </div>
         <div className={`${Style.div4}`}>
@@ -32,7 +36,7 @@ const IngredientDetails: FC = () => {
             Белки, г
           </div>
           <div className="text_type_digits-default text_color_inactive">
-            {`${ingredient.proteins}`}
+            {`${ingredient!.proteins}`}
           </div>
         </div>
         <div className={`${Style.div4}`}>
@@ -40,7 +44,7 @@ const IngredientDetails: FC = () => {
             Жиры, г
           </div>
           <div className="text_type_digits-default text_color_inactive">
-            {`${ingredient.fat}`}
+            {`${ingredient!.fat}`}
           </div>
         </div>
         <div className={`${Style.div4}`}>
@@ -48,12 +52,12 @@ const IngredientDetails: FC = () => {
             Углеводы, г
           </div>
           <div className="text_type_digits-default text_color_inactive">
-            {`${ingredient.carbohydrates}`}
+            {`${ingredient!.carbohydrates}`}
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default IngredientDetails;

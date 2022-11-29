@@ -13,14 +13,14 @@ import ErrorRequest from "../../components/ErrorRequest/ErrorRequest";
 import { ERROR_TEXT_GET_REGISTER_USER, IS_LOADING, RESET_ERROR } from "../../services/actions/user";
 import { ClipLoader } from "react-spinners";
 import { color } from "../../utils/data";
-import { AnyAction } from "redux";
+import { RootState } from "../../services/reducers";
 
 const Register: FC = () => {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { errorText, isLoading } = useSelector((store: AnyAction) => store.userData);
+  const { errorText, isLoading } = useSelector((store: RootState) => store.userData);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
