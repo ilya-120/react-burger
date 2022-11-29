@@ -4,17 +4,18 @@ import {
   SUCCESS_GET_INGREDIENTS,
 } from "../ingredients";
 import { getIngredients } from "../../../utils/StellarBurgersApi";
+import { Dispatch } from "redux";
 
-export const getStoreIngredients = () => (dispatch) => {
+export const getStoreIngredients = () => (dispatch: Dispatch) => {
   getIngredients()
     .then((res) =>
       res && res.success
         ? dispatch({ type: GET_INGREDIENTS, payload: res.data }) &&
-          dispatch({ type: SUCCESS_GET_INGREDIENTS })
+        dispatch({ type: SUCCESS_GET_INGREDIENTS })
         : dispatch({
-            type: ERROR_TEXT_GET_INGREDIENTS,
-            payload: "От сервера полученны некорректные данные",
-          })
+          type: ERROR_TEXT_GET_INGREDIENTS,
+          payload: "От сервера полученны некорректные данные",
+        })
     )
     .catch((err) =>
       dispatch({

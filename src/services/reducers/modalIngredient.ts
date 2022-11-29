@@ -1,11 +1,21 @@
+import { TIngredient } from "../../utils/typeData";
 import { CLOSE_SHOW_MODAL, OPEN_SHOW_MODAL } from "../actions/modalIngredient";
+import { TModalActions } from "../actions/typeModalIngredientAction";
 
-const initialState = {
-  showModal: false,
-  modalIngredientsDetails: {},
+type TInitialState = {
+  showModal: boolean;
+  modalIngredientsDetails: TIngredient;
 };
 
-export const modalIngredientReducer = (state = initialState, action) => {
+const initialState: TInitialState = {
+  showModal: false,
+  modalIngredientsDetails: {} as TIngredient,
+};
+
+export const modalIngredientReducer = (
+  state = initialState,
+  action: TModalActions
+) => {
   switch (action.type) {
     case OPEN_SHOW_MODAL:
       return {

@@ -1,4 +1,6 @@
+import { Dispatch } from "redux";
 import { forgotPassword, getUserInfo, logOut, resetPassword, setUserInfo, signin, signup, updateAccessToken } from "../../../utils/StellarBurgersApi";
+import { TFunctionVoid, TUserDataForm } from "../../../utils/typeData";
 import { deleteCookie, setCookie } from "../../../utils/utils";
 import {
   ERROR_TEXT_GET_LOGIN_USER,
@@ -18,7 +20,8 @@ import {
   USER_INFO_DATA_SUCCESS,
 } from "../user";
 
-export const registerRequest = (form, nav, reflectErrorRequest) => (dispatch) => {
+
+export const registerRequest = (form: TUserDataForm, nav: TFunctionVoid, reflectErrorRequest: TFunctionVoid) => (dispatch: Dispatch) => {
   signup(form)
     .then((res) =>
       res && res.success
@@ -31,19 +34,19 @@ export const registerRequest = (form, nav, reflectErrorRequest) => (dispatch) =>
           type: ERROR_TEXT_GET_REGISTER_USER,
           payload: "Ошибка регистрации",
         }),
-          reflectErrorRequest())
+          reflectErrorRequest()
+        )
     )
     .catch(
       (err) =>
         dispatch({
           type: ERROR_TEXT_GET_REGISTER_USER,
           payload: `Ошибка регистрации: ${err.message}`,
-        }),
-      reflectErrorRequest()
+        }) && reflectErrorRequest()
     );
 };
 
-export const loginRequest = (form, nav, reflectErrorRequest) => (dispatch) => {
+export const loginRequest = (form: TUserDataForm, nav: TFunctionVoid, reflectErrorRequest: TFunctionVoid) => (dispatch: Dispatch) => {
   signin(form)
     .then((res) =>
       res && res.success
@@ -54,8 +57,7 @@ export const loginRequest = (form, nav, reflectErrorRequest) => (dispatch) => {
         : dispatch({
           type: ERROR_TEXT_GET_LOGIN_USER,
           payload: "Ошибка авторизации",
-        }),
-      reflectErrorRequest()
+        }) && reflectErrorRequest()
     )
     .then(() => {
       nav();
@@ -65,12 +67,11 @@ export const loginRequest = (form, nav, reflectErrorRequest) => (dispatch) => {
         dispatch({
           type: ERROR_TEXT_GET_LOGIN_USER,
           payload: `Ошибка авторизации: ${err.message}`,
-        }),
-      reflectErrorRequest()
+        }) && reflectErrorRequest()
     );
 };
 
-export const logoutUserRequest = (reflectErrorRequest) => (dispatch) => {
+export const logoutUserRequest = (reflectErrorRequest: TFunctionVoid) => (dispatch: Dispatch) => {
   logOut()
     .then((res) =>
       res && res.success
@@ -81,20 +82,18 @@ export const logoutUserRequest = (reflectErrorRequest) => (dispatch) => {
         : dispatch({
           type: ERROR_TEXT_POST_LOGOUT_USER,
           payload: "Ошибка выхода",
-        }),
-      reflectErrorRequest()
+        }) && reflectErrorRequest()
     )
     .catch(
       (err) =>
         dispatch({
           type: ERROR_TEXT_POST_LOGOUT_USER,
           payload: `Ошибка: ${err.message}`,
-        }),
-      reflectErrorRequest()
+        }) && reflectErrorRequest()
     );
 };
 
-export const userRequest = (reflectErrorRequest) => (dispatch) => {
+export const userRequest = (reflectErrorRequest: TFunctionVoid) => (dispatch: Dispatch) => {
   getUserInfo()
     .then((res) =>
       res && res.success
@@ -103,9 +102,8 @@ export const userRequest = (reflectErrorRequest) => (dispatch) => {
         dispatch({
           type: ERROR_TEXT_GET_USER_INFO,
           payload: "Ошибка получения данных",
-        }),
-      reflectErrorRequest ?
-        reflectErrorRequest() : ''
+        }) && reflectErrorRequest ?
+          reflectErrorRequest() : ''
     )
     .catch(
       async (err) =>
@@ -116,13 +114,12 @@ export const userRequest = (reflectErrorRequest) => (dispatch) => {
           dispatch({
             type: ERROR_TEXT_GET_USER_INFO,
             payload: `Ошибка получения данных: ${err.message}`,
-          }),
-      reflectErrorRequest ?
-        reflectErrorRequest() : ''
+          }) && reflectErrorRequest ?
+            reflectErrorRequest() : ''
     )
 };
 
-export const udateUserRequest = (form, reflectErrorRequest) => (dispatch) => {
+export const udateUserRequest = (form: TUserDataForm, reflectErrorRequest: TFunctionVoid) => (dispatch: Dispatch) => {
   setUserInfo(form)
     .then((res) =>
       res && res.success
@@ -130,8 +127,7 @@ export const udateUserRequest = (form, reflectErrorRequest) => (dispatch) => {
         : dispatch({
           type: ERROR_TEXT_PATCH_UPDATE_USER,
           payload: "Ошибка обновления данных",
-        }),
-      reflectErrorRequest())
+        }) && reflectErrorRequest())
     .catch(
       async (err) =>
         err.message === 'jwt expired' ?
@@ -143,12 +139,11 @@ export const udateUserRequest = (form, reflectErrorRequest) => (dispatch) => {
           dispatch({
             type: ERROR_TEXT_PATCH_UPDATE_USER,
             payload: `Ошибка обновления данных: ${err.message}`,
-          }),
-      reflectErrorRequest())
+          }) && reflectErrorRequest())
     ;
 };
 
-export const forgotPasswordRequest = (form, nav, reflectErrorRequest) => (dispatch) => {
+export const forgotPasswordRequest = (form: TUserDataForm, nav: TFunctionVoid, reflectErrorRequest: TFunctionVoid) => (dispatch: Dispatch) => {
   forgotPassword(form)
     .then((res) =>
       res && res.success
@@ -157,20 +152,18 @@ export const forgotPasswordRequest = (form, nav, reflectErrorRequest) => (dispat
         : dispatch({
           type: ERROR_TEXT_POST_FORGOT_PASSWORD,
           payload: "Ошибка",
-        }),
-      reflectErrorRequest()
+        }) && reflectErrorRequest()
     )
     .catch(
       (err) =>
         dispatch({
           type: ERROR_TEXT_POST_FORGOT_PASSWORD,
           payload: `Ошибка: ${err.message}`,
-        }),
-      reflectErrorRequest()
+        }) && reflectErrorRequest()
     );
 };
 
-export const resetPasswordRequest = (form, nav, reflectErrorRequest) => (dispatch) => {
+export const resetPasswordRequest = (form: TUserDataForm, nav: TFunctionVoid, reflectErrorRequest: TFunctionVoid) => (dispatch: Dispatch) => {
   resetPassword(form)
     .then((res) =>
       res && res.success
@@ -179,15 +172,13 @@ export const resetPasswordRequest = (form, nav, reflectErrorRequest) => (dispatc
         : dispatch({
           type: ERROR_TEXT_POST_RESET_PASSWORD,
           payload: "Ошибка",
-        }),
-      reflectErrorRequest()
+        }) && reflectErrorRequest()
     )
     .catch(
       (err) =>
         dispatch({
           type: ERROR_TEXT_POST_RESET_PASSWORD,
           payload: `Ошибка: ${err.message}`,
-        }),
-      reflectErrorRequest()
+        }) && reflectErrorRequest()
     );
 };

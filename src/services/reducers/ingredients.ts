@@ -1,10 +1,21 @@
+import { TIngredient } from "../../utils/typeData";
 import {
   ERROR_TEXT_GET_INGREDIENTS,
   GET_INGREDIENTS,
   SUCCESS_GET_INGREDIENTS,
 } from "../actions/ingredients";
+import { TIngredientsActions } from "../actions/typeIngredientsAction";
 
-const initialState = {
+type TInitialState = {
+  ingredients: TIngredient[],
+  buns: TIngredient[],
+  mains: TIngredient[],
+  sauces: TIngredient[],
+  success: boolean,
+  errorText: string | null,
+};
+
+const initialState: TInitialState = {
   ingredients: [],
   buns: [],
   mains: [],
@@ -13,7 +24,7 @@ const initialState = {
   errorText: null,
 };
 
-export const ingredientsReducer = (state = initialState, action) => {
+export const ingredientsReducer = (state = initialState, action: TIngredientsActions): TInitialState => {
   switch (action.type) {
     case SUCCESS_GET_INGREDIENTS:
       return {

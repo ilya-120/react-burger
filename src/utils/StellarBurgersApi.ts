@@ -1,12 +1,5 @@
-import { TIngredient } from "./typeData";
+import { TIngredient, TUserDataForm } from "./typeData";
 import { getCookie, setCookie } from "./utils";
-
-type TUserDataForm = {
-  name?: string;
-  email: string;
-  password?: string;
-  token?: string;
-};
 
 type TOrder = {
   order:

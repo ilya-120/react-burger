@@ -17,6 +17,16 @@ export type TIngredient = {
   index: number;
 };
 
+export type TUserDataForm = {
+  name?: string;
+  email?: string;
+  password?: string;
+  token?: string;
+};
+
 export interface IProtectedRoute {
   children: ReactElement;
 }
+
+export type TFunctionVoid =
+  () => void
