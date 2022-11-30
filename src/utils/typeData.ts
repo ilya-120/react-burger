@@ -17,12 +17,17 @@ export type TIngredient = {
   index: number;
 };
 
+export interface IUserTypes {
+  name: string;
+  email: string;
+}
+
 export type TUserDataForm = {
   name?: string;
   email?: string;
   password?: string;
   token?: string;
-  user?: any | null;
+  user?: IUserTypes;
 };
 
 export interface IProtectedRoute {

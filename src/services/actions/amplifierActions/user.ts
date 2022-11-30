@@ -1,4 +1,3 @@
-import { Dispatch } from "redux";
 import {
   forgotPassword,
   getUserInfo,
@@ -59,13 +58,13 @@ export const registerRequest: AppThunk =
       );
   };
 
-export const loginRequest =
+export const loginRequest: AppThunk =
   (
     form: TUserDataForm,
     nav: TFunctionVoid,
     reflectErrorRequest: TFunctionVoid
   ) =>
-  (dispatch: Dispatch) => {
+  (dispatch: AppDispatch) => {
     signin(form)
       .then((res) =>
         res && res.success
@@ -89,8 +88,8 @@ export const loginRequest =
       );
   };
 
-export const logoutUserRequest =
-  (reflectErrorRequest: TFunctionVoid) => (dispatch: Dispatch) => {
+export const logoutUserRequest: AppThunk =
+  (reflectErrorRequest: TFunctionVoid) => (dispatch: AppDispatch) => {
     logOut()
       .then((res) =>
         res && res.success
@@ -111,8 +110,8 @@ export const logoutUserRequest =
       );
   };
 
-export const userRequest =
-  (reflectErrorRequest: TFunctionVoid) => (dispatch: Dispatch) => {
+export const userRequest: AppThunk =
+  (reflectErrorRequest: TFunctionVoid) => (dispatch: AppDispatch) => {
     getUserInfo()
       .then((res) =>
         res && res.success
@@ -136,9 +135,9 @@ export const userRequest =
       );
   };
 
-export const udateUserRequest =
+export const udateUserRequest: AppThunk =
   (form: TUserDataForm, reflectErrorRequest: TFunctionVoid) =>
-  (dispatch: Dispatch) => {
+  (dispatch: AppDispatch) => {
     setUserInfo(form)
       .then((res) =>
         res && res.success
@@ -160,13 +159,13 @@ export const udateUserRequest =
       );
   };
 
-export const forgotPasswordRequest =
+export const forgotPasswordRequest: AppThunk =
   (
     form: TUserDataForm,
     nav: TFunctionVoid,
     reflectErrorRequest: TFunctionVoid
   ) =>
-  (dispatch: Dispatch) => {
+  (dispatch: AppDispatch) => {
     forgotPassword(form)
       .then((res) =>
         res && res.success
@@ -185,13 +184,13 @@ export const forgotPasswordRequest =
       );
   };
 
-export const resetPasswordRequest =
+export const resetPasswordRequest: AppThunk =
   (
     form: TUserDataForm,
     nav: TFunctionVoid,
     reflectErrorRequest: TFunctionVoid
   ) =>
-  (dispatch: Dispatch) => {
+  (dispatch: AppDispatch) => {
     resetPassword(form)
       .then((res) =>
         res && res.success

@@ -42,13 +42,13 @@ const UserProfile: FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setForm({ password: "", ...userInfo!.user });
+    setForm({ password: "", ...userInfo!.user as any });
   }, [userInfo]);
 
   useEffect(() => {
     if (
-      userInfo!.user.name === form.name &&
-      userInfo!.user.email === form.email &&
+      userInfo!.user!.name === form.name &&
+      userInfo!.user!.email === form.email &&
       !form.password
     ) {
       setDisabled(true);
@@ -76,7 +76,7 @@ const UserProfile: FC = () => {
   };
 
   const onCancel = useCallback(() => {
-    setForm({ ...userInfo!.user });
+    setForm({ ...userInfo!.user as any });
     setDisabled(true);
   }, [userInfo]);
 
