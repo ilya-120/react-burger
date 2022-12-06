@@ -2,7 +2,6 @@ import { TIngredient } from "../../utils/typeData";
 import {
   ERROR_TEXT_GET_INGREDIENTS,
   GET_INGREDIENTS,
-  SUCCESS_GET_INGREDIENTS,
 } from "./ingredients";
 
 export interface IErrorTextGetIngredients {
@@ -15,11 +14,6 @@ export interface IGetIngredients {
   readonly type: typeof GET_INGREDIENTS;
 }
 
-export interface ISuccessGetIngredients {
-  readonly type: typeof SUCCESS_GET_INGREDIENTS;
-}
-
 export type TIngredientsActions =
   | IErrorTextGetIngredients
   | IGetIngredients
-  | ISuccessGetIngredients;

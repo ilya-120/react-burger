@@ -1,0 +1,13 @@
+.section {
+  max-width: 860px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: 756px;
+  overflow-y: scroll;
+}

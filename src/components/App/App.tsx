@@ -24,10 +24,10 @@ import ProtectedRouteOnLogin from "../ProtectedRoute/ProtectedRouteOnLogin";
 import { userRequest } from "../../services/actions/amplifierActions/user";
 import { getCookie } from "../../utils/utils";
 import { RootState } from "../../services/reducers";
-
-interface ILocationState {
-  backgroundLocation?: string;
-}
+import Feed from "../../pages/Feed/Feed";
+import UserOrdersHistory from "../UserOrdersHistory/UserOrdersHistory";
+import Order from "../Order/Order";
+import { ILocationState } from "../../utils/typeData";
 
 const App: FC = () => {
   const location = useLocation();
@@ -66,6 +66,22 @@ const App: FC = () => {
                     <BurgerConstructor />
                   </main>
                 </DndProvider>
+              }
+            />
+            <Route
+              path="/feed"
+              element={
+                <main>
+                  <Feed />
+                </main>
+              }
+            />
+            <Route
+              path="/feed/:id"
+              element={
+                <main className="main">
+                  <Order />
+                </main>
               }
             />
             <Route
@@ -129,7 +145,25 @@ const App: FC = () => {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="orders"
+                element={
+                  <ProtectedRoute>
+                    <UserOrdersHistory />
+                  </ProtectedRoute>
+                }
+              />
             </Route>
+            <Route
+              path="/profile/orders/:id"
+              element={
+                <ProtectedRoute>
+                  <main className="main">
+                    <Order />
+                  </main>
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
           {state?.backgroundLocation && (
@@ -145,6 +179,34 @@ const App: FC = () => {
                   >
                     <IngredientDetails />
                   </Modal>
+                }
+              />
+              <Route
+                path="/feed/:id"
+                element={
+                  <ProtectedRoute>
+                    <Modal
+                      onClose={() => {
+                        navigate("/feed");
+                      }}
+                    >
+                      <Order />
+                    </Modal>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile/orders/:id"
+                element={
+                  <ProtectedRoute>
+                    <Modal
+                      onClose={() => {
+                        navigate("/profile/orders");
+                      }}
+                    >
+                      <Order />
+                    </Modal>
+                  </ProtectedRoute>
                 }
               />
             </Routes>

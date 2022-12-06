@@ -1,4 +1,4 @@
-import Style from "./OrderDetails.module.css";
+import Styles from "./OrderDetails.module.css";
 import done from "../../images/done.svg";
 import { color } from "../../utils/data";
 import { ClipLoader } from "react-spinners";
@@ -11,7 +11,7 @@ const OrderDetails: FC = () => {
     (store: RootState) => store.orderNumber
   );
   return (
-    <div className={`${Style["order-box"]}`}>
+    <div className={`${Styles["order-box"]}`}>
       <div className="mt-15">
         <p className="text text_type_digits-large">
           {!orderNumber && !error ? (
@@ -28,7 +28,7 @@ const OrderDetails: FC = () => {
       <div className="text text_type_main-default mb-15">
         {!error ? "идентификатор заказа" : `error: ${errorText}`}
       </div>
-      <div className={`${Style.div}`}>
+      <div className={`${Styles.div}`}>
         {!error ? <img alt="фото" src={done} /> : ""}
       </div>
       <div className="text text_type_main-default mb-2">

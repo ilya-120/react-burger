@@ -7,11 +7,34 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { rootReducer } from "./services/reducers";
+import { wsOrdersHistoryActions } from "./services/actions/typeWsOrdersHistoryAction";
+import { socketMiddleware } from "./services/socketMiddleware";
+import { ws_url_all, ws_url_user } from "./utils/data";
+import { wsUserOrdersHistoryActions } from "./services/actions/typeWsUserOrdersHistoryAction";
+import {
+  WS_ORDERS_HISTORY_CLOSE,
+  WS_ORDERS_HISTORY_ERROR,
+  WS_USER_ORDERS_HISTORY_CLOSE,
+  WS_USER_ORDERS_HISTORY_ERROR,
+} from "./services/actions/ws";
 
 export const store = configureStore({
   reducer: rootReducer,
   devTools: true,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [
+          WS_ORDERS_HISTORY_CLOSE,
+          WS_USER_ORDERS_HISTORY_CLOSE,
+          WS_ORDERS_HISTORY_ERROR,
+          WS_USER_ORDERS_HISTORY_ERROR
+        ],
+      },
+    }).concat(
+      socketMiddleware(ws_url_user, wsUserOrdersHistoryActions, true),
+      socketMiddleware(ws_url_all, wsOrdersHistoryActions, false)
+    ),
 });
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

@@ -35,6 +35,21 @@ const checkResponse = <T>(res: Response) => {
     : res.json().then((err) => Promise.reject(err));
 };
 
+export const getUserInfo = async (): Promise<TApiData<TUserDataForm>> => {
+  const res = await fetch(`${BASE_URL}auth/user`, {
+    method: "GET",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      ...headers,
+      Authorization: `${getCookie("accessToken")}`,
+    },
+  });
+  return checkResponse(res);
+};
+
+
 export const updateAccessToken = async () => {
   const refreshToken = localStorage.getItem("refreshToken");
   const res = await fetch(`${BASE_URL}auth/token`, {
@@ -83,6 +98,7 @@ export const getOrderNumber = async (ingredients: string[]) => {
     method: "POST",
     headers: {
       ...headers,
+      Authorization: `${getCookie("accessToken")}`,
     },
     body: JSON.stringify(ingredients),
   });
@@ -118,20 +134,6 @@ export const signin = async (
   });
   const data = await checkResponse<TUserDataForm>(res);
   return data;
-};
-
-export const getUserInfo = async (): Promise<TApiData<TUserDataForm>> => {
-  const res = await fetch(`${BASE_URL}auth/user`, {
-    method: "GET",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
-    headers: {
-      ...headers,
-      Authorization: `${getCookie("accessToken")}`,
-    },
-  });
-  return checkResponse(res);
 };
 
 export const setUserInfo = async (

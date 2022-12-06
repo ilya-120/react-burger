@@ -1,0 +1,40 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  margin: 19px auto 0;
+  max-width: 640px;
+  max-height: 620px;
+}
+
+.number {
+  text-align: center;
+}
+
+.doneColor {
+  color: rgba(0, 204, 204, 1);
+}
+
+.pendingColor {
+  color: rgba(242, 242, 243, 1);
+}
+
+.cancelledColor {
+  color: rgb(255, 0, 0);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 40px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.total {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
 import { FC } from "react";
 import { RootState } from "../../services/reducers";
+import { constants } from "../../utils/data";
 
 const BurgerIngredients: FC = () => {
   const saucesRef = useRef<HTMLUListElement>(null);
@@ -50,19 +51,19 @@ const BurgerIngredients: FC = () => {
       <div className={`${Styles.ingredients} custom-scroll`} id="container">
         <BurgerIngredientsType
           ingredients={buns}
-          ingredient={"bun"}
+          ingredient={constants.bun}
           title={"Булки"}
           ref={bunsRef}
         />
         <BurgerIngredientsType
           ingredients={sauces}
-          ingredient={"sauce"}
+          ingredient={constants.sauce}
           title={"Соусы"}
           ref={saucesRef}
         />
         <BurgerIngredientsType
           ingredients={mains}
-          ingredient={"main"}
+          ingredient={constants.main}
           title={"Начинки"}
           ref={mainsRef}
         />

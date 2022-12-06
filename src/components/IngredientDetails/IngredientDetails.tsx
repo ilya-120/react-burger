@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../services/reducers";
 import { TIngredient } from "../../utils/typeData";
-import Style from "./IngredientDetails.module.css";
+import Styles from "./IngredientDetails.module.css";
 
 const IngredientDetails: FC = () => {
   const { id } = useParams();
@@ -13,17 +13,17 @@ const IngredientDetails: FC = () => {
   );
 
   return (
-    <div className={`${Style.box}`}>
-      <div className={`${Style.div1}`}>
+    <div className={`${Styles.box}`}>
+      <div className={`${Styles.div1}`}>
         <img alt={ingredient!.name} src={ingredient!.image_large} />
       </div>
-      <div className={`${Style.div2}`}>
+      <div className={`${Styles.div2}`}>
         <p className=" text_type_main-medium text mb-8">{`${
           ingredient!.name
         }`}</p>
       </div>
-      <div className={`${Style.div3}`}>
-        <div className={`${Style.div4}`}>
+      <div className={`${Styles.div3}`}>
+        <div className={`${Styles.div4}`}>
           <div className="text text_color_inactive text_type_main-small  mb-2">
             Калории, ккал
           </div>
@@ -31,7 +31,7 @@ const IngredientDetails: FC = () => {
             {`${ingredient!.calories}`}
           </div>
         </div>
-        <div className={`${Style.div4}`}>
+        <div className={`${Styles.div4}`}>
           <div className="text text_color_inactive text_type_main-small mb-2">
             Белки, г
           </div>
@@ -39,7 +39,7 @@ const IngredientDetails: FC = () => {
             {`${ingredient!.proteins}`}
           </div>
         </div>
-        <div className={`${Style.div4}`}>
+        <div className={`${Styles.div4}`}>
           <div className="text text_color_inactive text_type_main-small  mb-2">
             Жиры, г
           </div>
@@ -47,7 +47,7 @@ const IngredientDetails: FC = () => {
             {`${ingredient!.fat}`}
           </div>
         </div>
-        <div className={`${Style.div4}`}>
+        <div className={`${Styles.div4}`}>
           <div className="text text_color_inactive text_type_main-small  mb-2">
             Углеводы, г
           </div>

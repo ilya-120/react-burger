@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { FC } from "react";
 import { TIngredient } from "../../utils/typeData";
 import { RootState } from "../../services/reducers";
+import { constants } from "../../utils/data";
 
 const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
@@ -68,7 +69,7 @@ const BurgerConstructor: FC = () => {
   }
 
   function dropNewIngredient(ingredient: TIngredient) {
-    if (ingredient.type !== "bun") {
+    if (ingredient.type !== constants.bun) {
       const newIdIngredient = {
         ...ingredient,
         id: ingredient._id,
@@ -101,10 +102,10 @@ const BurgerConstructor: FC = () => {
       ? navigate("/login")
       : dispatch({
           type: RESET_OLD_ORDER_DATA,
-        }) &&
+        })
         dispatch({
           type: OPEN_SHOW_MODAL_ORDER_NUMBER,
-        }) &&
+        })
         dispatch(
           (getStoreOrderNumber as any)({ ingredients: orderIngredients })
         );

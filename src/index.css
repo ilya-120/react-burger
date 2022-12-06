@@ -11,6 +11,13 @@ main {
   margin: auto;
 }
 
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 122px auto;
+}
+
 .message {
   display: flex;
   align-items: center;

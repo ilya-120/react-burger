@@ -13,6 +13,10 @@ import { TConstructorActions } from "../actions/typeConstructorAction";
 import { TModalActions } from "../actions/typeModalIngredientAction";
 import { TModalOrderActions } from "../actions/typeModalOrderAction";
 import { TUserActions } from "../actions/typeUserAction";
+import { ordersHistoryReducer } from "./ordersHistory";
+import { ordersUserHistoryReducer } from "./ordersUserHistory";
+import { TWSUserOrdersHistoryActions } from "../actions/typeWsUserOrdersHistoryAction";
+import { TWSOrdersHistoryActions } from "../actions/typeWsOrdersHistoryAction";
 
 export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
@@ -21,6 +25,8 @@ export const rootReducer = combineReducers({
   modalIngredient: modalIngredientReducer,
   modalOrder: modalOrderReducer,
   userData: userReducer,
+  ordersHistory: ordersHistoryReducer,
+  ordersUserHistory: ordersUserHistoryReducer,
 });
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -30,7 +36,9 @@ type TApplicationActions =
   | TUserActions
   | TModalOrderActions
   | TModalActions
-  | TConstructorActions;
+  | TConstructorActions
+  | TWSOrdersHistoryActions
+  | TWSUserOrdersHistoryActions;
 
 export type AppThunk<TReturn = void> = ActionCreator<
   ThunkAction<TReturn, Action, RootState, TApplicationActions>
