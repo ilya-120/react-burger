@@ -34,7 +34,7 @@ const AppHeader: FC = () => {
           </div>
           <div className={`${Styles.div} pl-6`}>
             <NavLink
-              to="/orders"
+              to="/feed"
               className={(navData) =>
                 navData.isActive
                   ? `${Styles.header__link_active}`
@@ -44,7 +44,7 @@ const AppHeader: FC = () => {
               <label className={`${Styles.label}`}>
                 <ListIcon
                   type={`${
-                    pathname.slice(0, 7) === "/orders" ? "primary" : "secondary"
+                    pathname.slice(0, 7) === "/feed" ? "primary" : "secondary"
                   }`}
                 />
                 <p className="text text_type_main-default pl-2">

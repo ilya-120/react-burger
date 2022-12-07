@@ -12,7 +12,7 @@ export const useIntersectionObserver = (ref: RefObject<HTMLElement>) => {
   );
 
   useEffect(() => {
-    (observerRef.observe as any)(ref.current);
+    (observerRef.observe)(ref.current!);
     return () => observerRef.disconnect();
   }, [ref, observerRef]);
 

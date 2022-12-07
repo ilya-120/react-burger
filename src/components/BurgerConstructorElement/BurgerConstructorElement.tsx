@@ -5,10 +5,10 @@ import {
 import Styles from "./BurgerConstructorElement.module.css";
 import { useRef } from "react";
 import { DropTargetMonitor, useDrag, useDrop, XYCoord } from "react-dnd";
-import { useDispatch } from "react-redux";
 import { REMOVE_ELEMENT } from "../../services/actions/constructor";
 import { FC } from "react";
 import { TIngredient } from "../../utils/typeData";
+import { useAppDispatch } from "../../hooks/hook";
 
 type TBurgerConstructorElementProps<T> = {
   element: T;
@@ -20,7 +20,7 @@ const BurgerConstructorElement: FC<
   TBurgerConstructorElementProps<TIngredient>
 > = ({ element, index, moveIngredient }) => {
   const ref = useRef<HTMLLIElement>(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [handlerId, dropTarget] = useDrop<any>({
     accept: "ingredients",
     collect: (monitor) => ({

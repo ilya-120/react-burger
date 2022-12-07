@@ -1,3 +1,5 @@
+import { TUserDataForm } from "../../utils/typeData";
+import { TUserActions } from "../actions/typeUserAction";
 import {
   ERROR_TEXT_GET_LOGIN_USER,
   ERROR_TEXT_GET_REGISTER_USER,
@@ -18,7 +20,16 @@ import {
   USER_INFO_DATA_SUCCESS,
 } from "../actions/user";
 
-const initialState = {
+type TInitialState = {
+  success: boolean;
+  errorText: string | null;
+  userInfo: TUserDataForm | null;
+  isLoading: boolean | null;
+  isLogin: boolean | null;
+  forgotSuccess: boolean | null;
+};
+
+const initialState: TInitialState = {
   success: false,
   errorText: "",
   userInfo: {},
@@ -27,7 +38,10 @@ const initialState = {
   forgotSuccess: null,
 };
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (
+  state = initialState,
+  action: TUserActions
+): TInitialState => {
   switch (action.type) {
     case REGISTER_USER_SUCCESS:
       return {
@@ -88,7 +102,7 @@ export const userReducer = (state = initialState, action) => {
     case RESET_ERROR:
       return {
         ...state,
-        errorText: '',
+        errorText: "",
         success: false,
         isLoading: false,
       };

@@ -1,7 +1,6 @@
 import { FC, useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useDispatch, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 import { getStoreIngredients } from "../../services/actions/amplifierActions/ingredients";
 import AppHeader from "../AppHeader/AppHeader";
@@ -23,27 +22,25 @@ import NotFound from "../../pages/NotFound/NotFound";
 import ProtectedRouteOnLogin from "../ProtectedRoute/ProtectedRouteOnLogin";
 import { userRequest } from "../../services/actions/amplifierActions/user";
 import { getCookie } from "../../utils/utils";
-import { AnyAction } from "redux";
-
-interface ILocationState {
-  backgroundLocation?: string;
-}
+import Feed from "../../pages/Feed/Feed";
+import UserOrdersHistory from "../UserOrdersHistory/UserOrdersHistory";
+import Order from "../Order/Order";
+import { ILocationState } from "../../utils/typeData";
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 
 const App: FC = () => {
   const location = useLocation();
   const state = location.state as ILocationState;
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch((getStoreIngredients as any)());
+    dispatch(getStoreIngredients());
     const token = getCookie("accessToken");
-    if (token) dispatch((userRequest as any)());
+    if (token) dispatch(userRequest());
   }, [dispatch]);
 
-  const { success, errorText } = useSelector(
-    (store: AnyAction) => store.ingredients
-  );
+  const { success, errorText } = useAppSelector((store) => store.ingredients);
 
   return (
     <div className="root">
@@ -66,6 +63,22 @@ const App: FC = () => {
                     <BurgerConstructor />
                   </main>
                 </DndProvider>
+              }
+            />
+            <Route
+              path="/feed"
+              element={
+                <main>
+                  <Feed />
+                </main>
+              }
+            />
+            <Route
+              path="/feed/:id"
+              element={
+                <main className="main">
+                  <Order />
+                </main>
               }
             />
             <Route
@@ -129,7 +142,25 @@ const App: FC = () => {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="orders"
+                element={
+                  <ProtectedRoute>
+                    <UserOrdersHistory />
+                  </ProtectedRoute>
+                }
+              />
             </Route>
+            <Route
+              path="/profile/orders/:id"
+              element={
+                <ProtectedRoute>
+                  <main className="main">
+                    <Order />
+                  </main>
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
           {state?.backgroundLocation && (
@@ -145,6 +176,32 @@ const App: FC = () => {
                   >
                     <IngredientDetails />
                   </Modal>
+                }
+              />
+              <Route
+                path="/feed/:id"
+                element={
+                  <Modal
+                    onClose={() => {
+                      navigate("/feed");
+                    }}
+                  >
+                    <Order />
+                  </Modal>
+                }
+              />
+              <Route
+                path="/profile/orders/:id"
+                element={
+                  <ProtectedRoute>
+                    <Modal
+                      onClose={() => {
+                        navigate("/profile/orders");
+                      }}
+                    >
+                      <Order />
+                    </Modal>
+                  </ProtectedRoute>
                 }
               />
             </Routes>

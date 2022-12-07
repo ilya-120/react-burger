@@ -1,20 +1,20 @@
 import Styles from "./Profile.module.css";
 import { NavLink, Outlet } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { logoutUserRequest } from "../../services/actions/amplifierActions/user";
 import { FC, useState } from "react";
 import ErrorRequest from "../../components/ErrorRequest/ErrorRequest";
 import Modal from "../../components/Modal/Modal";
 import { RESET_ERROR } from "../../services/actions/user";
-import { AnyAction } from "redux";
+
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 
 const Profile: FC = () => {
   const [showModal, setShowModal] = useState(false);
-  const dispatch = useDispatch();
-  const { errorText } = useSelector((store: AnyAction) => store.userData);
+  const dispatch = useAppDispatch();
+  const { errorText } = useAppSelector(store => store.userData);
 
   const logOut = () => {
-    dispatch((logoutUserRequest as any)(reflectErrorRequest))
+    dispatch(logoutUserRequest(reflectErrorRequest))
   }
 
   const reflectErrorRequest = () => {

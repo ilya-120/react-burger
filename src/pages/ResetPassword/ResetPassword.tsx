@@ -1,4 +1,4 @@
-import { FC, FormEvent, SyntheticEvent, useState } from "react";
+import { FC, FormEvent, useState } from "react";
 import {
   Button,
   Input,
@@ -6,7 +6,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./ResetPassword.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import {
   ERROR_TEXT_POST_RESET_PASSWORD,
   IS_LOADING,
@@ -17,15 +16,15 @@ import ErrorRequest from "../../components/ErrorRequest/ErrorRequest";
 import Modal from "../../components/Modal/Modal";
 import { color } from "../../utils/data";
 import { ClipLoader } from "react-spinners";
-import { AnyAction } from "redux";
+
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { useForm } from "../../hooks/useForm";
 
 const ResetPassword: FC = () => {
   const [showModal, setShowModal] = useState(false);
-  const dispatch = useDispatch();
-  const { errorText, isLoading } = useSelector(
-    (state: AnyAction) => state.userData
-  );
-  const [form, setForm] = useState({ password: "", token: "" });
+  const dispatch = useAppDispatch();
+  const { errorText, isLoading } = useAppSelector((state) => state.userData);
+  const {form, onChange} = useForm({ password: "", token: "" });
   const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent) => {
@@ -35,7 +34,7 @@ const ResetPassword: FC = () => {
     });
     form.password && form.token
       ? dispatch(
-          (resetPasswordRequest as any)(
+          resetPasswordRequest(
             form,
             () => {
               navigate("/login");
@@ -50,11 +49,6 @@ const ResetPassword: FC = () => {
     setShowModal(true);
   };
 
-  const onChange = (e: SyntheticEvent) => {
-    let target = e.target as HTMLInputElement;
-    setForm({ ...form, [target.name]: target.value });
-  };
-
   const reflectErrorRequest = () => {
     setShowModal(true);
   };
@@ -67,7 +61,7 @@ const ResetPassword: FC = () => {
     <form onSubmit={handleSubmit} className={Styles.container}>
       <h2 className="text text_type_main-medium pb-6">Восстановление пароля</h2>
       <PasswordInput
-        value={form.password}
+        value={form.password!}
         placeholder={"Введите новый пароль"}
         name={"password"}
         onChange={onChange}
@@ -77,7 +71,7 @@ const ResetPassword: FC = () => {
         type={"text"}
         placeholder={"Введите код из письма"}
         onChange={onChange}
-        value={form.token}
+        value={form.token!}
         name={"token"}
         size={"default"}
       />

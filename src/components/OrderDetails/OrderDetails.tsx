@@ -1,17 +1,16 @@
-import Style from "./OrderDetails.module.css";
+import Styles from "./OrderDetails.module.css";
 import done from "../../images/done.svg";
 import { color } from "../../utils/data";
 import { ClipLoader } from "react-spinners";
-import { useSelector } from "react-redux";
-import { AnyAction } from "redux";
 import { FC } from "react";
+import { useAppSelector } from "../../hooks/hook";
 
 const OrderDetails: FC = () => {
-  const { error, errorText, orderNumber } = useSelector(
-    (store: AnyAction) => store.orderNumber
+  const { error, errorText, orderNumber } = useAppSelector(
+    (store) => store.orderNumber
   );
   return (
-    <div className={`${Style["order-box"]}`}>
+    <div className={`${Styles["order-box"]}`}>
       <div className="mt-15">
         <p className="text text_type_digits-large">
           {!orderNumber && !error ? (
@@ -28,7 +27,7 @@ const OrderDetails: FC = () => {
       <div className="text text_type_main-default mb-15">
         {!error ? "идентификатор заказа" : `error: ${errorText}`}
       </div>
-      <div className={`${Style.div}`}>
+      <div className={`${Styles.div}`}>
         {!error ? <img alt="фото" src={done} /> : ""}
       </div>
       <div className="text text_type_main-default mb-2">
@@ -41,6 +40,6 @@ const OrderDetails: FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default OrderDetails;

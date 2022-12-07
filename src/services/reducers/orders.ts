@@ -4,15 +4,26 @@ import {
   RESET_OLD_ORDER_DATA,
   SUCCESS_GET_ORDER_NUMBER,
 } from "../actions/orders";
+import { TOrderActions } from "../actions/typeOrderAction";
 
-const initialState = {
+type TInitialState = {
+  success: boolean;
+  error: boolean;
+  errorText: string | null;
+  orderNumber: number | null;
+};
+
+const initialState: TInitialState = {
   success: false,
   error: false,
   errorText: "",
   orderNumber: null,
 };
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (
+  state = initialState,
+  action: TOrderActions
+): TInitialState => {
   switch (action.type) {
     case SUCCESS_GET_ORDER_NUMBER:
       return {

@@ -2,10 +2,11 @@ import { RefObject, useRef } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerIngredients.module.css";
 import BurgerIngredientsType from "../BurgerIngredientsType/BurgerIngredientsType";
-import { useSelector } from "react-redux";
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
 import { FC } from "react";
-import { AnyAction } from "redux";
+
+import { constants } from "../../utils/data";
+import { useAppSelector } from "../../hooks/hook";
 
 const BurgerIngredients: FC = () => {
   const saucesRef = useRef<HTMLUListElement>(null);
@@ -15,11 +16,10 @@ const BurgerIngredients: FC = () => {
   const observerSauces = useIntersectionObserver(saucesRef);
   const observerMain = useIntersectionObserver(mainsRef);
 
-  const { buns, mains, sauces } = useSelector(
-    (store: AnyAction) => store.ingredients
-  );
+  const { buns, mains, sauces } = useAppSelector((store) => store.ingredients);
 
-  const onTabClick = (ref: RefObject<HTMLUListElement>) => ref.current?.scrollIntoView();
+  const onTabClick = (ref: RefObject<HTMLUListElement>) =>
+    ref.current?.scrollIntoView();
 
   return (
     <section className={`${Styles.section}`}>
@@ -50,19 +50,19 @@ const BurgerIngredients: FC = () => {
       <div className={`${Styles.ingredients} custom-scroll`} id="container">
         <BurgerIngredientsType
           ingredients={buns}
-          ingredient={"bun"}
+          ingredient={constants.bun}
           title={"Булки"}
           ref={bunsRef}
         />
         <BurgerIngredientsType
           ingredients={sauces}
-          ingredient={"sauce"}
+          ingredient={constants.sauce}
           title={"Соусы"}
           ref={saucesRef}
         />
         <BurgerIngredientsType
           ingredients={mains}
-          ingredient={"main"}
+          ingredient={constants.main}
           title={"Начинки"}
           ref={mainsRef}
         />
