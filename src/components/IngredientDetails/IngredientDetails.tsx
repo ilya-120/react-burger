@@ -1,13 +1,13 @@
 import { FC } from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { RootState } from "../../services/reducers";
+import { useAppSelector } from "../../hooks/hook";
+
 import { TIngredient } from "../../utils/typeData";
 import Styles from "./IngredientDetails.module.css";
 
 const IngredientDetails: FC = () => {
   const { id } = useParams();
-  const { ingredients } = useSelector((store: RootState) => store.ingredients);
+  const { ingredients } = useAppSelector((store) => store.ingredients);
   const ingredient = ingredients.find(
     (ingredient: TIngredient) => ingredient._id === id
   );

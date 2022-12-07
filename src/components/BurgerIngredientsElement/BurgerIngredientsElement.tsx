@@ -3,7 +3,6 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./BurgerIngredientsElement.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
 import { useMemo } from "react";
 import {
@@ -12,7 +11,8 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { FC } from "react";
 import { TIngredient } from "../../utils/typeData";
-import { RootState } from "../../services/reducers";
+
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 
 type TBurgerIngredientsElementProps<T> = {
   ingredient: T
@@ -20,9 +20,9 @@ type TBurgerIngredientsElementProps<T> = {
 
 const BurgerIngredientsElement: FC<TBurgerIngredientsElementProps<TIngredient>> = ({ ingredient }) => {
   let location = useLocation();
-  const dispatch = useDispatch();
-  const { constructorBuns, constructorIngredients } = useSelector(
-    (store: RootState) => store.constructorBurger
+  const dispatch = useAppDispatch();
+  const { constructorBuns, constructorIngredients } = useAppSelector(
+    store => store.constructorBurger
   );
 
   const [, dragRef, dragPreviewRef] = useDrag({
@@ -43,7 +43,7 @@ const BurgerIngredientsElement: FC<TBurgerIngredientsElementProps<TIngredient>> 
   const showCountMaterials = useMemo(() => {
     if (ingredient._id === constructorBuns._id) return 1;
     const id = constructorIngredients!.filter(
-      (item: TIngredient) => item.id === ingredient._id
+      (item) => item.id === ingredient._id
     );
     return id.length;
   }, [constructorIngredients, constructorBuns, ingredient._id]);

@@ -1,9 +1,8 @@
 import { FC } from "react";
 import Styles from "./OrderCardIngredients.module.css";
-import { useSelector } from "react-redux";
 import { useLocation, Link } from "react-router-dom";
 import { TIngredient, TOrderData } from "../../utils/typeData";
-import { RootState } from "../../services/reducers";
+
 import OrderTime from "./OrderTime";
 import OrderPrice from "./OrderPrice/OrderPrice";
 import {
@@ -12,6 +11,7 @@ import {
   getItemsPrice,
   getOrderDate,
 } from "../../hooks/ordersFunctions";
+import { useAppSelector } from "../../hooks/hook";
 
 type TOrderCardIngredients = {
   name: string;
@@ -35,8 +35,8 @@ const OrderCardIngredients: FC<TOrderCardIngredients> = ({
       ? `/feed/${order?._id}`
       : `/profile/orders/${order._id}`;
 
-  const allIngredients: TIngredient[] = useSelector(
-    (store: RootState) => store.ingredients.ingredients
+  const allIngredients: TIngredient[] = useAppSelector(
+    (store) => store.ingredients.ingredients
   );
 
   const orderIngredients = getOrderIngredients(

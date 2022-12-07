@@ -12,7 +12,6 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./UserProfile.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import {
   udateUserRequest,
   userRequest,
@@ -26,24 +25,25 @@ import {
   IS_LOADING,
   RESET_ERROR,
 } from "../../services/actions/user";
-import { RootState } from "../../services/reducers";
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { useForm } from "../../hooks/useForm";
 
 const UserProfile: FC = () => {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const {form, onChange, setForm} = useForm({ name: "", email: "", password: "" });
   const [disabled, setDisabled] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const dispatch = useDispatch();
-  const { userInfo, isLoading, errorText } = useSelector(
-    (store: RootState) => store.userData
+  const dispatch = useAppDispatch();
+  const { userInfo, isLoading, errorText } = useAppSelector(
+    (store) => store.userData
   );
 
   useEffect(() => {
-    dispatch((userRequest as any)(reflectErrorRequest));
+    dispatch(userRequest(reflectErrorRequest));
   }, [dispatch]);
 
   useEffect(() => {
-    setForm({ password: "", ...userInfo!.user as any });
-  }, [userInfo]);
+    setForm({ password: "", ...userInfo!.user! });
+  }, [userInfo, setForm]);
 
   useEffect(() => {
     if (
@@ -61,7 +61,7 @@ const UserProfile: FC = () => {
       type: IS_LOADING,
     });
     form
-      ? dispatch((udateUserRequest as any)(form, reflectErrorRequest))
+      ? dispatch(udateUserRequest(form, reflectErrorRequest))
       : dispatch({
           type: ERROR_TEXT_PATCH_UPDATE_USER,
           payload: "Проверьте корректность данных!",
@@ -69,16 +69,15 @@ const UserProfile: FC = () => {
     setShowModal(true);
   };
 
-  const onChange = (e: SyntheticEvent) => {
-    let target = e.target as HTMLInputElement;
-    setForm({ ...form, [target.name]: target.value });
+  const handleChange = (e: SyntheticEvent) => {
+    onChange(e);
     setDisabled(false);
   };
 
   const onCancel = useCallback(() => {
-    setForm({ ...userInfo!.user as any });
+    setForm({ password: "", ...userInfo!.user! });
     setDisabled(true);
-  }, [userInfo]);
+  }, [userInfo, setForm]);
 
   const reflectErrorRequest = () => {
     setShowModal(true);
@@ -93,7 +92,7 @@ const UserProfile: FC = () => {
       <Input
         type={"text"}
         placeholder={"Имя"}
-        onChange={onChange}
+        onChange={handleChange}
         value={form.name || ""}
         name={"name"}
         error={false}
@@ -109,7 +108,7 @@ const UserProfile: FC = () => {
         name={"email"}
         errorText={"Ошибка"}
         error={false}
-        onChange={onChange}
+        onChange={handleChange}
         size={"default"}
         icon={"EditIcon"}
       />
@@ -117,7 +116,7 @@ const UserProfile: FC = () => {
       <PasswordInput
         value={form.password || ""}
         name={"password"}
-        onChange={onChange}
+        onChange={handleChange}
         icon={"EditIcon"}
       />
       {!disabled ? (

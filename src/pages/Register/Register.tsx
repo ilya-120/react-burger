@@ -1,4 +1,4 @@
-import { FC, FormEvent, SyntheticEvent, useState } from "react";
+import { FC, FormEvent, useState } from "react";
 import {
   Button,
   Input,
@@ -6,21 +6,22 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./Register.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { registerRequest } from "../../services/actions/amplifierActions/user";
 import Modal from "../../components/Modal/Modal";
 import ErrorRequest from "../../components/ErrorRequest/ErrorRequest";
 import { ERROR_TEXT_GET_REGISTER_USER, IS_LOADING, RESET_ERROR } from "../../services/actions/user";
 import { ClipLoader } from "react-spinners";
 import { color } from "../../utils/data";
-import { RootState } from "../../services/reducers";
+
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { useForm } from "../../hooks/useForm";
 
 const Register: FC = () => {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const {form, onChange} = useForm({ name: "", email: "", password: "" });
   const [showModal, setShowModal] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { errorText, isLoading } = useSelector((store: RootState) => store.userData);
+  const { errorText, isLoading } = useAppSelector(store => store.userData);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -28,7 +29,7 @@ const Register: FC = () => {
       type: IS_LOADING,
     });
     form.email && form.password && form.name ?
-      dispatch((registerRequest as any)(form, () => {
+      dispatch(registerRequest(form, () => {
         navigate('/')
       }, reflectErrorRequest))
       :
@@ -37,11 +38,6 @@ const Register: FC = () => {
         payload: "Заполните все поля!",
       });
     setShowModal(true)
-  };
-
-  const onChange = (e: SyntheticEvent) => {
-    let target = e.target as HTMLInputElement;
-    setForm({ ...form, [target.name]: target.value });
   };
 
   const reflectErrorRequest = () => {
@@ -58,7 +54,7 @@ const Register: FC = () => {
           type={"text"}
           placeholder={"Имя"}
           onChange={onChange}
-          value={form.name}
+          value={form.name!}
           name={"name"}
           error={false}
           errorText={"Ошибка"}
@@ -68,7 +64,7 @@ const Register: FC = () => {
         <Input
           type={"text"}
           placeholder={"E-mail"}
-          value={form.email}
+          value={form.email!}
           name={"email"}
           errorText={"Ошибка"}
           error={false}
@@ -77,7 +73,7 @@ const Register: FC = () => {
         />
         <span className="pb-6"></span>
         <PasswordInput
-          value={form.password}
+          value={form.password!}
           name={"password"}
           onChange={onChange}
         />

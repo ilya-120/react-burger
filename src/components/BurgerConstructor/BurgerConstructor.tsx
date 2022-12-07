@@ -8,8 +8,6 @@ import Modal from "../Modal/Modal";
 import { v4 as uuidv4 } from "uuid";
 import { SyntheticEvent, useCallback, useEffect, useMemo } from "react";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import { useDispatch, useSelector } from "react-redux";
-
 import { getStoreOrderNumber } from "../../services/actions/amplifierActions/orders";
 import { useDrop } from "react-dnd";
 import BurgerConstructorElement from "../BurgerConstructorElement/BurgerConstructorElement";
@@ -28,15 +26,16 @@ import {
 import { useNavigate } from "react-router-dom";
 import { FC } from "react";
 import { TIngredient } from "../../utils/typeData";
-import { RootState } from "../../services/reducers";
+
 import { constants } from "../../utils/data";
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 
 const BurgerConstructor: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { constructorIngredients, constructorBuns, orderIngredients } =
-    useSelector((store: RootState) => store.constructorBurger);
-  const { showModal } = useSelector((store: RootState) => store.modalOrder);
-  const { isLogin } = useSelector((store: RootState) => store.userData);
+    useAppSelector(store => store.constructorBurger);
+  const { showModal } = useAppSelector(store => store.modalOrder);
+  const { isLogin } = useAppSelector(store => store.userData);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,7 +54,7 @@ const BurgerConstructor: FC = () => {
       constructorIngredients!
         .map((item: TIngredient) => item.price)
         .concat(Array(2).fill(constructorBuns.price || 0))
-        .reduce((a: number, b: number) => a + b),
+        .reduce((a, b) => a + b),
     [constructorIngredients, constructorBuns]
   );
 
@@ -102,13 +101,11 @@ const BurgerConstructor: FC = () => {
       ? navigate("/login")
       : dispatch({
           type: RESET_OLD_ORDER_DATA,
-        })
-        dispatch({
-          type: OPEN_SHOW_MODAL_ORDER_NUMBER,
-        })
-        dispatch(
-          (getStoreOrderNumber as any)({ ingredients: orderIngredients })
-        );
+        });
+    dispatch({
+      type: OPEN_SHOW_MODAL_ORDER_NUMBER,
+    });
+    dispatch(getStoreOrderNumber({ ingredients: orderIngredients }));
   }
 
   const moveIngredient = useCallback(

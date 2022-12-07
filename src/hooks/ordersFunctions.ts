@@ -59,14 +59,14 @@ export const getOrderIngredients = (
 ) => {
   return ingredients
     .map((id: string) =>
-      allIngredients.filter((item: TIngredient) => item._id === id)
+      allIngredients.filter((item) => item._id === id)
     )
     .flat();
 };
 
 export const getItemsPrice = (ingredients: TIngredient[]) => {
   return ingredients.reduce(
-    (item: number, curr: TIngredient) =>
+    (item, curr) =>
       curr.type === constants.bun ? 2 * curr.price + item : item + curr.price,
     0
   );

@@ -1,19 +1,26 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { ClipLoader } from "react-spinners";
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { userRequest } from "../../services/actions/amplifierActions/user";
 import {
   WS_USER_ORDERS_HISTORY_OPEN,
   WS_USER_ORDERS_HISTORY_CLOSE,
 } from "../../services/actions/ws";
-import { RootState } from "../../services/reducers";
+
 import { color } from "../../utils/data";
 import { TOrderData } from "../../utils/typeData";
 import OrderCardIngredients from "../OrderCardIngredients/OrderCardIngredients";
 import Styles from "./UserOrdersHistory.module.css";
 
 function UserOrdersHistory() {
-  const dispatch = useDispatch();
-  const { data, wsConnected } = useSelector((store: RootState) => store.ordersUserHistory);
+  const dispatch = useAppDispatch();
+  const { data, wsConnected } = useAppSelector(
+    (store) => store.ordersUserHistory
+  );
+  useEffect(() => {
+    dispatch(userRequest);
+  }, [dispatch]);
+
   useEffect(() => {
     dispatch({ type: WS_USER_ORDERS_HISTORY_OPEN });
     return () => {

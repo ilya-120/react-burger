@@ -2,13 +2,12 @@ import Styles from "./OrderDetails.module.css";
 import done from "../../images/done.svg";
 import { color } from "../../utils/data";
 import { ClipLoader } from "react-spinners";
-import { useSelector } from "react-redux";
 import { FC } from "react";
-import { RootState } from "../../services/reducers";
+import { useAppSelector } from "../../hooks/hook";
 
 const OrderDetails: FC = () => {
-  const { error, errorText, orderNumber } = useSelector(
-    (store: RootState) => store.orderNumber
+  const { error, errorText, orderNumber } = useAppSelector(
+    (store) => store.orderNumber
   );
   return (
     <div className={`${Styles["order-box"]}`}>
@@ -41,6 +40,6 @@ const OrderDetails: FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default OrderDetails;

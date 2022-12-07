@@ -1,4 +1,4 @@
-import { FC, FormEvent, SyntheticEvent, useState } from "react";
+import { FC, FormEvent, useState } from "react";
 import {
   Button,
   Input,
@@ -6,7 +6,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./Login.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "../../services/actions/amplifierActions/user";
 import {
   ERROR_TEXT_GET_LOGIN_USER,
@@ -17,17 +16,17 @@ import ErrorRequest from "../../components/ErrorRequest/ErrorRequest";
 import Modal from "../../components/Modal/Modal";
 import { ClipLoader } from "react-spinners";
 import { color } from "../../utils/data";
-import { RootState } from "../../services/reducers";
+
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { useForm } from "../../hooks/useForm";
 
 const Login: FC = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const {form, onChange} = useForm({ email: "", password: "" });
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
-  const { errorText, isLoading } = useSelector(
-    (store: RootState) => store.userData
-  );
+  const { errorText, isLoading } = useAppSelector((store) => store.userData);
   const fromPage = location.state?.from?.pathname || "/";
 
   const handleSubmit = (e: FormEvent) => {
@@ -36,17 +35,12 @@ const Login: FC = () => {
       type: IS_LOADING,
     });
     form.email && form.password
-      ? dispatch((loginRequest as any)(form, nav, reflectErrorRequest))
+      ? dispatch(loginRequest(form, nav, reflectErrorRequest))
       : dispatch({
           type: ERROR_TEXT_GET_LOGIN_USER,
           payload: "Заполните все поля!",
         });
     setShowModal(true);
-  };
-
-  const onChange = (e: SyntheticEvent) => {
-    let target = e.target as HTMLInputElement;
-    setForm({ ...form, [target.name]: target.value });
   };
 
   const reflectErrorRequest = () => {
@@ -67,7 +61,7 @@ const Login: FC = () => {
       <Input
         type={"text"}
         placeholder={"E-mail"}
-        value={form.email}
+        value={form.email!}
         name={"email"}
         errorText={"Ошибка"}
         error={false}
@@ -76,7 +70,7 @@ const Login: FC = () => {
       />
       <span className="pb-6"></span>
       <PasswordInput
-        value={form.password}
+        value={form.password!}
         name={"password"}
         onChange={onChange}
       />

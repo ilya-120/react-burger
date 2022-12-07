@@ -1,11 +1,10 @@
-import { FC, FormEvent, SyntheticEvent, useState } from "react";
+import { FC, FormEvent, useState } from "react";
 import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Styles from "./ForgotPassword.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import {
   ERROR_TEXT_POST_FORGOT_PASSWORD,
   IS_LOADING,
@@ -16,15 +15,15 @@ import Modal from "../../components/Modal/Modal";
 import ErrorRequest from "../../components/ErrorRequest/ErrorRequest";
 import { ClipLoader } from "react-spinners";
 import { color } from "../../utils/data";
-import { RootState } from "../../services/reducers";
+
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { useForm } from "../../hooks/useForm";
 
 const ForgotPassword: FC = () => {
   const [showModal, setShowModal] = useState(false);
-  const dispatch = useDispatch();
-  const { errorText, isLoading } = useSelector(
-    (state: RootState) => state.userData
-  );
-  const [form, setForm] = useState({ email: "" });
+  const dispatch = useAppDispatch();
+  const { errorText, isLoading } = useAppSelector((state) => state.userData);
+  const {form, onChange} = useForm({ email: "" });
   const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent) => {
@@ -34,7 +33,7 @@ const ForgotPassword: FC = () => {
     });
     form.email
       ? dispatch(
-          (forgotPasswordRequest as any)(
+          forgotPasswordRequest(
             form,
             () => {
               navigate("/reset-password");
@@ -47,11 +46,6 @@ const ForgotPassword: FC = () => {
           payload: "Заполните поле!",
         });
     setShowModal(true);
-  };
-
-  const onChange = (e: SyntheticEvent) => {
-    let target = e.target as HTMLInputElement;
-    setForm({ ...form, [target.name]: target.value });
   };
 
   const reflectErrorRequest = () => {
@@ -68,7 +62,7 @@ const ForgotPassword: FC = () => {
       <Input
         type={"text"}
         placeholder={"Укажите e-mail"}
-        value={form.email}
+        value={form.email!}
         name={"email"}
         errorText={"Ошибка"}
         error={false}

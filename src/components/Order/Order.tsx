@@ -1,19 +1,19 @@
 import { useEffect } from "react";
 import Styles from "./Order.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import { getOrderDate, getOrderIngredients, getItemsPrice, getOrderStatus, getQuantityItems } from "../../hooks/ordersFunctions";
 import { WS_ORDERS_HISTORY_CLOSE, WS_ORDERS_HISTORY_OPEN, WS_USER_ORDERS_HISTORY_CLOSE, WS_USER_ORDERS_HISTORY_OPEN } from "../../services/actions/ws";
-import { RootState } from "../../services/reducers";
+
 import { color, constants } from "../../utils/data";
 import { TIngredient, TOrderData } from "../../utils/typeData";
 import OrderPrice from "../OrderCardIngredients/OrderPrice/OrderPrice";
 import OrderTime from "../OrderCardIngredients/OrderTime";
 import { ClipLoader } from "react-spinners";
 import OrderIngredient from "../App/OrderIngredient/OrderIngredient";
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 
 const Order = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const isProfile = useLocation();
 
@@ -32,13 +32,13 @@ const Order = () => {
     };
   }, [dispatch, isProfile, id]);
 
-  const { data, wsConnected } = useSelector((store: RootState) =>   isProfile.pathname === '/profile/orders/' + id ? store.ordersUserHistory : store.ordersHistory);
+  const { data, wsConnected } = useAppSelector(store =>   isProfile.pathname === '/profile/orders/' + id ? store.ordersUserHistory : store.ordersHistory);
 
   const order = data.orders.find((i: TOrderData) => i._id === id) as TOrderData;
   const timeOrder = getOrderDate(order);
 
-  const allIngredients: TIngredient[] = useSelector(
-    (store: RootState) => store.ingredients.ingredients
+  const allIngredients: TIngredient[] = useAppSelector(
+    store => store.ingredients.ingredients
   );
 
   if (order) {

@@ -20,7 +20,7 @@ const Orders: FC<TOrders> = ({ data }) => {
             {constants.orders.ready}
           </h3>
           <ul className={Styles.list}>
-            {done.map((item: number, index: number) => {
+            {done.map((item, index) => {
               return (
                 <li
                   key={index}
@@ -37,7 +37,7 @@ const Orders: FC<TOrders> = ({ data }) => {
             {constants.orders.preparing}
           </h3>
           <ul className={Styles.list}>
-            {pending.map((item: number, index: number) => {
+            {pending.map((item, index) => {
               return (
                 <li key={index} className={`text text_type_digits-default`}>
                   {item}
