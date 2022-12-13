@@ -33,9 +33,9 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
   const { constructorIngredients, constructorBuns, orderIngredients } =
-    useAppSelector(store => store.constructorBurger);
-  const { showModal } = useAppSelector(store => store.modalOrder);
-  const { isLogin } = useAppSelector(store => store.userData);
+    useAppSelector((store) => store.constructorBurger);
+  const { showModal } = useAppSelector((store) => store.modalOrder);
+  const { isLogin } = useAppSelector((store) => store.userData);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -123,7 +123,11 @@ const BurgerConstructor: FC = () => {
   );
 
   return (
-    <section ref={dropTarget} className={`${Styles["section-constructor"]}`}>
+    <section
+      data-testid="constructor"
+      ref={dropTarget}
+      className={`${Styles["section-constructor"]}`}
+    >
       <div className={`${Styles.div} pt-25 pb-2 ml-3`}>
         {constructorBuns._id && (
           <ConstructorElement
