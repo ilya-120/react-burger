@@ -1,5 +1,4 @@
 {
-   "homepage": "./",
    "name": "react-burger",
    "version": "0.1.0",
    "private": true,
@@ -30,8 +29,8 @@
    },
    "scripts": {
       "start": "react-scripts start",
-      "predeploy": "react-scripts build",
-      "deploy": "gh-pages -d build",
+      "predeploy": "npm run build && scp -r ./build/* ilya@84.252.139.77:/home/ilya/frontend",
+      "build": "react-scripts build",
       "test": "react-scripts test",
       "eject": "react-scripts eject",
       "cypress": "cypress open cache clear"
