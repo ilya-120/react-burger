@@ -14,7 +14,7 @@ type TInitialState = {
   error?: PayloadAction | null;
 };
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
   wsConnected: false,
   data: {
     success: false,

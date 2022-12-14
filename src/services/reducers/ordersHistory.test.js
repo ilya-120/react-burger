@@ -1,15 +1,5 @@
 import * as types from "../actions/ws";
-import { ordersHistoryReducer } from "./ordersHistory";
-
-const initialState = {
-  wsConnected: false,
-  data: {
-    success: false,
-    orders: [],
-    total: 0,
-    totalToday: 0,
-  },
-};
+import { ordersHistoryReducer, initialState } from "./ordersHistory";
 
 describe("ordersHistoryReducer", () => {
   it("should return the initial state", () => {

@@ -1,14 +1,5 @@
 import * as types from "../actions/ingredients";
-import { ingredientsReducer } from "./ingredients";
-
-const initialState = {
-  ingredients: [],
-  buns: [],
-  mains: [],
-  sauces: [],
-  success: false,
-  errorText: null,
-};
+import { ingredientsReducer, initialState } from "./ingredients";
 
 describe("ingredientsReducer", () => {
   it("should return the initial state", () => {

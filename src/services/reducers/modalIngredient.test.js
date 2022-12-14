@@ -1,10 +1,5 @@
 import * as types from "../actions/modalIngredient";
-import { modalIngredientReducer } from "./modalIngredient";
-
-const initialState = {
-    showModal: false,
-    modalIngredientsDetails: {},
-};
+import { modalIngredientReducer, initialState } from "./modalIngredient";
 
 describe("modalIngredientReducer", () => {
   it("should return the initial state", () => {

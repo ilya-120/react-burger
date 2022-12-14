@@ -8,7 +8,7 @@ type TInitialState = {
   showModal: boolean;
 };
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
   showModal: false,
 };
 

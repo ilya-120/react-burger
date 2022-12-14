@@ -1,14 +1,5 @@
 import * as types from "../actions/user";
-import { userReducer } from "./user";
-
-const initialState = {
-  success: false,
-  errorText: "",
-  userInfo: {},
-  isLoading: null,
-  isLogin: null,
-  forgotSuccess: null,
-};
+import { userReducer, initialState } from "./user";
 
 describe("userReducer", () => {
   it("should return the initial state", () => {

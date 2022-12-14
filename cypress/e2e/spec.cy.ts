@@ -31,6 +31,7 @@ describe('Burger Constructor', () => {
 
   it('Drag and Drop', () => {
     cy.visit('/')
+    cy.wait(5000);
     dragAndDrop(0)
     dragAndDrop(3)
     dragAndDrop(7)
@@ -39,6 +40,7 @@ describe('Burger Constructor', () => {
 
   it('Make order', () => {
     cy.visit('/')
+    cy.wait(5000);
     dragAndDrop(0)
     dragAndDrop(3)
     dragAndDrop(7)

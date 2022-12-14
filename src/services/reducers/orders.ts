@@ -13,7 +13,7 @@ type TInitialState = {
   orderNumber: number | null;
 };
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
   success: false,
   error: false,
   errorText: "",

@@ -1,11 +1,5 @@
 import * as types from "../actions/constructor";
-import { constructorReducer } from "./constructor";
-
-const initialState = {
-  orderIngredients: [],
-  constructorIngredients: [],
-  constructorBuns: {},
-};
+import { constructorReducer, initialState } from "./constructor";
 
 describe("constructorReducer", () => {
   it("should return the initial state", () => {

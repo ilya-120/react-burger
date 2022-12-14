@@ -1,9 +1,5 @@
 import * as types from "../actions/modalOrder";
-import { modalOrderReducer } from "./modalOrder";
-
-const initialState = {
-    showModal: false,
-};
+import { modalOrderReducer, initialState } from "./modalOrder";
 
 describe("modalOrderReducer", () => {
   it("should return the initial state", () => {

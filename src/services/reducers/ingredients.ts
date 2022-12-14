@@ -15,7 +15,7 @@ type TInitialState = {
   errorText: string | null,
 };
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
   ingredients: [],
   buns: [],
   mains: [],
