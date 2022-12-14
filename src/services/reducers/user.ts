@@ -29,7 +29,7 @@ type TInitialState = {
   forgotSuccess: boolean | null;
 };
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
   success: false,
   errorText: "",
   userInfo: {},

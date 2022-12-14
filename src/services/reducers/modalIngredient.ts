@@ -7,7 +7,7 @@ type TInitialState = {
   modalIngredientsDetails: TIngredient;
 };
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
   showModal: false,
   modalIngredientsDetails: {} as TIngredient,
 };

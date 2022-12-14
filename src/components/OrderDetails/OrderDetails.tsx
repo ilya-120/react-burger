@@ -12,7 +12,7 @@ const OrderDetails: FC = () => {
   return (
     <div className={`${Styles["order-box"]}`}>
       <div className="mt-15">
-        <p className="text text_type_digits-large">
+        <p data-testid="order_number" className="text text_type_digits-large">
           {!orderNumber && !error ? (
             <ClipLoader
               color={color}

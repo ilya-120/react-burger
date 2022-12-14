@@ -15,7 +15,7 @@ type TInitialState = {
   constructorBuns: TIngredient;
 };
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
   orderIngredients: [],
   constructorIngredients: [],
   constructorBuns: {} as TIngredient,

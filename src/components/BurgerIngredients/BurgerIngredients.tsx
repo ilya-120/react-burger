@@ -24,7 +24,7 @@ const BurgerIngredients: FC = () => {
   return (
     <section className={`${Styles.section}`}>
       <h1 className="text text_type_main-large mt-10">Соберите бургер</h1>
-      <div className={`${Styles.tabs} mt-5 mb-10`}>
+      <div data-testid="ingredient-tabs" className={`${Styles.tabs} mt-5 mb-10`}>
         <Tab
           value="buns"
           active={observerBun.isOnScreen}

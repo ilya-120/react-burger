@@ -50,6 +50,7 @@ const BurgerIngredientsElement: FC<TBurgerIngredientsElementProps<TIngredient>> 
 
   return (
     <Link
+    data-testid="ingredient"
     to={`/ingredients/${ingredient._id}`}
     state={{backgroundLocation: location}} className={`${Styles.element} mb-8`} ref={dragRef}>
       <div onClick={handleshowModal}>
