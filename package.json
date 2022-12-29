@@ -29,7 +29,7 @@
    },
    "scripts": {
       "start": "react-scripts start",
-      "predeploy": "npm run build && scp -r ./build/* ilya@84.252.139.77:/home/ilya/frontend",
+      "predeploy": "npm run build && scp -r ./build/* ilya120@46.138.253.44:/var/www/html6",
       "build": "react-scripts build",
       "test": "react-scripts test",
       "eject": "react-scripts eject",
